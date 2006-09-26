@@ -388,9 +388,6 @@ function akst_share_form() {
 	global $post, $social_sites, $current_user;
 
 	if (isset($current_user)) {
-
-// print_r($current_user); die();
-
 		$user = get_currentuserinfo();
 		$name = $current_user->user_nicename;
 		$email = $current_user->user_email;
@@ -400,9 +397,6 @@ function akst_share_form() {
 		$name = $user['comment_author'];
 		$email = $user['comment_author_email'];
 	}
-
-// die($name);
-
 ?>
 	<!-- Share This BEGIN -->
 	<div id="akst_form">
