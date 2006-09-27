@@ -40,37 +40,45 @@ $social_sites = array(
 		'name' => 'Furl'
 		, 'url' => 'http://furl.net/storeIt.jsp?u={url}&amp;t=={title}'
 	)
-	, 'technorati' => array(
-		'name' => 'Technorati'
-		, 'url' => 'http://www.technorati.com/faves?add={url}'
-	)
-	, 'magnolia' => array(
-		'name' => 'ma.gnolia'
-		, 'url' => 'http://ma.gnolia.com/bookmarklet/add?url={url}&amp;title={title}'
-	)
 	, 'netscape' => array(
 		'name' => 'Netscape'
 		, 'url' => ' http://www.netscape.com/submit/?U={url}&amp;T={title}'
 	)
-	, 'blinklist' => array(
-		'name' => 'BlinkList'
-		, 'url' => 'http://blinklist.com/index.php?Action=Blink/addblink.php&amp;Url={url]&amp;Title={title}'
+	, 'yahoo_myweb' => array(
+		'name' => 'Yahoo! My Web'
+		, 'url' => 'http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&amp;t={title}'
+	)
+	, 'technorati' => array(
+		'name' => 'Technorati'
+		, 'url' => 'http://www.technorati.com/faves?add={url}'
+	)
+	, 'google_bmarks' => array(
+		'name' => 'Google Bookmarks'
+		, 'url' => '  http://www.google.com/bookmarks/mark?op=edit&amp;bkmk={url}&amp;title={title}'
 	)
 	, 'newsvine' => array(
 		'name' => 'Newsvine'
 		, 'url' => 'http://www.newsvine.com/_wine/save?u={url}&amp;h={title}'
 	)
-	, 'blogmarks' => array(
-		'name' => 'Blogmarks'
-		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&amp;url={url}&amp;title={title}'
+	, 'blinklist' => array(
+		'name' => 'BlinkList'
+		, 'url' => 'http://blinklist.com/index.php?Action=Blink/addblink.php&amp;Url={url]&amp;Title={title}'
 	)
 	, 'reddit' => array(
 		'name' => 'reddit'
 		, 'url' => 'http://reddit.com/submit?url={url}&amp;title={title}'
 	)
-	, 'yahoo_myweb' => array(
-		'name' => 'Yahoo! My Web'
-		, 'url' => 'http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&amp;t={title}'
+	, 'blogmarks' => array(
+		'name' => 'Blogmarks'
+		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&amp;url={url}&amp;title={title}'
+	)
+	, 'magnolia' => array(
+		'name' => 'ma.gnolia'
+		, 'url' => 'http://ma.gnolia.com/bookmarklet/add?url={url}&amp;title={title}'
+	)
+	, 'windows_live' => array(
+		'name' => 'Windows Live'
+		, 'url' => 'https://favorites.live.com/quickadd.aspx?marklet=1&amp;mkt=en-us&amp;url={url}&amp;title={title}&amp;top=1'
 	)
 	, 'tailrank' => array(
 		'name' => 'Tailrank'
