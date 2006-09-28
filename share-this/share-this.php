@@ -270,6 +270,7 @@ foreach ($social_sites as $key => $data) {
 	padding: 0;
 }
 #akst_email ul li label {
+	color: #555;
 	display: block;
 	margin-bottom: 3px;
 }
@@ -378,9 +379,9 @@ function akst_head() {
 	$wp = get_bloginfo('wpurl');
 	$url = $wp.AKST_FILEPATH;
 	print('
-	<link rel="stylesheet" type="text/css" href="'.$url.'?akst_action=css" />
 	<script type="text/javascript" src="'.$wp.'/wp-includes/js/prototype.js"></script>
 	<script type="text/javascript" src="'.$url.'?akst_action=js"></script>
+	<link rel="stylesheet" type="text/css" href="'.$url.'?akst_action=css" />
 	');
 }
 add_action('wp_head', 'akst_head');
