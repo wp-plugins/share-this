@@ -210,7 +210,7 @@ function akst_xy(id) {
 #akst_form ul.tabs li.selected {
 	background: #fff;
 	border-bottom: 1px solid #fff;
-	cursor: normal;
+	cursor: default;
 	padding: 4px 5px 1px 5px;
 }
 #akst_form div.clear {
