@@ -86,6 +86,8 @@ $social_sites = array(
 	)
 );
 
+$akst_add_link_to_content = true;
+
 define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
 define('AKST_WPPATH', '../../../../');
 
@@ -386,11 +388,30 @@ function akst_head() {
 }
 add_action('wp_head', 'akst_head');
 
-function akst_share_link() {
+function akst_share_link($action = 'print') {
 	global $post;
+	ob_start();
 ?>
 <a href="javascript:void(akst_share('<?php print($post->ID); ?>'));" title="E-mail this, post to del.icio.us, etc." id="akst_link_<?php print($post->ID); ?>">Share This</a>
 <?php
+	$link = ob_get_contents();
+	ob_end_clean();
+	switch ($action) {
+		case 'print':
+			print($link);
+			break;
+		case 'return':
+			return $link;
+			break;
+	}
+}
+
+function akst_add_share_link_to_content($content) {
+	$content .= '<p>'.akst_share_link('return').'</p>';
+	return $content;
+}
+if ($akst_add_link_to_content) {
+	add_action('the_content', 'akst_add_share_link_to_content');
 }
 
 function akst_share_form() {
