@@ -88,17 +88,18 @@ $social_sites = array(
 
 $akst_add_link_to_content = true;
 
+@define('AK_WPROOT', '../../../../');
 define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
-define('AKST_WPPATH', '../../../../');
 
 if (!function_exists('ak_check_email_address')) {
 	function ak_check_email_address($email) {
-		// First, we check that there's one @ symbol, and that the lengths are right
+// From: http://www.ilovejackdaniels.com/php/email-address-validation/
+// First, we check that there's one @ symbol, and that the lengths are right
 		if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
 			// Email invalid because wrong number of characters in one section, or wrong number of @ symbols.
 			return false;
 		}
-		// Split it into sections to make life easier
+// Split it into sections to make life easier
 		$email_array = explode("@", $email);
 		$local_array = explode(".", $email_array[0]);
 		for ($i = 0; $i < sizeof($local_array); $i++) {
@@ -288,7 +289,7 @@ foreach ($social_sites as $key => $data) {
 			die();
 			break;
 		case 'send_mail':
-			require(AKST_WPPATH.'wp-blog-header.php');
+			require(AK_WPROOT.'wp-blog-header.php');
 
 			$post_id = '';
 			$to = '';
