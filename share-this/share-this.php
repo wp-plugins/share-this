@@ -408,7 +408,7 @@ function akst_share_link($action = 'print') {
 }
 
 function akst_add_share_link_to_content($content) {
-	$content .= '<p>'.akst_share_link('return').'</p>';
+	$content .= '<p class="akst_link">'.akst_share_link('return').'</p>';
 	return $content;
 }
 if ($akst_add_link_to_content) {
