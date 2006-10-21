@@ -1,7 +1,7 @@
 <?php
 
 // Share This
-// version 1.0b, 2006-09-26
+// version 1.0, 2006-11-01
 //
 // Copyright (c) 2006 Alex King
 // http://alexking.org/projects/wordpress/
