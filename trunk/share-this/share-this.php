@@ -86,10 +86,12 @@ $social_sites = array(
 	)
 );
 
-$akst_add_link_to_content = true;
+// set this to false if you do not want to automatically add the Share This link to your content
+
+@define('AKST_ADDTOCONTENT', true);
 
 @define('AK_WPROOT', '../../../../');
-define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
+@define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
 
 if (!function_exists('ak_check_email_address')) {
 	function ak_check_email_address($email) {
@@ -413,7 +415,7 @@ function akst_add_share_link_to_content($content) {
 	$content .= '<p class="akst_link">'.akst_share_link('return').'</p>';
 	return $content;
 }
-if ($akst_add_link_to_content) {
+if (AKST_ADDTOCONTENT) {
 	add_action('the_content', 'akst_add_share_link_to_content');
 }
 
