@@ -198,6 +198,7 @@ function akst_xy(id) {
 	margin: 5px;
 }
 #akst_form ul.tabs {
+	border: 1px solid #999;
 	list-style: none;
 	margin: 10px 10px 0 10px;
 	padding: 0;
@@ -234,7 +235,7 @@ function akst_xy(id) {
 	float: left;
 	margin: 0;
 	padding: 0;
-	width: 50%;
+	width: 45%;
 }
 #akst_social ul li a {
 	display: block;
@@ -254,6 +255,7 @@ foreach ($social_sites as $key => $data) {
 ?>
 #akst_email {
 	display: none;
+	text-align: left;
 }
 #akst_email form, #akst_email fieldset {
 	border: 0;
