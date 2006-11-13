@@ -1,10 +1,10 @@
 <?php
 
 // Share This
-// version 1.0, 2006-11-01
+// version 1.0, 2006-11-13
 //
 // Copyright (c) 2006 Alex King
-// http://alexking.org/projects/wordpress/
+// http://alexking.org/projects/wordpress
 //
 // This is an add-on for WordPress
 // http://wordpress.org/
@@ -17,9 +17,9 @@
 
 /*
 Plugin Name: Share This
-Plugin URI: http://alexking.org/projects/wordpress/share-this
+Plugin URI: http://alexking.org/projects/wordpress
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. Thanks to <a href="http://www.twistermc.com/">Thomas McMahon</a> for footwork on the URLs.
-Version: 1.0b
+Version: 1.0
 Author: Alex King
 Author URI: http://alexking.org/
 */
@@ -89,8 +89,9 @@ $social_sites = array(
 // set this to false if you do not want to automatically add the Share This link to your content
 
 @define('AKST_ADDTOCONTENT', true);
+@define('AKST_ADDTOFOOTER', true);
 
-@define('AK_WPROOT', '../../../../');
+@define('AK_WPROOT', '../../../');
 @define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
 
 if (!function_exists('ak_check_email_address')) {
@@ -480,6 +481,9 @@ function akst_share_form() {
 	</div>
 	<!-- Share This END -->
 <?php
+}
+if (AKST_ADDTOFOOTER) {
+	add_action('wp_footer', 'akst_share_form');
 }
 
 ?>
