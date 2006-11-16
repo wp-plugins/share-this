@@ -3,7 +3,7 @@ Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, te
 Contributors: alexkingorg
 Requires at least: 1.5
 Tested up to: 2.0.5
-Stable tag: 1.0
+Stable tag: 1.1
 
 Share This is a plugin that provides an unobtrusive way for your visitors to add your post to various social bookmarking sites, or send a link via e-mail to a friend.
 
@@ -48,6 +48,10 @@ If your theme does not include a wp_footer() call, you will need to add the akst
 `<?php akst_share_form(); ?>`
 
 or add the `<?php wp_footer(); ?>` tag to your theme footer.
+
+If you see 'undefined' in the bookmark URLs, you need to make sure your theme includes post IDs in the title elements, like so:
+
+`<h2 id="post-123"><a href="...`
 
 == Frequently Asked Questions ==
 
