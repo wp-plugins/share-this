@@ -1,7 +1,6 @@
 <?php
 
 // Share This
-// version 1.0, 2006-11-13
 //
 // Copyright (c) 2006 Alex King
 // http://alexking.org/projects/wordpress
@@ -19,10 +18,14 @@
 Plugin Name: Share This
 Plugin URI: http://alexking.org/projects/wordpress
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. Thanks to <a href="http://www.twistermc.com/">Thomas McMahon</a> for footwork on the URLs.
-Version: 1.0
+Version: 1.1
 Author: Alex King
 Author URI: http://alexking.org/
 */
+
+if (function_exists('load_plugin_textdomain')) {
+	load_plugin_textdomain('alexking.org');
+}
 
 // Find more URLs here: 
 // http://3spots.blogspot.com/2006/02/30-social-bookmarks-add-to-footer.html
@@ -62,7 +65,7 @@ $social_sites = array(
 	)
 	, 'blinklist' => array(
 		'name' => 'BlinkList'
-		, 'url' => 'http://blinklist.com/index.php?Action=Blink/addblink.php&amp;Url={url]&amp;Title={title}'
+		, 'url' => 'http://blinklist.com/index.php?Action=Blink/addblink.php&amp;Url={url}&amp;Title={title}'
 	)
 	, 'reddit' => array(
 		'name' => 'reddit'
@@ -348,7 +351,7 @@ foreach ($social_sites as $key => $data) {
 			}
 
 			if (empty($post_id) || empty($to) || !ak_check_email_address($to) || empty($email) || !ak_check_email_address($email)) {
-				wp_die('Click your <strong>back button</strong> and make sure those e-mail addresses are valid then try again.');
+				wp_die(__('Click your <strong>back button</strong> and make sure those e-mail addresses are valid then try again.', 'alexking.org'));
 			}
 			
 			$post = &get_post($post_id);
@@ -361,12 +364,12 @@ foreach ($social_sites as $key => $data) {
 				.'Return-Path: "'.$name.'" <'.$email.'>'."\n"
 				."Content-Type: text/plain; charset=\"" . get_option('blog_charset') ."\"\n";
 			
-			$subject = 'Check out this post on '.get_bloginfo('name');
+			$subject = __('Check out this post on ', 'alexking.org').get_bloginfo('name');
 			
-			$message = 'Greetings--'."\n\n"
-				.$name.' thinks this will be of interest to you:'."\n\n"
+			$message = __('Greetings--', 'alexking.org')."\n\n"
+				.$name.__(' thinks this will be of interest to you:', 'alexking.org')."\n\n"
 				.$url."\n\n"
-				.'Enjoy.'."\n\n"
+				.__('Enjoy.', 'alexking.org')."\n\n"
 				.'--'."\n"
 				.get_bloginfo('home')."\n";
 			
@@ -377,6 +380,7 @@ foreach ($social_sites as $key => $data) {
 			}
 			
 			header("Location: $url");
+			status_header('302');
 			die();
 			
 			break;
@@ -398,7 +402,7 @@ function akst_share_link($action = 'print') {
 	global $post;
 	ob_start();
 ?>
-<a href="javascript:void(akst_share('<?php print($post->ID); ?>'));" title="E-mail this, post to del.icio.us, etc." id="akst_link_<?php print($post->ID); ?>">Share This</a>
+<a href="javascript:void(akst_share('<?php print($post->ID); ?>'));" title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>"><?php _e('Share This', 'alexking.org'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
@@ -436,10 +440,10 @@ function akst_share_form() {
 ?>
 	<!-- Share This BEGIN -->
 	<div id="akst_form">
-		<a href="javascript:void($('akst_form').style.display='none');" class="akst_close">Close</a>
+		<a href="javascript:void($('akst_form').style.display='none');" class="akst_close"><?php _e('Close', 'alexking.org'); ?></a>
 		<ul class="tabs">
-			<li id="akst_tab1" class="selected" onclick="akst_share_tab('1');">Social Web</li>
-			<li id="akst_tab2" onclick="akst_share_tab('2');">E-mail</li>
+			<li id="akst_tab1" class="selected" onclick="akst_share_tab('1');"><?php _e('Social Web', 'alexking.org'); ?></li>
+			<li id="akst_tab2" onclick="akst_share_tab('2');"><?php _e('E-mail', 'alexking.org'); ?></li>
 		</ul>
 		<div class="clear"></div>
 		<div id="akst_social">
@@ -455,22 +459,22 @@ function akst_share_form() {
 		<div id="akst_email">
 			<form action="<?php print(get_bloginfo('wpurl').AKST_FILEPATH); ?>" method="post">
 				<fieldset>
-					<legend>E-mail It</legend>
+					<legend><?php _e('E-mail It', 'alexking.org'); ?></legend>
 					<ul>
 						<li>
-							<label>To Address:</label>
+							<label><?php _e('To Address:', 'alexking.org'); ?></label>
 							<input type="text" name="akst_to" value="" class="akst_text" />
 						</li>
 						<li>
-							<label>Your Name:</label>
+							<label><?php _e('Your Name:', 'alexking.org'); ?></label>
 							<input type="text" name="akst_name" value="<?php print(htmlspecialchars($name)); ?>" class="akst_text" />
 						</li>
 						<li>
-							<label>Your Address:</label>
+							<label><?php _e('Your Address:', 'alexking.org'); ?></label>
 							<input type="text" name="akst_email" value="<?php print(htmlspecialchars($email)); ?>" class="akst_text" />
 						</li>
 						<li>
-							<input type="submit" name="akst_submit" value="Send It" />
+							<input type="submit" name="akst_submit" value="<?php _e('Send It', 'alexking.org'); ?>" />
 						</li>
 					</ul>
 					<input type="hidden" name="akst_action" value="send_mail" />
