@@ -49,10 +49,6 @@ If your theme does not include a wp_footer() call, you will need to add the akst
 
 or add the `<?php wp_footer(); ?>` tag to your theme footer.
 
-If you see 'undefined' in the bookmark URLs, you need to make sure your theme includes post IDs in the title elements, like so:
-
-`<h2 id="post-123"><a href="...`
-
 == Frequently Asked Questions ==
 
 = How do I add or remove social sites? =
