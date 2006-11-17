@@ -41,7 +41,7 @@ $social_sites = array(
 	)
 	, 'furl' => array(
 		'name' => 'Furl'
-		, 'url' => 'http://furl.net/storeIt.jsp?u={url}&amp;t=={title}'
+		, 'url' => 'http://furl.net/storeIt.jsp?u={url}&amp;t={title}'
 	)
 	, 'netscape' => array(
 		'name' => 'Netscape'
@@ -133,12 +133,10 @@ if (!empty($_REQUEST['akst_action'])) {
 		case 'js':
 			header("Content-type: text/javascript");
 ?>
-function akst_share(id) {
+function akst_share(id, url, title) {
 	var form = $('akst_form');
 	var link = $('akst_link_' + id);
 	var offset = Position.cumulativeOffset(link);
-	var url = encodeURIComponent($('post-' + id).firstChild.href);
-	var title = encodeURIComponent($('post-' + id).firstChild.innerHTML);
 
 <?php
 	foreach ($social_sites as $key => $data) {
@@ -299,6 +297,10 @@ foreach ($social_sites as $key => $data) {
 		case 'send_mail':
 			require(AK_WPROOT.'wp-blog-header.php');
 
+			if (function_exists('load_plugin_textdomain')) {
+				load_plugin_textdomain('alexking.org');
+			}
+
 			$post_id = '';
 			$to = '';
 			$name = '';
@@ -402,7 +404,7 @@ function akst_share_link($action = 'print') {
 	global $post;
 	ob_start();
 ?>
-<a href="javascript:void(akst_share('<?php print($post->ID); ?>'));" title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>"><?php _e('Share This', 'alexking.org'); ?></a>
+<a href="javascript:void(akst_share('<?php print($post->ID); ?>', '<?php print(urlencode(get_permalink($post->ID))); ?>', '<?php print(urlencode(get_the_title())); ?>'));" title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>"><?php _e('Share This', 'alexking.org'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
