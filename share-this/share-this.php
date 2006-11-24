@@ -18,7 +18,7 @@
 Plugin Name: Share This
 Plugin URI: http://alexking.org/projects/wordpress
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. Thanks to <a href="http://www.twistermc.com/">Thomas McMahon</a> for footwork on the URLs.
-Version: 1.1
+Version: 1.2
 Author: Alex King
 Author URI: http://alexking.org/
 */
@@ -33,23 +33,23 @@ if (function_exists('load_plugin_textdomain')) {
 $social_sites = array(
 	'delicious' => array(
 		'name' => 'del.icio.us'
-		, 'url' => 'http://del.icio.us/post?url={url}&amp;title={title}'
+		, 'url' => 'http://del.icio.us/post?url={url}&title={title}'
 	)
 	, 'digg' => array(
 		'name' => 'Digg'
-		, 'url' => 'http://digg.com/submit?phase=2&amp;url={url}'
+		, 'url' => 'http://digg.com/submit?phase=2&url={url}&title={title}'
 	)
 	, 'furl' => array(
 		'name' => 'Furl'
-		, 'url' => 'http://furl.net/storeIt.jsp?u={url}&amp;t={title}'
+		, 'url' => 'http://furl.net/storeIt.jsp?u={url}&t={title}'
 	)
 	, 'netscape' => array(
 		'name' => 'Netscape'
-		, 'url' => ' http://www.netscape.com/submit/?U={url}&amp;T={title}'
+		, 'url' => ' http://www.netscape.com/submit/?U={url}&T={title}'
 	)
 	, 'yahoo_myweb' => array(
 		'name' => 'Yahoo! My Web'
-		, 'url' => 'http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&amp;t={title}'
+		, 'url' => 'http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&t={title}'
 	)
 	, 'technorati' => array(
 		'name' => 'Technorati'
@@ -57,35 +57,35 @@ $social_sites = array(
 	)
 	, 'google_bmarks' => array(
 		'name' => 'Google Bookmarks'
-		, 'url' => '  http://www.google.com/bookmarks/mark?op=edit&amp;bkmk={url}&amp;title={title}'
+		, 'url' => '  http://www.google.com/bookmarks/mark?op=edit&amp;bkmk={url}&title={title}'
 	)
 	, 'newsvine' => array(
 		'name' => 'Newsvine'
-		, 'url' => 'http://www.newsvine.com/_wine/save?u={url}&amp;h={title}'
+		, 'url' => 'http://www.newsvine.com/_wine/save?u={url}&h={title}'
 	)
 	, 'blinklist' => array(
 		'name' => 'BlinkList'
-		, 'url' => 'http://blinklist.com/index.php?Action=Blink/addblink.php&amp;Url={url}&amp;Title={title}'
+		, 'url' => 'http://blinklist.com/index.php?Action=Blink/addblink.php&Url={url}&Title={title}'
 	)
 	, 'reddit' => array(
 		'name' => 'reddit'
-		, 'url' => 'http://reddit.com/submit?url={url}&amp;title={title}'
+		, 'url' => 'http://reddit.com/submit?url={url}&title={title}'
 	)
 	, 'blogmarks' => array(
 		'name' => 'Blogmarks'
-		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&amp;url={url}&amp;title={title}'
+		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&amp;url={url}&title={title}'
 	)
 	, 'magnolia' => array(
 		'name' => 'ma.gnolia'
-		, 'url' => 'http://ma.gnolia.com/bookmarklet/add?url={url}&amp;title={title}'
+		, 'url' => 'http://ma.gnolia.com/bookmarklet/add?url={url}&title={title}'
 	)
 	, 'windows_live' => array(
 		'name' => 'Windows Live'
-		, 'url' => 'https://favorites.live.com/quickadd.aspx?marklet=1&amp;mkt=en-us&amp;url={url}&amp;title={title}&amp;top=1'
+		, 'url' => 'https://favorites.live.com/quickadd.aspx?marklet=1&mkt=en-us&url={url}&title={title}&amp;top=1'
 	)
 	, 'tailrank' => array(
 		'name' => 'Tailrank'
-		, 'url' => 'http://tailrank.com/share/?link_href={url}&amp;title={title}'
+		, 'url' => 'http://tailrank.com/share/?link_href={url}&title={title}'
 	)
 );
 
@@ -135,6 +135,12 @@ if (!empty($_REQUEST['akst_action'])) {
 ?>
 function akst_share(id, url, title) {
 	var form = $('akst_form');
+	
+	if (form.style.display == 'block') {
+		form.style.display = 'none';
+		return;
+	}
+	
 	var link = $('akst_link_' + id);
 	var offset = Position.cumulativeOffset(link);
 
@@ -422,7 +428,7 @@ function akst_add_share_link_to_content($content) {
 	$content .= '<p class="akst_link">'.akst_share_link('return').'</p>';
 	return $content;
 }
-if (AKST_ADDTOCONTENT) {
+if (AKST_ADDTOCONTENT && !is_feed()) {
 	add_action('the_content', 'akst_add_share_link_to_content');
 }
 
