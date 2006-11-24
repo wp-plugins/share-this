@@ -135,8 +135,9 @@ if (!empty($_REQUEST['akst_action'])) {
 ?>
 function akst_share(id, url, title) {
 	var form = $('akst_form');
+	var post_id = $('akst_post_id');
 	
-	if (form.style.display == 'block') {
+	if (form.style.display == 'block' && post_id.value == id) {
 		form.style.display = 'none';
 		return;
 	}
@@ -150,7 +151,7 @@ function akst_share(id, url, title) {
 	}
 ?>
 
-	$('akst_post_id').value = id;
+	post_id.value = id;
 
 	form.style.left = offset[0] + 'px';
 	form.style.top = (offset[1] + link.offsetHeight + 3) + 'px';
