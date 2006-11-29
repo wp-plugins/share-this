@@ -97,6 +97,7 @@ $social_sites = array(
 @define('AK_WPROOT', '../../../');
 @define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
 
+
 if (!function_exists('ak_check_email_address')) {
 	function ak_check_email_address($email) {
 // From: http://www.ilovejackdaniels.com/php/email-address-validation/
@@ -408,10 +409,13 @@ function akst_head() {
 add_action('wp_head', 'akst_head');
 
 function akst_share_link($action = 'print') {
+	if (function_exists('akm_check_mobile') && akm_check_mobile()) {
+		return '';
+	}
 	global $post;
 	ob_start();
 ?>
-<a href="javascript:void(akst_share('<?php print($post->ID); ?>', '<?php print(urlencode(get_permalink($post->ID))); ?>', '<?php print(urlencode(get_the_title())); ?>'));" title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>"><?php _e('Share This', 'alexking.org'); ?></a>
+<a href="#" onclick="akst_share('<?php print($post->ID); ?>', '<?php print(urlencode(get_permalink($post->ID))); ?>', '<?php print(urlencode(get_the_title())); ?>'); return false;" title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>"><?php _e('Share This', 'alexking.org'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
