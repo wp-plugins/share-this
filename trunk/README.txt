@@ -55,6 +55,14 @@ or add the `<?php wp_footer(); ?>` tag to your theme footer.
 
 You can add or remove social sites by editing the share-this.php file. Use {url} and {title} in the URL to represent your post URL and title as you see done in the examples.
 
+= What happens if a user has JavaScript disabled or is using a mobile devide? =
+
+Realistically, if a user has JavaScript disabled or is using a mobile device, it's unlikely they will want to sharing an item via social bookmarking, etc. However, as of version 1.3 this is now supported.
+
+= Does Share This work in feeds too? =
+
+Yes, as of version 1.3.
+
 = Anything else? =
 
 That about does it - enjoy!
