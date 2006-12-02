@@ -93,6 +93,7 @@ $social_sites = array(
 
 @define('AKST_ADDTOCONTENT', true);
 @define('AKST_ADDTOFOOTER', true);
+@define('AKST_ADDTOFEED', true);
 
 @define('AK_WPROOT', '../../../');
 @define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
@@ -320,7 +321,7 @@ function akst_request_handler() {
 		}
 	}
 }
-add_action('init', 'akst_request_handler');			
+add_action('init', 'akst_request_handler', 9999);			
 
 function akst_head() {
 	$wp = get_bloginfo('wpurl');
@@ -362,12 +363,20 @@ function akst_share_link($action = 'print') {
 }
 
 function akst_add_share_link_to_content($content) {
-	$content .= '<p class="akst_link">'.akst_share_link('return').'</p>';
+	$doit = false;
+	if (is_feed() && AKST_ADDTOFEED) {
+		$doit = true;
+	}
+	else if (AKST_ADDTOCONTENT) {
+		$doit = true;
+	}
+	if ($doit) {
+		$content .= '<p class="akst_link">'.akst_share_link('return').'</p>';
+	}
 	return $content;
 }
-if (AKST_ADDTOCONTENT) {
-	add_action('the_content', 'akst_add_share_link_to_content');
-}
+add_action('the_content', 'akst_add_share_link_to_content');
+add_action('the_content_rss', 'akst_add_share_link_to_content');
 
 function akst_share_form() {
 	global $post, $social_sites, $current_user;
@@ -521,10 +530,16 @@ function akst_send_mail() {
 	die();
 }
 
+function akst_hide_pop() {
+	return false;
+}
+
 function akst_page() {
-	global $social_sites, $akst_action, $current_user;
+	global $social_sites, $akst_action, $current_user, $post;
 	
 	$akst_action = 'page';
+	
+	add_action('akpc_display_popularity', 'akst_hide_pop');
 	
 	$id = 0;
 	if (!empty($_GET['p'])) {
@@ -566,6 +581,9 @@ function akst_page() {
 	}
 	#akst_email {
 		display: block;
+	}
+	#akst_email ul li {
+		margin-bottom: 10px;
 	}
 	#akst_email ul li input.akst_text {
 		width: 220px;
@@ -624,6 +642,22 @@ function akst_page() {
 	#content .akst_entry {
 		font-size: 12px;
 		line-height: 150%;
+		margin-bottom: 20px;
+	}
+	#content .akst_entry p, #content .akst_entry li, #content .akst_entry dt, #content .akst_entry dd, #content .akst_entry div, #content .akst_entry blockquote {
+		margin-bottom: 10px;
+		padding: 0;
+	}
+	#content .akst_entry blockquote {
+		background: #eee;
+		border-left: 2px solid #ccc;
+		padding: 10px;
+	}
+	#content .akst_entry blockquote p {
+		margin: 0 0 10px 0;
+	}
+	#content .akst_entry p, #content .akst_entry li, #content .akst_entry dt, #content .akst_entry dd, #content .akst_entry td, #content .akst_entry blockquote, #content .akst_entry blockquote p {
+		line-height: 150%;
 	}
 	#content .akst_return {
 		font-size: 11px;
@@ -654,6 +688,10 @@ function akst_page() {
 	div.clear {
 		float: none;
 		clear: both;
+	}
+	hr {
+		border: 0;
+		border-bottom: 1px solid #ccc;
 	}
 	
 	</style>
@@ -731,7 +769,8 @@ function akst_page() {
 		<h1 class="akst_title"><?php the_title(); ?></h1>
 		<p class="akst_category"><?php _e('Posted in: ', 'alexking.org'); the_category(','); ?></p>
 		<div class="akst_entry"><?php the_content(); ?></div>
-		<p class="akst_return"><a href="<?php the_permalink(); ?>"><?php _e('Return to Post', 'alexking.org'); ?></a></p>
+		<hr />
+		<p class="akst_return"><?php _e('Return to:', 'alexking.org'); ?> <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></p>
 		<div class="clear"></div>
 	</div>
 	
