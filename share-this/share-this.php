@@ -18,7 +18,7 @@
 Plugin Name: Share This
 Plugin URI: http://alexking.org/projects/wordpress
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. Thanks to <a href="http://www.twistermc.com/">Thomas McMahon</a> for footwork on the URLs.
-Version: 1.2
+Version: 1.3dev
 Author: Alex King
 Author URI: http://alexking.org/
 */
@@ -302,6 +302,9 @@ foreach ($social_sites as $key => $data) {
 <?php
 			die();
 			break;
+		case 'share-this':
+			add_action('init', 'akst_page');
+			break;
 		case 'send_mail':
 			require(AK_WPROOT.'wp-blog-header.php');
 
@@ -501,6 +504,135 @@ function akst_share_form() {
 }
 if (AKST_ADDTOFOOTER) {
 	add_action('wp_footer', 'akst_share_form');
+}
+
+function akst_page() {
+	global $social_sites;
+	$id = 0;
+	if (!empty($_GET['p'])) {
+		$id = intval($_GET['p']);
+	}
+	if ($id <= 0) {
+		header("Location: ".get_bloginfo('siteurl'));
+		die();
+	}
+	query_posts('p='.$id);
+	if (have_posts()) : 
+		while (have_posts()) : 
+			the_post();
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title><?php _e('Share This : ', 'alexking.org'); the_title(); ?></title>
+	
+	<link rel="stylesheet" type="text/css" href="<?php bloginfo('wpurl'); print(AKST_FILEPATH); ?>?akst_action=css" />
+	<style type="text/css">
+	
+	body {
+		background: #fff url(<?php bloginfo('wpurl'); ?>/wp-content/plugins/share-this/page_back.gif) repeat-x;
+		padding: 20px;
+		text-align: center;
+	}
+	#body {
+		background: #fff;
+		border: 1px solid #ccc;
+		margin: 0 auto;
+		text-align: left;
+		width: 700px;
+	}
+	#info {
+		border-bottom: 1px solid #ddd;
+		padding: 10px;
+	}
+	#social {
+		float: left;
+		width: 425px;
+	}
+	#email {
+		float: left;
+		width: 275px;
+	}
+	#content {
+		border-top: 1px solid #ddd;
+		padding: 10px;
+	}
+	#footer {
+		background: #eee;
+		border-top: 1px solid #ddd;
+		padding: 10px;
+	}
+	#footer p {
+		margin: 0;
+		padding: 0;
+		text-align: center;
+	}
+	div.clear {
+		float: none;
+		clear: both;
+	}
+	
+	</style>
+	
+</head>
+<body>
+
+<div id="body">
+
+	<div id="info"
+		<p><?php _e('You arrived at this page because you have JavaScript turned off in your browser or you are using a mobile device. On this page you can use any of the Social Bookmarking links to save this post to a Social Bookmarking site, or the E-mail form to send a link to the site to someone via e-mail.', 'alexking.org'); ?></p>
+	</div>
+
+	<div id="social">
+		<h2><?php _e('Social Bookmarking', 'alexking.org'); ?></h2>
+		<div id="akst_social">
+			<ul>
+<?php
+	foreach ($social_sites as $key => $data) {
+		$link = str_replace(
+			array(
+				'{url}'
+				, '{title}'
+			)
+			, array(
+				urlencode(get_permalink($id))
+				, urlencode(get_the_title())
+			)
+			, $data['url']
+		);
+		print('				<li><a href="'.$link.'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
+	}
+?>
+			</ul>
+			<div class="clear"></div>
+		</div>
+	</div>
+	
+	<div id="email">
+		<h2><?php _e('E-mail', 'alexking.org'); ?></h2>
+	</div>
+	
+	<div class="clear"></div>
+	
+	<div id="content">
+		<h1 class=""><?php the_title(); ?></h1>
+		
+		
+	</div>
+	
+	<div id="footer">
+		<p><?php _e('Powered by <a href="http://alexking.org/projects/wordpress">Share This</a>', 'alexking.org'); ?></p>
+	</div>
+
+</div>
+
+</body>
+</html>
+<?php
+		endwhile;
+	endif;
+	die();
 }
 
 ?>
