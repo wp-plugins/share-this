@@ -18,7 +18,7 @@
 Plugin Name: Share This
 Plugin URI: http://alexking.org/projects/wordpress
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. Thanks to <a href="http://www.twistermc.com/">Thomas McMahon</a> for footwork on the URLs.
-Version: 1.3dev
+Version: 1.3
 Author: Alex King
 Author URI: http://alexking.org/
 */
@@ -97,6 +97,7 @@ $social_sites = array(
 @define('AK_WPROOT', '../../../');
 @define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
 
+$akst_action = '';
 
 if (!function_exists('ak_check_email_address')) {
 	function ak_check_email_address($email) {
@@ -250,17 +251,19 @@ function akst_xy(id) {
 	width: 45%;
 }
 #akst_social ul li a {
+	background-position: 0px 2px;
+	background-repeat: no-repeat;
 	display: block;
 	float: left;
 	height: 24px;
-	padding: 4px 0 0 24px;
+	padding: 4px 0 0 22px;
 	vertical-align: middle;
 }
 <?php
 foreach ($social_sites as $key => $data) {
 	print(
 '#akst_'.$key.' {
-	background: url('.$key.'.gif) no-repeat 2px center;
+	background-image: url('.$key.'.gif);
 }
 ');
 }
@@ -302,103 +305,22 @@ foreach ($social_sites as $key => $data) {
 <?php
 			die();
 			break;
-		case 'share-this':
-			add_action('init', 'akst_page');
-			break;
-		case 'send_mail':
-			require(AK_WPROOT.'wp-blog-header.php');
-
-			if (function_exists('load_plugin_textdomain')) {
-				load_plugin_textdomain('alexking.org');
-			}
-
-			$post_id = '';
-			$to = '';
-			$name = '';
-			$email = '';
-			
-			if (!empty($_REQUEST['akst_to'])) {
-				$to = stripslashes($_REQUEST['akst_to']);
-				$to = str_replace(
-					array(
-						','
-						,"\n"
-						,"\t"
-						,"\r"
-					)
-					, array()
-					, $to
-				);
-			}
-			
-			if (!empty($_REQUEST['akst_name'])) {
-				$name = stripslashes($_REQUEST['akst_name']);
-				$name = str_replace(
-					array(
-						'"'
-						,"\n"
-						,"\t"
-						,"\r"
-					)
-					, array()
-					, $name
-				);
-			}
-
-			if (!empty($_REQUEST['akst_email'])) {
-				$email = stripslashes($_REQUEST['akst_email']);
-				$email = str_replace(
-					array(
-						','
-						,"\n"
-						,"\t"
-						,"\r"
-					)
-					, array()
-					, $email
-				);
-			}
-			
-			if (!empty($_REQUEST['akst_post_id'])) {
-				$post_id = intval($_REQUEST['akst_post_id']);
-			}
-
-			if (empty($post_id) || empty($to) || !ak_check_email_address($to) || empty($email) || !ak_check_email_address($email)) {
-				wp_die(__('Click your <strong>back button</strong> and make sure those e-mail addresses are valid then try again.', 'alexking.org'));
-			}
-			
-			$post = &get_post($post_id);
-			
-			$url = get_permalink($post_id);
-			
-			$headers = "MIME-Version: 1.0\n" .
-				'From: "'.$name.'" <'.$email.'>'."\n"
-				.'Reply-To: "'.$name.'" <'.$email.'>'."\n"
-				.'Return-Path: "'.$name.'" <'.$email.'>'."\n"
-				."Content-Type: text/plain; charset=\"" . get_option('blog_charset') ."\"\n";
-			
-			$subject = __('Check out this post on ', 'alexking.org').get_bloginfo('name');
-			
-			$message = __('Greetings--', 'alexking.org')."\n\n"
-				.$name.__(' thinks this will be of interest to you:', 'alexking.org')."\n\n"
-				.$url."\n\n"
-				.__('Enjoy.', 'alexking.org')."\n\n"
-				.'--'."\n"
-				.get_bloginfo('home')."\n";
-			
-			@mail($to, $subject, $message, $headers);
-			
-			if (!empty($_SERVER['HTTP_REFERER'])) {
-				$url = $_SERVER['HTTP_REFERER'];
-			}
-			
-			header("Location: $url");
-			status_header('302');
-			die();
-			
-			break;
 	}
 }
+
+function akst_request_handler() {
+	if (!empty($_REQUEST['akst_action'])) {
+		switch ($_REQUEST['akst_action']) {
+			case 'share-this':
+				akst_page();
+				break;
+			case 'send_mail':
+				akst_send_mail();			
+				break;
+		}
+	}
+}
+add_action('init', 'akst_request_handler');			
 
 function akst_head() {
 	$wp = get_bloginfo('wpurl');
@@ -412,13 +334,20 @@ function akst_head() {
 add_action('wp_head', 'akst_head');
 
 function akst_share_link($action = 'print') {
-	if (function_exists('akm_check_mobile') && akm_check_mobile()) {
+	global $akst_action, $post;
+	if (in_array($akst_action, array('page'))) {
 		return '';
+	}
+	if (is_feed() || (function_exists('akm_check_mobile') && akm_check_mobile())) {
+		$onclick = '';
+	}
+	else {
+		$onclick = 'onclick="akst_share(\''.$post->ID.'\', \''.urlencode(get_permalink($post->ID)).'\', \''.urlencode(get_the_title()).'\'); return false;"';
 	}
 	global $post;
 	ob_start();
 ?>
-<a href="#" onclick="akst_share('<?php print($post->ID); ?>', '<?php print(urlencode(get_permalink($post->ID))); ?>', '<?php print(urlencode(get_the_title())); ?>'); return false;" title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>"><?php _e('Share This', 'alexking.org'); ?></a>
+<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&akst_action=share-this" <?php print($onclick); ?> title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>"><?php _e('Share This', 'alexking.org'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
@@ -436,7 +365,7 @@ function akst_add_share_link_to_content($content) {
 	$content .= '<p class="akst_link">'.akst_share_link('return').'</p>';
 	return $content;
 }
-if (AKST_ADDTOCONTENT && !is_feed()) {
+if (AKST_ADDTOCONTENT) {
 	add_action('the_content', 'akst_add_share_link_to_content');
 }
 
@@ -473,7 +402,7 @@ function akst_share_form() {
 			<div class="clear"></div>
 		</div>
 		<div id="akst_email">
-			<form action="<?php print(get_bloginfo('wpurl').AKST_FILEPATH); ?>" method="post">
+			<form action="<?php bloginfo('wpurl'); ?>/index.php" method="post">
 				<fieldset>
 					<legend><?php _e('E-mail It', 'alexking.org'); ?></legend>
 					<ul>
@@ -506,8 +435,97 @@ if (AKST_ADDTOFOOTER) {
 	add_action('wp_footer', 'akst_share_form');
 }
 
+function akst_send_mail() {
+	$post_id = '';
+	$to = '';
+	$name = '';
+	$email = '';
+	
+	if (!empty($_REQUEST['akst_to'])) {
+		$to = stripslashes($_REQUEST['akst_to']);
+		$to = str_replace(
+			array(
+				','
+				,"\n"
+				,"\t"
+				,"\r"
+			)
+			, array()
+			, $to
+		);
+	}
+	
+	if (!empty($_REQUEST['akst_name'])) {
+		$name = stripslashes($_REQUEST['akst_name']);
+		$name = str_replace(
+			array(
+				'"'
+				,"\n"
+				,"\t"
+				,"\r"
+			)
+			, array()
+			, $name
+		);
+	}
+
+	if (!empty($_REQUEST['akst_email'])) {
+		$email = stripslashes($_REQUEST['akst_email']);
+		$email = str_replace(
+			array(
+				','
+				,"\n"
+				,"\t"
+				,"\r"
+			)
+			, array()
+			, $email
+		);
+	}
+	
+	if (!empty($_REQUEST['akst_post_id'])) {
+		$post_id = intval($_REQUEST['akst_post_id']);
+	}
+
+	if (empty($post_id) || empty($to) || !ak_check_email_address($to) || empty($email) || !ak_check_email_address($email)) {
+		wp_die(__('Click your <strong>back button</strong> and make sure those e-mail addresses are valid then try again.', 'alexking.org'));
+	}
+	
+	$post = &get_post($post_id);
+	
+	$url = get_permalink($post_id);
+	
+	$headers = "MIME-Version: 1.0\n" .
+		'From: "'.$name.'" <'.$email.'>'."\n"
+		.'Reply-To: "'.$name.'" <'.$email.'>'."\n"
+		.'Return-Path: "'.$name.'" <'.$email.'>'."\n"
+		."Content-Type: text/plain; charset=\"" . get_option('blog_charset') ."\"\n";
+	
+	$subject = __('Check out this post on ', 'alexking.org').get_bloginfo('name');
+	
+	$message = __('Greetings--', 'alexking.org')."\n\n"
+		.$name.__(' thinks this will be of interest to you:', 'alexking.org')."\n\n"
+		.$url."\n\n"
+		.__('Enjoy.', 'alexking.org')."\n\n"
+		.'--'."\n"
+		.get_bloginfo('home')."\n";
+	
+	@mail($to, $subject, $message, $headers);
+	
+	if (!empty($_SERVER['HTTP_REFERER'])) {
+		$url = $_SERVER['HTTP_REFERER'];
+	}
+	
+	header("Location: $url");
+	status_header('302');
+	die();
+}
+
 function akst_page() {
-	global $social_sites;
+	global $social_sites, $akst_action, $current_user;
+	
+	$akst_action = 'page';
+	
 	$id = 0;
 	if (!empty($_GET['p'])) {
 		$id = intval($_GET['p']);
@@ -515,6 +533,16 @@ function akst_page() {
 	if ($id <= 0) {
 		header("Location: ".get_bloginfo('siteurl'));
 		die();
+	}
+	if (isset($current_user)) {
+		$user = get_currentuserinfo();
+		$name = $current_user->user_nicename;
+		$email = $current_user->user_email;
+	}
+	else {
+		$user = wp_get_current_commenter();
+		$name = $user['comment_author'];
+		$email = $user['comment_author_email'];
 	}
 	query_posts('p='.$id);
 	if (have_posts()) : 
@@ -530,33 +558,78 @@ function akst_page() {
 	<link rel="stylesheet" type="text/css" href="<?php bloginfo('wpurl'); print(AKST_FILEPATH); ?>?akst_action=css" />
 	<style type="text/css">
 	
+	#akst_social ul li {
+		width: 48%;
+	}
+	#akst_social ul li a {
+		background-position: 0px 4px;
+	}
+	#akst_email {
+		display: block;
+	}
+	#akst_email ul li input.akst_text {
+		width: 220px;
+	}
+	
 	body {
 		background: #fff url(<?php bloginfo('wpurl'); ?>/wp-content/plugins/share-this/page_back.gif) repeat-x;
+		font: 11px Verdana, sans-serif;
 		padding: 20px;
 		text-align: center;
 	}
 	#body {
 		background: #fff;
 		border: 1px solid #ccc;
+		border-width: 5px 1px 2px 1px;
 		margin: 0 auto;
 		text-align: left;
 		width: 700px;
 	}
 	#info {
 		border-bottom: 1px solid #ddd;
+		line-height: 150%;
 		padding: 10px;
+	}
+	#info p {
+		margin: 0;
+		padding: 0;
 	}
 	#social {
 		float: left;
-		width: 425px;
+		padding: 10px 0 10px 10px;
+		width: 350px;
 	}
 	#email {
 		float: left;
-		width: 275px;
+		padding: 10px;
+		width: 300px;
 	}
 	#content {
 		border-top: 1px solid #ddd;
-		padding: 10px;
+		padding: 20px 50px;
+	}
+	#content .akst_date {
+		color: #666;
+		float: right;
+		padding-top: 4px;
+	}
+	#content .akst_title {
+		font: bold 18px "Lucida Sans Unicode", "Lucida Grande", "Trebuchet MS", sans-serif;
+		margin: 0 150px 10px 0;
+		padding: 0;
+	}
+	#content .akst_category {
+		color: #333;
+	}
+	#content .akst_entry {
+		font-size: 12px;
+		line-height: 150%;
+	}
+	#content .akst_return {
+		font-size: 11px;
+		margin: 0;
+		padding: 20px;
+		text-align: center;
 	}
 	#footer {
 		background: #eee;
@@ -564,9 +637,19 @@ function akst_page() {
 		padding: 10px;
 	}
 	#footer p {
+		color: #555;
 		margin: 0;
 		padding: 0;
 		text-align: center;
+	}
+	#footer p a, #footer p a:visited {
+		color: #444;
+	}
+	h2 {
+		color: #333;
+		font: bold 14px "Lucida Sans Unicode", "Lucida Grande", "Trebuchet MS", sans-serif;
+		margin: 0 0;
+		padding: 0;
 	}
 	div.clear {
 		float: none;
@@ -574,18 +657,20 @@ function akst_page() {
 	}
 	
 	</style>
-	
+
+<?php do_action('akst_head'); ?>
+
 </head>
 <body>
 
 <div id="body">
 
 	<div id="info"
-		<p><?php _e('You arrived at this page because you have JavaScript turned off in your browser or you are using a mobile device. On this page you can use any of the Social Bookmarking links to save this post to a Social Bookmarking site, or the E-mail form to send a link to the site to someone via e-mail.', 'alexking.org'); ?></p>
+		<p><?php printf(__('<strong>What is this?</strong> From this page you can use the <em>Social Web</em> links to save %s to a social bookmarking site, or the <em>E-mail</em> form to send a link via e-mail.', 'alexking.org'), '<a href="'.get_permalink($id).'">'.get_the_title().'</a>'); ?></p>
 	</div>
 
 	<div id="social">
-		<h2><?php _e('Social Bookmarking', 'alexking.org'); ?></h2>
+		<h2><?php _e('Social Web', 'alexking.org'); ?></h2>
 		<div id="akst_social">
 			<ul>
 <?php
@@ -611,14 +696,43 @@ function akst_page() {
 	
 	<div id="email">
 		<h2><?php _e('E-mail', 'alexking.org'); ?></h2>
+		<div id="akst_email">
+			<form action="<?php bloginfo('wpurl'); ?>/index.php" method="post">
+				<fieldset>
+					<legend><?php _e('E-mail It', 'alexking.org'); ?></legend>
+					<ul>
+						<li>
+							<label><?php _e('To Address:', 'alexking.org'); ?></label>
+							<input type="text" name="akst_to" value="" class="akst_text" />
+						</li>
+						<li>
+							<label><?php _e('Your Name:', 'alexking.org'); ?></label>
+							<input type="text" name="akst_name" value="<?php print(htmlspecialchars($name)); ?>" class="akst_text" />
+						</li>
+						<li>
+							<label><?php _e('Your Address:', 'alexking.org'); ?></label>
+							<input type="text" name="akst_email" value="<?php print(htmlspecialchars($email)); ?>" class="akst_text" />
+						</li>
+						<li>
+							<input type="submit" name="akst_submit" value="<?php _e('Send It', 'alexking.org'); ?>" />
+						</li>
+					</ul>
+					<input type="hidden" name="akst_action" value="send_mail" />
+					<input type="hidden" name="akst_post_id" id="akst_post_id" value="<?php print($id); ?>" />
+				</fieldset>
+			</form>
+		</div>
 	</div>
 	
 	<div class="clear"></div>
 	
 	<div id="content">
-		<h1 class=""><?php the_title(); ?></h1>
-		
-		
+		<span class="akst_date"><?php the_time('F d, Y'); ?></span>
+		<h1 class="akst_title"><?php the_title(); ?></h1>
+		<p class="akst_category"><?php _e('Posted in: ', 'alexking.org'); the_category(','); ?></p>
+		<div class="akst_entry"><?php the_content(); ?></div>
+		<p class="akst_return"><a href="<?php the_permalink(); ?>"><?php _e('Return to Post', 'alexking.org'); ?></a></p>
+		<div class="clear"></div>
 	</div>
 	
 	<div id="footer">
