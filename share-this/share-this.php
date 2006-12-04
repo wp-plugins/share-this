@@ -57,7 +57,7 @@ $social_sites = array(
 	)
 	, 'google_bmarks' => array(
 		'name' => 'Google Bookmarks'
-		, 'url' => '  http://www.google.com/bookmarks/mark?op=edit&amp;bkmk={url}&title={title}'
+		, 'url' => '  http://www.google.com/bookmarks/mark?op=edit&bkmk={url}&title={title}'
 	)
 	, 'newsvine' => array(
 		'name' => 'Newsvine'
@@ -73,7 +73,7 @@ $social_sites = array(
 	)
 	, 'blogmarks' => array(
 		'name' => 'Blogmarks'
-		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&amp;url={url}&title={title}'
+		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&url={url}&title={title}'
 	)
 	, 'magnolia' => array(
 		'name' => 'ma.gnolia'
@@ -81,7 +81,7 @@ $social_sites = array(
 	)
 	, 'windows_live' => array(
 		'name' => 'Windows Live'
-		, 'url' => 'https://favorites.live.com/quickadd.aspx?marklet=1&mkt=en-us&url={url}&title={title}&amp;top=1'
+		, 'url' => 'https://favorites.live.com/quickadd.aspx?marklet=1&mkt=en-us&url={url}&title={title}&top=1'
 	)
 	, 'tailrank' => array(
 		'name' => 'Tailrank'
