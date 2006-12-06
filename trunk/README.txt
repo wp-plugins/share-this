@@ -1,5 +1,5 @@
 === Share This ===
-Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, netscape
+Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, netscape, social, socialize
 Contributors: alexkingorg
 Requires at least: 1.5
 Tested up to: 2.0.5
@@ -55,13 +55,35 @@ or add the `<?php wp_footer(); ?>` tag to your theme footer.
 
 You can add or remove social sites by editing the share-this.php file. Use {url} and {title} in the URL to represent your post URL and title as you see done in the examples.
 
+= How do I hide the icon? =
+
+Change the following in the plugin file:
+
+`@define('AKST_SHOWICON', true);`
+
+to:
+
+`@define('AKST_SHOWICON', false);`
+
+or define your own CSS class information for `.akst_share_link`.
+
 = What happens if a user has JavaScript disabled or is using a mobile devide? =
 
-Realistically, if a user has JavaScript disabled or is using a mobile device, it's unlikely they will want to sharing an item via social bookmarking, etc. However, as of version 1.3 this is now supported.
+Realistically, if a user has JavaScript disabled or is using a mobile device, it's unlikely they will want to sharing an item via social bookmarking, etc. However, as of version 1.3 this is now supported and they will be taken to a custom page for this.
 
 = Does Share This work in feeds too? =
 
 Yes, as of version 1.3.
+
+= How do I remove the link from items in my feeds? =
+
+Change the following in the plugin file:
+
+`@define('AKST_ADDTOFEED', true);`
+
+to:
+
+`@define('AKST_ADDTOFEED', true);`
 
 = Anything else? =
 

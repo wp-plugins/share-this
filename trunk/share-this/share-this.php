@@ -23,9 +23,22 @@ Author: Alex King
 Author URI: http://alexking.org/
 */
 
-if (function_exists('load_plugin_textdomain')) {
-	load_plugin_textdomain('alexking.org');
-}
+
+@define('AKST_ADDTOCONTENT', true);
+// set this to false if you do not want to automatically add the Share This link to your content
+
+
+@define('AKST_ADDTOFOOTER', true);
+// set this to false if you do not want to automatically add the Share This form to the page in your footer
+
+
+@define('AKST_ADDTOFEED', true);
+// set this to false if you do not want to automatically add the Share This link to items in your feed
+
+
+@define('AKST_SHOWICON', true);
+// set this to false if you do not want to show the Share This icon next to the Share This link
+
 
 // Find more URLs here: 
 // http://3spots.blogspot.com/2006/02/30-social-bookmarks-add-to-footer.html
@@ -89,14 +102,16 @@ $social_sites = array(
 	)
 );
 
-// set this to false if you do not want to automatically add the Share This link to your content
 
-@define('AKST_ADDTOCONTENT', true);
-@define('AKST_ADDTOFOOTER', true);
-@define('AKST_ADDTOFEED', true);
+// NO NEED TO EDIT BELOW THIS LINE
+// ============================================================
 
 @define('AK_WPROOT', '../../../');
 @define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
+
+if (function_exists('load_plugin_textdomain')) {
+	load_plugin_textdomain('alexking.org');
+}
 
 $akst_action = '';
 
@@ -302,8 +317,15 @@ foreach ($social_sites as $key => $data) {
 	padding: 3px;
 	width: 280px;
 }
-
 <?php
+if (AKST_SHOWICON) {
+?>
+.akst_share_link {
+	background: 1px 0 url(share-this.gif) no-repeat;
+	padding: 1px 0 3px 22px;
+}
+<?php
+}
 			die();
 			break;
 	}
@@ -348,7 +370,7 @@ function akst_share_link($action = 'print') {
 	global $post;
 	ob_start();
 ?>
-<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&akst_action=share-this" <?php print($onclick); ?> title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>"><?php _e('Share This', 'alexking.org'); ?></a>
+<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&akst_action=share-this" <?php print($onclick); ?> title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>" class="akst_share_link"><?php _e('Share This', 'alexking.org'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
