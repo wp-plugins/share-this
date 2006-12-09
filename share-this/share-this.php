@@ -370,7 +370,7 @@ function akst_share_link($action = 'print') {
 	global $post;
 	ob_start();
 ?>
-<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&akst_action=share-this" <?php print($onclick); ?> title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>" class="akst_share_link"><?php _e('Share This', 'alexking.org'); ?></a>
+<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&amp;akst_action=share-this" <?php print($onclick); ?> title="<?php _e('E-mail this, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>" class="akst_share_link"><?php _e('Share This', 'alexking.org'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
@@ -474,6 +474,7 @@ function akst_send_mail() {
 	
 	if (!empty($_REQUEST['akst_to'])) {
 		$to = stripslashes($_REQUEST['akst_to']);
+		$to = strip_tags($to);
 		$to = str_replace(
 			array(
 				','
@@ -488,6 +489,7 @@ function akst_send_mail() {
 	
 	if (!empty($_REQUEST['akst_name'])) {
 		$name = stripslashes($_REQUEST['akst_name']);
+		$name = strip_tags($name);
 		$name = str_replace(
 			array(
 				'"'
@@ -502,6 +504,7 @@ function akst_send_mail() {
 
 	if (!empty($_REQUEST['akst_email'])) {
 		$email = stripslashes($_REQUEST['akst_email']);
+		$email = strip_tags($email);
 		$email = str_replace(
 			array(
 				','
