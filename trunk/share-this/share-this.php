@@ -24,11 +24,11 @@ Author URI: http://alexking.org/
 */
 
 
-@define('AKST_ADDTOCONTENT', false);
+@define('AKST_ADDTOCONTENT', true);
 // set this to false if you do not want to automatically add the Share This link to your content
 
 
-@define('AKST_ADDTOFOOTER', false);
+@define('AKST_ADDTOFOOTER', true);
 // set this to false if you do not want to automatically add the Share This form to the page in your footer
 
 
@@ -106,7 +106,7 @@ $social_sites = array(
 // NO NEED TO EDIT BELOW THIS LINE
 // ============================================================
 
-@define('AK_WPROOT', '/www/v2.alexking.org/wp/');
+@define('AK_WPROOT', '../../../');
 @define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
 
 if (function_exists('load_plugin_textdomain')) {

@@ -3,7 +3,7 @@ Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, te
 Contributors: alexkingorg
 Requires at least: 1.5
 Tested up to: 2.0.5
-Stable tag: 1.2
+Stable tag: 1.3
 
 Share This is a plugin that provides an unobtrusive way for your visitors to add your post to various social bookmarking sites, or send a link via e-mail to a friend.
 
@@ -69,7 +69,7 @@ or define your own CSS class information for `.akst_share_link`.
 
 = What happens if a user has JavaScript disabled or is using a mobile devide? =
 
-Realistically, if a user has JavaScript disabled or is using a mobile device, it's unlikely they will want to sharing an item via social bookmarking, etc. However, as of version 1.3 this is now supported and they will be taken to a custom page for this.
+Realistically, if a user has JavaScript disabled or is using a mobile device, it's unlikely they will want to sharing an item via social web sites, e-mail, etc. However, as of version 1.3 this is now supported and they will be taken to a custom page that allows this.
 
 = Does Share This work in feeds too? =
 
