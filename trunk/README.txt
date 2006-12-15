@@ -3,14 +3,14 @@ Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, te
 Contributors: alexkingorg
 Requires at least: 1.5
 Tested up to: 2.0.5
-Stable tag: 1.3
+Stable tag: 1.3.1
 
 Share This is a plugin that provides an unobtrusive way for your visitors to add your post to various social bookmarking sites, or send a link via e-mail to a friend.
 
 == Installation ==
 
 1. Download the plugin archive and expand it (you've likely already done this).
-2. Put the 'share-this' folder into your wp-content/plugins/ directory.
+2. Put the 'share-this' folder into your wp-content/plugins/ directory. Afterward, you should have a folder structure like this: wp-content/plugins/share-this/(a bunch of files).
 3. Go to the Plugins page in your WordPress Administration area and click 'Activate' for Share This.
 4. If you are using a version of WP prior to 2.1, upload the included prototype.js to your wp-includes/js/ directory
 
@@ -50,6 +50,28 @@ If your theme does not include a wp_footer() call, you will need to add the akst
 or add the `<?php wp_footer(); ?>` tag to your theme footer.
 
 == Frequently Asked Questions ==
+
+= Why doesn't Share This show up in my plugins list? =
+
+Make sure you put the 'share-this' directory in your 'plugins' folder. It should look like this:
+
+wp-content/plugins/share-this/(a bunch of files)
+
+not:
+
+wp-content/plugins/share-this-1.3/share-this/(a bunch of files)
+
+= How come I go to a new page to Share This instead of getting the little pop-up? =
+
+or
+
+= How come the little popup doesn't show? =
+
+If you are using a version of WordPress prior to 2.1 and you don't have Prototype in your wp-includes/js directory, the little pop-up won't show and you'll be taken to the page instead. Make sure that the Prototype file is installed. 
+
+Also, the version of Prototype included in Share This 1.3 was incompatible with IE7, so make sure you get the version from the current release (or from WordPress).
+
+If you are using WordPress 2.1 or greater and/or you do have the Prototype file included in your wp-includes/js/ directory, you may need to make sure the form is being added properly (see notes on wp_footer in this document). Additionally check that other JavaScript on the page is not erroring out.
 
 = How do I add or remove social sites? =
 
