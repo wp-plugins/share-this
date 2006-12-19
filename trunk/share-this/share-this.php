@@ -17,7 +17,7 @@
 /*
 Plugin Name: Share This
 Plugin URI: http://alexking.org/projects/wordpress
-Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. Thanks to <a href="http://www.twistermc.com/">Thomas McMahon</a> for footwork on the URLs.
+Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. Thanks to <a href="http://www.twistermc.com/">Thomas McMahon</a> for footwork on the URLs. Questions on configuration, etc.? Make sure to read the README.
 Version: 1.3
 Author: Alex King
 Author URI: http://alexking.org/
@@ -588,6 +588,7 @@ function akst_page() {
 	if (have_posts()) : 
 		while (have_posts()) : 
 			the_post();
+			header('Content-Type: '.get_bloginfo('html_type').'; charset='.get_bloginfo('charset'));
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
