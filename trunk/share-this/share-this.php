@@ -146,6 +146,23 @@ if (!function_exists('ak_check_email_address')) {
 	}
 }
 
+if (!function_exists('ak_decode_entities')) {
+	function ak_decode_entities($text, $quote_style = ENT_COMPAT) {
+// From: http://us2.php.net/manual/en/function.html-entity-decode.php#68536
+		if (function_exists('html_entity_decode')) {
+			$text = html_entity_decode($text, $quote_style, 'ISO-8859-1'); // NOTE: UTF-8 does not work!
+		}
+		else { 
+			$trans_tbl = get_html_translation_table(HTML_ENTITIES, $quote_style);
+			$trans_tbl = array_flip($trans_tbl);
+			$text = strtr($text, $trans_tbl);
+		}
+		$text = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $text); 
+		$text = preg_replace('~&#([0-9]+);~e', 'chr("\\1")', $text);
+		return $text;
+	}
+}
+
 if (!empty($_REQUEST['akst_action'])) {
 	switch ($_REQUEST['akst_action']) {
 		case 'js':
@@ -536,10 +553,7 @@ function akst_send_mail() {
 		wp_die(__('Click your <strong>back button</strong> and make sure those e-mail addresses are valid then try again.', 'alexking.org'));
 	}
 	
-	$post = &get_post($post_id);
-	
-	$url = get_permalink($post_id);
-	
+//	$post = &get_post($post_id);
 	$headers = "MIME-Version: 1.0\n" .
 		'From: "'.$name.'" <'.$email.'>'."\n"
 		.'Reply-To: "'.$name.'" <'.$email.'>'."\n"
@@ -550,12 +564,13 @@ function akst_send_mail() {
 	
 	$message = __('Greetings--', 'alexking.org')."\n\n"
 		.$name.__(' thinks this will be of interest to you:', 'alexking.org')."\n\n"
-		.$url."\n\n"
+		.ak_decode_entities(get_the_title($post_id))."\n\n"
+		.get_permalink($post_id)."\n\n"
 		.__('Enjoy.', 'alexking.org')."\n\n"
 		.'--'."\n"
 		.get_bloginfo('home')."\n";
 	
-	@mail($to, $subject, $message, $headers);
+	@wp_mail($to, $subject, $message, $headers);
 	
 	if (!empty($_SERVER['HTTP_REFERER'])) {
 		$url = $_SERVER['HTTP_REFERER'];
