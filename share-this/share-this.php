@@ -345,11 +345,22 @@ function akst_request_handler() {
 }
 add_action('init', 'akst_request_handler', 9999);			
 
+function akst_init() {
+	if (function_exists('wp_enqueue_script')) {
+		wp_enqueue_script('prototype');
+	}
+}
+add_action('init', 'akst_init');			
+
 function akst_head() {
 	$wp = get_bloginfo('wpurl');
 	$url = $wp.AKST_FILEPATH;
+	if (!function_exists('wp_enqueue_script')) {
+		print('
+		<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-includes/js/prototype.js"></script>
+		');
+	}
 	print('
-	<script type="text/javascript" src="'.$wp.'/wp-includes/js/prototype.js"></script>
 	<script type="text/javascript" src="'.$url.'?akst_action=js"></script>
 	<link rel="stylesheet" type="text/css" href="'.$url.'?akst_action=css" />
 	');
@@ -729,7 +740,7 @@ function akst_page() {
 
 <div id="body">
 
-	<div id="info"
+	<div id="info">
 		<p><?php printf(__('<strong>What is this?</strong> From this page you can use the <em>Social Web</em> links to save %s to a social bookmarking site, or the <em>E-mail</em> form to send a link via e-mail.', 'alexking.org'), '<a href="'.get_permalink($id).'">'.get_the_title().'</a>'); ?></p>
 	</div>
 
