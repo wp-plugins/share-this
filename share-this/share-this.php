@@ -18,7 +18,7 @@
 Plugin Name: Share This
 Plugin URI: http://alexking.org/projects/wordpress
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. Thanks to <a href="http://www.twistermc.com/">Thomas McMahon</a> for footwork on the URLs. Questions on configuration, etc.? Make sure to read the README.
-Version: 1.3
+Version: 1.3.2
 Author: Alex King
 Author URI: http://alexking.org/
 */
@@ -64,29 +64,29 @@ $social_sites = array(
 		'name' => 'Yahoo! My Web'
 		, 'url' => 'http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&t={title}'
 	)
-	, 'technorati' => array(
-		'name' => 'Technorati'
-		, 'url' => 'http://www.technorati.com/faves?add={url}'
+	, 'stumbleupon' => array(
+		'name' => 'StumbleUpon'
+		, 'url' => 'http://www.stumbleupon.com/submit?url={url}&title={title}'
 	)
 	, 'google_bmarks' => array(
 		'name' => 'Google Bookmarks'
 		, 'url' => '  http://www.google.com/bookmarks/mark?op=edit&bkmk={url}&title={title}'
 	)
-	, 'newsvine' => array(
-		'name' => 'Newsvine'
-		, 'url' => 'http://www.newsvine.com/_wine/save?u={url}&h={title}'
+	, 'technorati' => array(
+		'name' => 'Technorati'
+		, 'url' => 'http://www.technorati.com/faves?add={url}'
 	)
 	, 'blinklist' => array(
 		'name' => 'BlinkList'
 		, 'url' => 'http://blinklist.com/index.php?Action=Blink/addblink.php&Url={url}&Title={title}'
 	)
+	, 'newsvine' => array(
+		'name' => 'Newsvine'
+		, 'url' => 'http://www.newsvine.com/_wine/save?u={url}&h={title}'
+	)
 	, 'reddit' => array(
 		'name' => 'reddit'
 		, 'url' => 'http://reddit.com/submit?url={url}&title={title}'
-	)
-	, 'blogmarks' => array(
-		'name' => 'Blogmarks'
-		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&url={url}&title={title}'
 	)
 	, 'magnolia' => array(
 		'name' => 'ma.gnolia'
@@ -101,6 +101,22 @@ $social_sites = array(
 		, 'url' => 'http://tailrank.com/share/?link_href={url}&title={title}'
 	)
 );
+
+/*
+
+// Additional sites
+
+	, 'blogmarks' => array(
+		'name' => 'Blogmarks'
+		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&url={url}&title={title}'
+	)
+
+	, 'favoriting' => array(
+		'name' => 'Favoriting'
+		, 'url' => 'http://www.favoriting.com/nuevoFavorito.asp?qs_origen=3&qs_url={url}&qs_title={title}'
+	)
+
+*/
 
 
 // NO NEED TO EDIT BELOW THIS LINE
