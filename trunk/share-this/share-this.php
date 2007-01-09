@@ -253,6 +253,7 @@ function akst_xy(id) {
 	display: none;
 	position: absolute;
 	width: 350px;
+	z-index: 999;
 }
 #akst_form a.akst_close {
 	color: #fff;
