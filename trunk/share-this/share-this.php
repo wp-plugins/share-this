@@ -84,13 +84,13 @@ $social_sites = array(
 		'name' => 'Newsvine'
 		, 'url' => 'http://www.newsvine.com/_wine/save?u={url}&h={title}'
 	)
-	, 'reddit' => array(
-		'name' => 'reddit'
-		, 'url' => 'http://reddit.com/submit?url={url}&title={title}'
-	)
 	, 'magnolia' => array(
 		'name' => 'ma.gnolia'
 		, 'url' => 'http://ma.gnolia.com/bookmarklet/add?url={url}&title={title}'
+	)
+	, 'reddit' => array(
+		'name' => 'reddit'
+		, 'url' => 'http://reddit.com/submit?url={url}&title={title}'
 	)
 	, 'windows_live' => array(
 		'name' => 'Windows Live'
