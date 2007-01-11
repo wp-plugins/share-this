@@ -73,6 +73,15 @@ Also, the version of Prototype included in Share This 1.3 was incompatible with 
 
 If you are using WordPress 2.1 or greater and/or you do have the Prototype file included in your wp-includes/js/ directory, you may need to make sure the form is being added properly (see notes on wp_footer in this document). Additionally check that other JavaScript on the page is not erroring out.
 
+= It doesn't look right with my theme, what do I do? =
+
+Share This intentionally includes just a minimum of CSS styling information so that it will take on some of your site's styling and blend in better with your site. However, some themes will require styling changes be made in order for Share This to look right.
+
+I recommend making those changes to the style.css in the theme rather than the CSS included in the Share This plugin file for 2 reasons:
+
+1. Another theme might need different style changes. You may not want the changes applied to all themes, but by putting them in the plugin CSS they will be applied to all themes.
+2. You won't have to re-apply your changes when you upgrade to a newer version of Share This.
+
 = How do I add or remove social sites? =
 
 You can add or remove social sites by editing the share-this.php file. Use {url} and {title} in the URL to represent your post URL and title as you see done in the examples.
