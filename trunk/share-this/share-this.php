@@ -179,6 +179,20 @@ if (!function_exists('ak_decode_entities')) {
 	}
 }
 
+if (!function_exists('ak_prototype')) {
+	function ak_prototype() {
+		if (!function_exists('wp_enqueue_script')) {
+			global $ak_prototype;
+			if (!isset($ak_prototype) || !$ak_prototype) {
+				print('
+		<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-includes/js/prototype.js"></script>
+				');
+			}
+			$$ak_prototype = true;
+		}
+	}
+}
+
 if (!empty($_REQUEST['akst_action'])) {
 	switch ($_REQUEST['akst_action']) {
 		case 'js':
@@ -389,11 +403,7 @@ add_action('init', 'akst_init');
 function akst_head() {
 	$wp = get_bloginfo('wpurl');
 	$url = $wp.AKST_FILEPATH;
-	if (!function_exists('wp_enqueue_script')) {
-		print('
-		<script type="text/javascript" src="'.get_bloginfo('wpurl').'/wp-includes/js/prototype.js"></script>
-		');
-	}
+	ak_prototype();
 	print('
 	<script type="text/javascript" src="'.$url.'?akst_action=js"></script>
 	<link rel="stylesheet" type="text/css" href="'.$url.'?akst_action=css" />
