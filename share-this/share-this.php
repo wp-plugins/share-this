@@ -648,7 +648,7 @@ function akst_page() {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title><?php _e('Share This : ', 'alexking.org'); the_title(); ?></title>
-	
+	<meta name="ROBOTS" content="NOINDEX" />
 	<link rel="stylesheet" type="text/css" href="<?php bloginfo('wpurl'); print(AKST_FILEPATH); ?>?akst_action=css" />
 	<style type="text/css">
 	
