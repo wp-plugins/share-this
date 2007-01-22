@@ -114,7 +114,7 @@ Change the following in the plugin file:
 
 to:
 
-`@define('AKST_ADDTOFEED', true);`
+`@define('AKST_ADDTOFEED', false);`
 
 = Anything else? =
 
