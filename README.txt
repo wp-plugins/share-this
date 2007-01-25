@@ -1,9 +1,9 @@
 === Share This ===
-Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, netscape, social, socialize
+Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, netscape, social, socialize, stumbleupon
 Contributors: alexkingorg
 Requires at least: 1.5
-Tested up to: 2.0.5
-Stable tag: 1.3.1
+Tested up to: 2.1
+Stable tag: 1.4
 
 Share This is a plugin that provides an unobtrusive way for your visitors to add your post to various social bookmarking sites, or send a link via e-mail to a friend.
 
@@ -13,6 +13,7 @@ Share This is a plugin that provides an unobtrusive way for your visitors to add
 2. Put the 'share-this' folder into your wp-content/plugins/ directory. Afterward, you should have a folder structure like this: wp-content/plugins/share-this/(a bunch of files).
 3. Go to the Plugins page in your WordPress Administration area and click 'Activate' for Share This.
 4. If you are using a version of WP prior to 2.1, upload the included prototype.js to your wp-includes/js/ directory
+
 
 == Template Tags ==
 
@@ -41,6 +42,7 @@ If you don't want to edit the .php file, you can add this to your WordPress inde
 `@define('AKST_ADDTOCONTENT', false);`
 `@define('AKST_ADDTOFOOTER', false);`
 
+
 == Known Issues ==
 
 If your theme does not include a wp_footer() call, you will need to add the akst_share_form template tag to your footer manually:
@@ -48,6 +50,7 @@ If your theme does not include a wp_footer() call, you will need to add the akst
 `<?php akst_share_form(); ?>`
 
 or add the `<?php wp_footer(); ?>` tag to your theme footer.
+
 
 == Frequently Asked Questions ==
 
