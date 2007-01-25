@@ -62,7 +62,7 @@ wp-content/plugins/share-this/(a bunch of files)
 
 not:
 
-wp-content/plugins/share-this-1.3.1/share-this/(a bunch of files)
+wp-content/plugins/share-this-1.4/share-this/(a bunch of files)
 
 = How come I go to a new page to Share This instead of getting the little pop-up? =
 
