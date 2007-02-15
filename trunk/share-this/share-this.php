@@ -501,8 +501,8 @@ function akst_share_form() {
 							<input type="text" id="akst_name" name="akst_name" value="<?php print(htmlspecialchars($name)); ?>" class="akst_text" />
 						</li>
 						<li>
-							<label for="akst_email"><?php _e('Your Address:', 'alexking.org'); ?></label>
-							<input type="text" id="akst_email" name="akst_email" value="<?php print(htmlspecialchars($email)); ?>" class="akst_text" />
+							<label for="akst_email_field"><?php _e('Your Address:', 'alexking.org'); ?></label>
+							<input type="text" id="akst_email_field" name="akst_email" value="<?php print(htmlspecialchars($email)); ?>" class="akst_text" />
 						</li>
 						<li>
 							<input type="submit" name="akst_submit" value="<?php _e('Send It', 'alexking.org'); ?>" />
@@ -819,16 +819,16 @@ function akst_page() {
 					<legend><?php _e('E-mail It', 'alexking.org'); ?></legend>
 					<ul>
 						<li>
-							<label><?php _e('To Address:', 'alexking.org'); ?></label>
-							<input type="text" name="akst_to" value="" class="akst_text" />
+							<label for="akst_to"><?php _e('To Address:', 'alexking.org'); ?></label>
+							<input type="text" id="akst_to" name="akst_to" value="" class="akst_text" />
 						</li>
 						<li>
-							<label><?php _e('Your Name:', 'alexking.org'); ?></label>
-							<input type="text" name="akst_name" value="<?php print(htmlspecialchars($name)); ?>" class="akst_text" />
+							<label for="akst_name"><?php _e('Your Name:', 'alexking.org'); ?></label>
+							<input type="text" id="akst_name" name="akst_name" value="<?php print(htmlspecialchars($name)); ?>" class="akst_text" />
 						</li>
 						<li>
-							<label><?php _e('Your Address:', 'alexking.org'); ?></label>
-							<input type="text" name="akst_email" value="<?php print(htmlspecialchars($email)); ?>" class="akst_text" />
+							<label for="akst_email_field"><?php _e('Your Address:', 'alexking.org'); ?></label>
+							<input type="text" id="akst_email_field" name="akst_email" value="<?php print(htmlspecialchars($email)); ?>" class="akst_text" />
 						</li>
 						<li>
 							<input type="submit" name="akst_submit" value="<?php _e('Send It', 'alexking.org'); ?>" />
