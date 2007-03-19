@@ -2,7 +2,7 @@
 
 // Share This
 //
-// Copyright (c) 2006 Alex King
+// Copyright (c) 2006-2007 Alex King
 // http://alexking.org/projects/wordpress
 //
 // This is an add-on for WordPress
@@ -18,7 +18,7 @@
 Plugin Name: Share This
 Plugin URI: http://alexking.org/projects/wordpress
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. Thanks to <a href="http://www.twistermc.com/">Thomas McMahon</a> for footwork on the URLs. Questions on configuration, etc.? Make sure to read the README.
-Version: 1.4
+Version: 1.5dev
 Author: Alex King
 Author URI: http://alexking.org/
 */
@@ -82,7 +82,7 @@ $social_sites = array(
 	)
 	, 'newsvine' => array(
 		'name' => 'Newsvine'
-		, 'url' => 'http://www.newsvine.com/_wine/save?u={url}&h={title}'
+		, 'url' => 'http://www.newsvine.com/_tools/seed&save?popoff=0&u={url}&h={title}'
 	)
 	, 'magnolia' => array(
 		'name' => 'ma.gnolia'
@@ -248,12 +248,6 @@ function akst_share_tab(tab) {
 			body2.style.display = 'block';
 			break;
 	}
-}
-
-function akst_xy(id) {
-	var element = $(id);
-	var x = 0;
-	var y = 0;
 }
 <?php
 			die();
