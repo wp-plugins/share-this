@@ -106,6 +106,15 @@ $social_sites = array(
 
 // Additional sites
 
+	, 'facebook' => array(
+		'name' => 'Facebook'
+		, 'url' => 'http://www.facebook.com/share.php?u={url}
+		
+		&title={title}'
+	)
+
+sphere it?
+
 	, 'blogmarks' => array(
 		'name' => 'Blogmarks'
 		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&url={url}&title={title}'
@@ -198,7 +207,7 @@ if (!empty($_REQUEST['akst_action'])) {
 		case 'js':
 			header("Content-type: text/javascript");
 ?>
-function akst_share(id, url, title) {
+function akst_share(id, url, title, html_id) {
 	var form = $('akst_form');
 	var post_id = $('akst_post_id');
 	
@@ -207,7 +216,7 @@ function akst_share(id, url, title) {
 		return;
 	}
 	
-	var link = $('akst_link_' + id);
+	var link = $('akst_link_' + html_id);
 	var offset = Position.cumulativeOffset(link);
 
 <?php
@@ -405,7 +414,7 @@ function akst_head() {
 }
 add_action('wp_head', 'akst_head');
 
-function akst_share_link($action = 'print') {
+function akst_share_link($action = 'print', $id_ext = '') {
 	global $akst_action, $post;
 	if (in_array($akst_action, array('page'))) {
 		return '';
@@ -414,12 +423,12 @@ function akst_share_link($action = 'print') {
 		$onclick = '';
 	}
 	else {
-		$onclick = 'onclick="akst_share(\''.$post->ID.'\', \''.urlencode(get_permalink($post->ID)).'\', \''.urlencode(get_the_title()).'\'); return false;"';
+		$onclick = 'onclick="akst_share(\''.$post->ID.'\', \''.urlencode(get_permalink($post->ID)).'\', \''.urlencode(get_the_title()).'\', \''.$post->ID.$id_ext.'\'); return false;"';
 	}
 	global $post;
 	ob_start();
 ?>
-<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&amp;akst_action=share-this" <?php print($onclick); ?> title="<?php _e('E-mail, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID); ?>" class="akst_share_link" rel="nofollow"><?php _e('Share This', 'alexking.org'); ?></a>
+<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&amp;akst_action=share-this" <?php print($onclick); ?> title="<?php _e('Email, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID.$id_ext); ?>" class="akst_share_link" rel="nofollow"><?php _e('Share This', 'alexking.org'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
