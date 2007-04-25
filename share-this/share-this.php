@@ -127,6 +127,8 @@ sphere it?
 
 */
 
+$akst_limit_mail_recipients = 5;
+
 
 // NO NEED TO EDIT BELOW THIS LINE
 // ============================================================
@@ -428,7 +430,7 @@ function akst_share_link($action = 'print', $id_ext = '') {
 	global $post;
 	ob_start();
 ?>
-<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&amp;akst_action=share-this" <?php print($onclick); ?> title="<?php _e('Email, post to del.icio.us, etc.', 'alexking.org'); ?>" id="akst_link_<?php print($post->ID.$id_ext); ?>" class="akst_share_link" rel="nofollow"><?php _e('Share This', 'alexking.org'); ?></a>
+<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&amp;akst_action=share-this" <?php print($onclick); ?> title="<?php _e('Email, post to del.icio.us, etc.', 'share-this'); ?>" id="akst_link_<?php print($post->ID.$id_ext); ?>" class="akst_share_link" rel="nofollow"><?php _e('Share This', 'share-this'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
@@ -474,10 +476,10 @@ function akst_share_form() {
 ?>
 	<!-- Share This BEGIN -->
 	<div id="akst_form">
-		<a href="javascript:void($('akst_form').style.display='none');" class="akst_close"><?php _e('Close', 'alexking.org'); ?></a>
+		<a href="javascript:void($('akst_form').style.display='none');" class="akst_close"><?php _e('Close', 'share-this'); ?></a>
 		<ul class="tabs">
-			<li id="akst_tab1" class="selected" onclick="akst_share_tab('1');"><?php _e('Social Web', 'alexking.org'); ?></li>
-			<li id="akst_tab2" onclick="akst_share_tab('2');"><?php _e('E-mail', 'alexking.org'); ?></li>
+			<li id="akst_tab1" class="selected" onclick="akst_share_tab('1');"><?php _e('Social Web', 'share-this'); ?></li>
+			<li id="akst_tab2" onclick="akst_share_tab('2');"><?php _e('E-mail', 'share-this'); ?></li>
 		</ul>
 		<div class="clear"></div>
 		<div id="akst_social">
@@ -493,22 +495,22 @@ function akst_share_form() {
 		<div id="akst_email">
 			<form action="<?php bloginfo('wpurl'); ?>/index.php" method="post">
 				<fieldset>
-					<legend><?php _e('E-mail It', 'alexking.org'); ?></legend>
+					<legend><?php _e('E-mail It', 'share-this'); ?></legend>
 					<ul>
 						<li>
-							<label for="akst_to"><?php _e('To Address:', 'alexking.org'); ?></label>
+							<label for="akst_to"><?php _e('To Address:', 'share-this'); ?></label>
 							<input type="text" id="akst_to" name="akst_to" value="" class="akst_text" />
 						</li>
 						<li>
-							<label for="akst_name"><?php _e('Your Name:', 'alexking.org'); ?></label>
+							<label for="akst_name"><?php _e('Your Name:', 'share-this'); ?></label>
 							<input type="text" id="akst_name" name="akst_name" value="<?php print(htmlspecialchars($name)); ?>" class="akst_text" />
 						</li>
 						<li>
-							<label for="akst_email_field"><?php _e('Your Address:', 'alexking.org'); ?></label>
+							<label for="akst_email_field"><?php _e('Your Address:', 'share-this'); ?></label>
 							<input type="text" id="akst_email_field" name="akst_email" value="<?php print(htmlspecialchars($email)); ?>" class="akst_text" />
 						</li>
 						<li>
-							<input type="submit" name="akst_submit" value="<?php _e('Send It', 'alexking.org'); ?>" />
+							<input type="submit" name="akst_submit" value="<?php _e('Send It', 'share-this'); ?>" />
 						</li>
 					</ul>
 					<input type="hidden" name="akst_action" value="send_mail" />
@@ -525,6 +527,8 @@ if (AKST_ADDTOFOOTER) {
 }
 
 function akst_send_mail() {
+	global $akst_limit_mail_recipients;
+	
 	$post_id = '';
 	$to = '';
 	$name = '';
@@ -535,14 +539,25 @@ function akst_send_mail() {
 		$to = strip_tags($to);
 		$to = str_replace(
 			array(
-				','
-				,"\n"
+				"\n"
 				,"\t"
 				,"\r"
 			)
 			, array()
 			, $to
 		);
+	}
+	
+	$to = str_replace(array(',', ';'), ' ', $to);
+	if (strstr($to, ' ')) {
+		$to = explode(' ', $to);
+	}
+	else {
+		$to = array($to);
+	}
+	
+	if (count($to) > $akst_limit_mail_recipients) {
+		wp_die(sprintf(__('Sorry, you can only send this to %s people at once. Click your <strong>back button</strong> and try again.', 'share-this'), $akst_limit_mail_recipients));
 	}
 	
 	if (!empty($_REQUEST['akst_name'])) {
@@ -578,9 +593,16 @@ function akst_send_mail() {
 	if (!empty($_REQUEST['akst_post_id'])) {
 		$post_id = intval($_REQUEST['akst_post_id']);
 	}
+	
+	$valid_email = 0;
+	foreach ($to as $email) {
+		if (ak_check_email_address($to)) {
+			$valid_email++;
+		}
+	}
 
-	if (empty($post_id) || empty($to) || !ak_check_email_address($to) || empty($email) || !ak_check_email_address($email)) {
-		wp_die(__('Click your <strong>back button</strong> and make sure those e-mail addresses are valid then try again.', 'alexking.org'));
+	if (empty($post_id) || empty($to) || count($to) != $valid_email || empty($email) || !ak_check_email_address($email)) {
+		wp_die(__('Oops, please click your <strong>back button</strong> and make sure those e-mail addresses are correct, then try again.', 'share-this'));
 	}
 	
 //	$post = &get_post($post_id);
@@ -590,25 +612,31 @@ function akst_send_mail() {
 		.'Return-Path: "'.$name.'" <'.$email.'>'."\n"
 		."Content-Type: text/plain; charset=\"" . get_option('blog_charset') ."\"\n";
 	
-	$subject = __('Check out this post on ', 'alexking.org').get_bloginfo('name');
+	$subject = __('Check out this post on ', 'share-this').get_bloginfo('name');
 	
-	$message = __('Greetings--', 'alexking.org')."\n\n"
-		.$name.__(' thinks this will be of interest to you:', 'alexking.org')."\n\n"
+	$message = __('Greetings--', 'share-this')."\n\n"
+		.$name.__(' thinks this will be of interest to you:', 'share-this')."\n\n"
 		.ak_decode_entities(get_the_title($post_id))."\n\n"
 		.get_permalink($post_id)."\n\n"
-		.__('Enjoy.', 'alexking.org')."\n\n"
+		.__('Enjoy.', 'share-this')."\n\n"
 		.'--'."\n"
 		.get_bloginfo('home')."\n";
 	
-	@wp_mail($to, $subject, $message, $headers);
+	foreach ($to as $recipient) {
+		@wp_mail($recipient, $subject, $message, $headers);
+	}
 	
 	if (!empty($_SERVER['HTTP_REFERER'])) {
 		$url = $_SERVER['HTTP_REFERER'];
 	}
 	
+	wp_die(sprintf(__('Thanks, we\'ve sent this article to your recipients via e-mail. <a href="'.get_permalink($post_id).'">Return to original page</a>.', 'share-this'), $akst_limit_mail_recipients));
+
+/*	
 	header("Location: $url");
 	status_header('302');
 	die();
+*/
 }
 
 function akst_hide_pop() {
@@ -650,7 +678,7 @@ function akst_page() {
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title><?php _e('Share This : ', 'alexking.org'); the_title(); ?></title>
+	<title><?php _e('Share This : ', 'share-this'); the_title(); ?></title>
 	<meta name="robots" content="noindex, noarchive" />
 	<link rel="stylesheet" type="text/css" href="<?php bloginfo('wpurl'); print(AKST_FILEPATH); ?>?akst_action=css" />
 	<style type="text/css">
@@ -786,11 +814,11 @@ function akst_page() {
 <div id="body">
 
 	<div id="info">
-		<p><?php printf(__('<strong>What is this?</strong> From this page you can use the <em>Social Web</em> links to save %s to a social bookmarking site, or the <em>E-mail</em> form to send a link via e-mail.', 'alexking.org'), '<a href="'.get_permalink($id).'">'.get_the_title().'</a>'); ?></p>
+		<p><?php printf(__('<strong>What is this?</strong> From this page you can use the <em>Social Web</em> links to save %s to a social bookmarking site, or the <em>E-mail</em> form to send a link via e-mail.', 'share-this'), '<a href="'.get_permalink($id).'">'.get_the_title().'</a>'); ?></p>
 	</div>
 
 	<div id="social">
-		<h2><?php _e('Social Web', 'alexking.org'); ?></h2>
+		<h2><?php _e('Social Web', 'share-this'); ?></h2>
 		<div id="akst_social">
 			<ul>
 <?php
@@ -815,26 +843,26 @@ function akst_page() {
 	</div>
 	
 	<div id="email">
-		<h2><?php _e('E-mail', 'alexking.org'); ?></h2>
+		<h2><?php _e('E-mail', 'share-this'); ?></h2>
 		<div id="akst_email">
 			<form action="<?php bloginfo('wpurl'); ?>/index.php" method="post">
 				<fieldset>
-					<legend><?php _e('E-mail It', 'alexking.org'); ?></legend>
+					<legend><?php _e('E-mail It', 'share-this'); ?></legend>
 					<ul>
 						<li>
-							<label for="akst_to"><?php _e('To Address:', 'alexking.org'); ?></label>
+							<label for="akst_to"><?php _e('To Address:', 'share-this'); ?></label>
 							<input type="text" id="akst_to" name="akst_to" value="" class="akst_text" />
 						</li>
 						<li>
-							<label for="akst_name"><?php _e('Your Name:', 'alexking.org'); ?></label>
+							<label for="akst_name"><?php _e('Your Name:', 'share-this'); ?></label>
 							<input type="text" id="akst_name" name="akst_name" value="<?php print(htmlspecialchars($name)); ?>" class="akst_text" />
 						</li>
 						<li>
-							<label for="akst_email_field"><?php _e('Your Address:', 'alexking.org'); ?></label>
+							<label for="akst_email_field"><?php _e('Your Address:', 'share-this'); ?></label>
 							<input type="text" id="akst_email_field" name="akst_email" value="<?php print(htmlspecialchars($email)); ?>" class="akst_text" />
 						</li>
 						<li>
-							<input type="submit" name="akst_submit" value="<?php _e('Send It', 'alexking.org'); ?>" />
+							<input type="submit" name="akst_submit" value="<?php _e('Send It', 'share-this'); ?>" />
 						</li>
 					</ul>
 					<input type="hidden" name="akst_action" value="send_mail" />
@@ -849,15 +877,15 @@ function akst_page() {
 	<div id="content">
 		<span class="akst_date"><?php the_time('F d, Y'); ?></span>
 		<h1 class="akst_title"><?php the_title(); ?></h1>
-		<p class="akst_category"><?php _e('Posted in: ', 'alexking.org'); the_category(','); ?></p>
+		<p class="akst_category"><?php _e('Posted in: ', 'share-this'); the_category(','); ?></p>
 		<div class="akst_entry"><?php the_content(); ?></div>
 		<hr />
-		<p class="akst_return"><?php _e('Return to:', 'alexking.org'); ?> <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></p>
+		<p class="akst_return"><?php _e('Return to:', 'share-this'); ?> <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></p>
 		<div class="clear"></div>
 	</div>
 	
 	<div id="footer">
-		<p><?php _e('Powered by <a href="http://alexking.org/projects/wordpress">Share This</a>', 'alexking.org'); ?></p>
+		<p><?php _e('Powered by <a href="http://alexking.org/projects/wordpress">Share This</a>', 'share-this'); ?></p>
 	</div>
 
 </div>
