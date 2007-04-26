@@ -550,7 +550,13 @@ function akst_send_mail() {
 	
 	$to = str_replace(array(',', ';'), ' ', $to);
 	if (strstr($to, ' ')) {
-		$to = explode(' ', $to);
+		$temp = explode(' ', $to);
+		$to = array();
+		foreach ($temp as $email) {
+			if (!empty($email)) {
+				$to[] = $email;
+			}
+		}
 	}
 	else {
 		$to = array($to);
