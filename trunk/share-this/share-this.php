@@ -5,6 +5,9 @@
 // Copyright (c) 2006-2007 Alex King
 // http://alexking.org/projects/wordpress
 //
+// Released under the GPL license
+// http://www.opensource.org/licenses/gpl-license.php
+//
 // This is an add-on for WordPress
 // http://wordpress.org/
 //
@@ -92,9 +95,9 @@ $social_sites = array(
 		'name' => 'reddit'
 		, 'url' => 'http://reddit.com/submit?url={url}&title={title}'
 	)
-	, 'windows_live' => array(
-		'name' => 'Windows Live'
-		, 'url' => 'https://favorites.live.com/quickadd.aspx?marklet=1&mkt=en-us&url={url}&title={title}&top=1'
+	, 'facebook' => array(
+		'name' => 'Facebook'
+		, 'url' => 'http://www.facebook.com/share.php?u={url}'
 	)
 	, 'tailrank' => array(
 		'name' => 'Tailrank'
@@ -106,14 +109,10 @@ $social_sites = array(
 
 // Additional sites
 
-	, 'facebook' => array(
-		'name' => 'Facebook'
-		, 'url' => 'http://www.facebook.com/share.php?u={url}
-		
-		&title={title}'
+	, 'windows_live' => array(
+		'name' => 'Windows Live'
+		, 'url' => 'https://favorites.live.com/quickadd.aspx?marklet=1&mkt=en-us&url={url}&title={title}&top=1'
 	)
-
-sphere it?
 
 	, 'blogmarks' => array(
 		'name' => 'Blogmarks'
@@ -560,6 +559,10 @@ function akst_send_mail() {
 	}
 	else {
 		$to = array($to);
+	}
+	
+	if (count($to) == 0) {
+		wp_die(sprintf(__('Please make sure you have entered an e-mail address to sent this to. Click your <strong>back button</strong> and try again.', 'share-this'), $akst_limit_mail_recipients));
 	}
 	
 	if (count($to) > $akst_limit_mail_recipients) {
