@@ -460,7 +460,7 @@ add_action('the_content', 'akst_add_share_link_to_content');
 add_action('the_content_rss', 'akst_add_share_link_to_content');
 
 function akst_share_form() {
-	global $post, $social_sites, $current_user;
+	global $post, $social_sites, $current_user, $akst_limit_mail_recipients;
 
 	if (isset($current_user)) {
 		$user = get_currentuserinfo();
@@ -497,7 +497,7 @@ function akst_share_form() {
 					<legend><?php _e('E-mail It', 'share-this'); ?></legend>
 					<ul>
 						<li>
-							<label for="akst_to"><?php _e('To Address:', 'share-this'); ?></label>
+							<label for="akst_to"><?php printf(__('To Addresses (up to %d):', 'share-this'), $akst_limit_mail_recipients); ?></label>
 							<input type="text" id="akst_to" name="akst_to" value="" class="akst_text" />
 						</li>
 						<li>
@@ -560,13 +560,14 @@ function akst_send_mail() {
 	else {
 		$to = array($to);
 	}
+	$to = array_unique($to);
 	
 	if (count($to) == 0) {
 		wp_die(sprintf(__('Please make sure you have entered an e-mail address to sent this to. Click your <strong>back button</strong> and try again.', 'share-this'), $akst_limit_mail_recipients));
 	}
 	
 	if (count($to) > $akst_limit_mail_recipients) {
-		wp_die(sprintf(__('Sorry, you can only send this to %s people at once. Click your <strong>back button</strong> and try again.', 'share-this'), $akst_limit_mail_recipients));
+		wp_die(sprintf(__('Sorry, you can only send this to %d people at once. Click your <strong>back button</strong> and try again.', 'share-this'), $akst_limit_mail_recipients));
 	}
 	
 	if (!empty($_REQUEST['akst_name'])) {
@@ -604,8 +605,8 @@ function akst_send_mail() {
 	}
 	
 	$valid_email = 0;
-	foreach ($to as $email) {
-		if (ak_check_email_address($to)) {
+	foreach ($to as $address) {
+		if (ak_check_email_address($address)) {
 			$valid_email++;
 		}
 	}
@@ -632,6 +633,7 @@ function akst_send_mail() {
 		.get_bloginfo('home')."\n";
 	
 	foreach ($to as $recipient) {
+print('<p>Sending to: '.$recipient);
 		@wp_mail($recipient, $subject, $message, $headers);
 	}
 	
@@ -653,7 +655,7 @@ function akst_hide_pop() {
 }
 
 function akst_page() {
-	global $social_sites, $akst_action, $current_user, $post;
+	global $social_sites, $akst_action, $current_user, $post, $akst_limit_mail_recipients;
 	
 	$akst_action = 'page';
 	
@@ -859,7 +861,7 @@ function akst_page() {
 					<legend><?php _e('E-mail It', 'share-this'); ?></legend>
 					<ul>
 						<li>
-							<label for="akst_to"><?php _e('To Address:', 'share-this'); ?></label>
+							<label for="akst_to"><?php printf(__('To Addresses (up to %d):', 'share-this'), $akst_limit_mail_recipients); ?></label>
 							<input type="text" id="akst_to" name="akst_to" value="" class="akst_text" />
 						</li>
 						<li>
