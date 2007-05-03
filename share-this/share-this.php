@@ -615,7 +615,6 @@ function akst_send_mail() {
 		wp_die(__('Oops, please click your <strong>back button</strong> and make sure those e-mail addresses are correct, then try again.', 'share-this'));
 	}
 	
-//	$post = &get_post($post_id);
 	$headers = "MIME-Version: 1.0\n" .
 		'From: "'.$name.'" <'.$email.'>'."\n"
 		.'Reply-To: "'.$name.'" <'.$email.'>'."\n"
@@ -623,17 +622,27 @@ function akst_send_mail() {
 		."Content-Type: text/plain; charset=\"" . get_option('blog_charset') ."\"\n";
 	
 	$subject = __('Check out this post on ', 'share-this').get_bloginfo('name');
+
+	$post = &get_post($post_id);
+	
+	$excerpt = $post->post_excerpt;
+	if (empty($excerpt)) {
+		$excerpt = strip_tags(get_the_content());
+		if (strlen($excerpt) > 250) {
+			$excerpt = substr($excerpt, 0, 247).'...';
+		}
+	}
 	
 	$message = __('Greetings--', 'share-this')."\n\n"
 		.$name.__(' thinks this will be of interest to you:', 'share-this')."\n\n"
 		.ak_decode_entities(get_the_title($post_id))."\n\n"
+		.$excerpt."\n\n"
 		.get_permalink($post_id)."\n\n"
 		.__('Enjoy.', 'share-this')."\n\n"
 		.'--'."\n"
 		.get_bloginfo('home')."\n";
 	
 	foreach ($to as $recipient) {
-print('<p>Sending to: '.$recipient);
 		@wp_mail($recipient, $subject, $message, $headers);
 	}
 	
@@ -641,7 +650,7 @@ print('<p>Sending to: '.$recipient);
 		$url = $_SERVER['HTTP_REFERER'];
 	}
 	
-	wp_die(sprintf(__('Thanks, we\'ve sent this article to your recipients via e-mail. <a href="'.get_permalink($post_id).'">Return to original page</a>.', 'share-this'), $akst_limit_mail_recipients));
+	wp_die(__('Thanks, we\'ve sent this article to your recipients via e-mail. <a href="'.get_permalink($post_id).'">Return to original page</a>.', 'share-this'));
 
 /*	
 	header("Location: $url");
