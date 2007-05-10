@@ -331,7 +331,7 @@ function akst_share_tab(tab) {
 foreach ($social_sites as $key => $data) {
 	print(
 '#akst_'.$key.' {
-	background-image: url('.$key.'.gif);
+	background-image: url('.$key.'.gif) !important;
 }
 ');
 }
@@ -373,7 +373,7 @@ foreach ($social_sites as $key => $data) {
 if (AKST_SHOWICON) {
 ?>
 .akst_share_link {
-	background: 1px 0 url(share-icon-16x16.gif) no-repeat;
+	background: 1px 0 url(share-icon-16x16.gif) no-repeat !important;
 	padding: 1px 0 3px 22px;
 }
 <?php
@@ -429,7 +429,7 @@ function akst_share_link($action = 'print', $id_ext = '') {
 	global $post;
 	ob_start();
 ?>
-<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&amp;akst_action=share-this" <?php print($onclick); ?> title="<?php _e('Email, post to del.icio.us, etc.', 'share-this'); ?>" id="akst_link_<?php print($post->ID.$id_ext); ?>" class="akst_share_link" rel="nofollow"><?php _e('Share This', 'share-this'); ?></a>
+<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&amp;akst_action=share-this" <?php print($onclick); ?> title="<?php _e('Email, post to del.icio.us, etc.', 'share-this'); ?>" id="akst_link_<?php print($post->ID.$id_ext); ?>" class="akst_share_link" rel="noindex nofollow"><?php _e('Share This', 'share-this'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
