@@ -119,6 +119,11 @@ $social_sites = array(
 		, 'url' => 'http://blogmarks.net/my/new.php?mini=1&url={url}&title={title}'
 	)
 
+	, 'plugim' => array(
+		'name' => 'PlugIM'
+		, 'url' => 'http://www.plugim.com/submit?url={url}&title={title}'
+	)
+
 	, 'favoriting' => array(
 		'name' => 'Favoriting'
 		, 'url' => 'http://www.favoriting.com/nuevoFavorito.asp?qs_origen=3&qs_url={url}&qs_title={title}'
