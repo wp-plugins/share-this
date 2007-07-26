@@ -55,9 +55,9 @@ $social_sites = array(
 		'name' => 'Digg'
 		, 'url' => 'http://digg.com/submit?phase=2&url={url}&title={title}'
 	)
-	, 'furl' => array(
-		'name' => 'Furl'
-		, 'url' => 'http://furl.net/storeIt.jsp?u={url}&t={title}'
+	, 'facebook' => array(
+		'name' => 'Facebook'
+		, 'url' => 'http://www.facebook.com/share.php?u={url}'
 	)
 	, 'netscape' => array(
 		'name' => 'Netscape'
@@ -95,9 +95,9 @@ $social_sites = array(
 		'name' => 'reddit'
 		, 'url' => 'http://reddit.com/submit?url={url}&title={title}'
 	)
-	, 'facebook' => array(
-		'name' => 'Facebook'
-		, 'url' => 'http://www.facebook.com/share.php?u={url}'
+	, 'furl' => array(
+		'name' => 'Furl'
+		, 'url' => 'http://furl.net/storeIt.jsp?u={url}&t={title}'
 	)
 	, 'tailrank' => array(
 		'name' => 'Tailrank'
