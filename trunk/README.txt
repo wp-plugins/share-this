@@ -85,6 +85,10 @@ I recommend making those changes to the style.css in the theme rather than the C
 1. Another theme might need different style changes. You may not want the changes applied to all themes, but by putting them in the plugin CSS they will be applied to all themes.
 2. You won't have to re-apply your changes when you upgrade to a newer version of Share This.
 
+= The icons don't show up, what's wrong? =
+
+Please see the answer to "It doesn't look right with my theme, what do I do?" above.
+
 = How do I add or remove social sites? =
 
 You can add or remove social sites by editing the share-this.php file. Use {url} and {title} in the URL to represent your post URL and title as you see done in the examples.
