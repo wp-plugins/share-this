@@ -26,7 +26,6 @@ Author: Alex King
 Author URI: http://alexking.org/
 */
 
-
 @define('AKST_ADDTOCONTENT', true);
 // set this to false if you do not want to automatically add the Share This link to your content
 
@@ -47,37 +46,25 @@ Author URI: http://alexking.org/
 // http://3spots.blogspot.com/2006/02/30-social-bookmarks-add-to-footer.html
 
 $social_sites = array(
-	'delicious' => array(
-		'name' => 'del.icio.us'
-		, 'url' => 'http://del.icio.us/post?url={url}&title={title}'
+	'facebook' => array(
+		'name' => 'Facebook'
+		, 'url' => 'http://www.facebook.com/share.php?u={url}'
 	)
 	, 'digg' => array(
 		'name' => 'Digg'
 		, 'url' => 'http://digg.com/submit?phase=2&url={url}&title={title}'
 	)
-	, 'facebook' => array(
-		'name' => 'Facebook'
-		, 'url' => 'http://www.facebook.com/share.php?u={url}'
-	)
-	, 'netscape' => array(
-		'name' => 'Netscape'
-		, 'url' => ' http://www.netscape.com/submit/?U={url}&T={title}'
-	)
-	, 'yahoo_myweb' => array(
-		'name' => 'Yahoo! My Web'
-		, 'url' => 'http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&t={title}'
-	)
 	, 'stumbleupon' => array(
 		'name' => 'StumbleUpon'
 		, 'url' => 'http://www.stumbleupon.com/submit?url={url}&title={title}'
 	)
-	, 'google_bmarks' => array(
-		'name' => 'Google Bookmarks'
-		, 'url' => '  http://www.google.com/bookmarks/mark?op=edit&bkmk={url}&title={title}'
+	, 'delicious' => array(
+		'name' => 'del.icio.us'
+		, 'url' => 'http://del.icio.us/post?url={url}&title={title}'
 	)
-	, 'technorati' => array(
-		'name' => 'Technorati'
-		, 'url' => 'http://www.technorati.com/faves?add={url}'
+	, 'reddit' => array(
+		'name' => 'reddit'
+		, 'url' => 'http://reddit.com/submit?url={url}&title={title}'
 	)
 	, 'blinklist' => array(
 		'name' => 'BlinkList'
@@ -87,14 +74,6 @@ $social_sites = array(
 		'name' => 'Newsvine'
 		, 'url' => 'http://www.newsvine.com/_tools/seed&save?popoff=0&u={url}&h={title}'
 	)
-	, 'magnolia' => array(
-		'name' => 'ma.gnolia'
-		, 'url' => 'http://ma.gnolia.com/bookmarklet/add?url={url}&title={title}'
-	)
-	, 'reddit' => array(
-		'name' => 'reddit'
-		, 'url' => 'http://reddit.com/submit?url={url}&title={title}'
-	)
 	, 'furl' => array(
 		'name' => 'Furl'
 		, 'url' => 'http://furl.net/storeIt.jsp?u={url}&t={title}'
@@ -103,11 +82,30 @@ $social_sites = array(
 		'name' => 'Tailrank'
 		, 'url' => 'http://tailrank.com/share/?link_href={url}&title={title}'
 	)
+	, 'magnolia' => array(
+		'name' => 'Ma.gnolia'
+		, 'url' => 'http://ma.gnolia.com/bookmarklet/add?url={url}&title={title}'
+	)
 );
 
 /*
 
 // Additional sites
+
+	, 'google_bmarks' => array(
+		'name' => 'Google Bookmarks'
+		, 'url' => '  http://www.google.com/bookmarks/mark?op=edit&bkmk={url}&title={title}'
+	)
+
+	, 'yahoo_myweb' => array(
+		'name' => 'Yahoo! My Web'
+		, 'url' => 'http://myweb2.search.yahoo.com/myresults/bookmarklet?u={url}&t={title}'
+	)
+
+	, 'technorati' => array(
+		'name' => 'Technorati'
+		, 'url' => 'http://www.technorati.com/faves?add={url}'
+	)
 
 	, 'windows_live' => array(
 		'name' => 'Windows Live'
@@ -124,9 +122,34 @@ $social_sites = array(
 		, 'url' => 'http://www.plugim.com/submit?url={url}&title={title}'
 	)
 
+	, 'yigg' => array(
+		'name' => 'Y!gg'
+		, 'url' => 'http://yigg.de/neu?exturl={url}&exttitle={title}'
+	)
+		
+	, 'simpy' => array(
+		'name' => 'Simpy'
+		, 'url' => 'http://www.simpy.com/simpy/LinkAdd.do?title={title}&href={url}'
+	)
+
 	, 'favoriting' => array(
 		'name' => 'Favoriting'
 		, 'url' => 'http://www.favoriting.com/nuevoFavorito.asp?qs_origen=3&qs_url={url}&qs_title={title}'
+	)
+
+	, 'design_float' => array(
+		'name' => 'Design Float'
+		, 'url' => 'http://www.designfloat.com/submit.php?url={url}'
+	)
+
+	, 'propeller' => array(
+		'name' => 'Propeller'
+		, 'url' => ' http://www.propeller.com/submit/?U={url}&T={title}'
+	)
+
+	, 'bizz_buzz' => array(
+		'name' => 'Bizz Buzz'
+		, 'url' => 'http://www.bestwaytoinvest.com/bbsubmit?u={url}&t={title}'
 	)
 
 */
@@ -225,13 +248,18 @@ function akst_share(id, url, title, html_id) {
 	var link = $('akst_link_' + html_id);
 	var offset = Position.cumulativeOffset(link);
 
+	if (document.getElementById('akst_social')) {
+
 <?php
 	foreach ($social_sites as $key => $data) {
-		print('	$("akst_'.$key.'").href = akst_share_url("'.$data['url'].'", url, title);'."\n");
+		print('		$("akst_'.$key.'").href = akst_share_url("'.$data['url'].'", url, title);'."\n");
 	}
 ?>
+	}
 
-	post_id.value = id;
+	if (document.getElementById('akst_email')) {
+		post_id.value = id;
+	}
 
 	form.style.left = offset[0] + 'px';
 	form.style.top = (offset[1] + link.offsetHeight + 3) + 'px';
@@ -239,15 +267,27 @@ function akst_share(id, url, title, html_id) {
 }
 
 function akst_share_url(base, url, title) {
-	base = base.replace('{url}', url);
-	return base.replace('{title}', title);
+	base = base.replace('{url}', url).replace('{title}', title);
+	return 'http://r.sharethis.com/web.php?destination=' + encodeURIComponent(base);
 }
 
 function akst_share_tab(tab) {
 	var tab1 = document.getElementById('akst_tab1');
+	if (typeof tab1 == 'undefined') {
+		tab1 = document.createElement('div');
+	}
 	var tab2 = document.getElementById('akst_tab2');
+	if (typeof tab2 == 'undefined') {
+		tab2 = document.createElement('div');
+	}
 	var body1 = document.getElementById('akst_social');
+	if (typeof body1 == 'undefined') {
+		body1 = document.createElement('div');
+	}
 	var body2 = document.getElementById('akst_email');
+	if (typeof body1 == 'undefined') {
+		body1 = document.createElement('div');
+	}
 	
 	switch (tab) {
 		case '1':
@@ -342,7 +382,6 @@ foreach ($social_sites as $key => $data) {
 }
 ?>
 #akst_email {
-	display: none;
 	text-align: left;
 }
 #akst_email form, #akst_email fieldset {
@@ -374,6 +413,9 @@ foreach ($social_sites as $key => $data) {
 	padding: 3px;
 	width: 280px;
 }
+#akst_credit {
+	background: #fff;
+}
 <?php
 if (AKST_SHOWICON) {
 ?>
@@ -396,6 +438,35 @@ function akst_request_handler() {
 				break;
 			case 'send_mail':
 				akst_send_mail();			
+				break;
+			case 'akst_update_settings':
+				if (empty($_POST['akst_tabs_to_show'])) {
+					$_POST['akst_tabs_to_show'] = array('social', 'email');
+				}
+				if (empty($_POST['tab_order'])) {
+					$_POST['tab_order'] = 'social';
+				}
+				$tabs = array();
+				if (count($_POST['akst_tabs_to_show']) > 1) {
+					switch ($_POST['tab_order']) {
+						case 'social':
+							$tabs[] = 'social';
+							break;
+						case 'email':
+							$tabs[] = 'email';
+							break;
+					}
+				}
+				if (!in_array('social', $tabs) && in_array('social', $_POST['akst_tabs_to_show'])) {
+					$tabs[] = 'social';
+				}
+				if (!in_array('email', $tabs) && in_array('email', $_POST['akst_tabs_to_show'])) {
+					$tabs[] = 'email';
+				}
+				update_option('akst_tabs', implode(',', $tabs));
+				
+				header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=share-this.php&updated=true');
+				die();
 				break;
 		}
 	}
@@ -434,7 +505,7 @@ function akst_share_link($action = 'print', $id_ext = '') {
 	global $post;
 	ob_start();
 ?>
-<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&amp;akst_action=share-this" <?php print($onclick); ?> title="<?php _e('Email, post to del.icio.us, etc.', 'share-this'); ?>" id="akst_link_<?php print($post->ID.$id_ext); ?>" class="akst_share_link" rel="noindex nofollow"><?php _e('Share This', 'share-this'); ?></a>
+<a href="<?php bloginfo('siteurl'); ?>/?p=<?php print($post->ID); ?>&amp;akst_action=share-this" <?php print($onclick); ?> title="<?php _e('Email, post to del.icio.us, etc.', 'share-this'); ?>" id="akst_link_<?php print($post->ID.$id_ext); ?>" class="akst_share_link" rel="noindex nofollow"><?php _e('ShareThis', 'share-this'); ?></a>
 <?php
 	$link = ob_get_contents();
 	ob_end_clean();
@@ -466,6 +537,9 @@ add_action('the_content_rss', 'akst_add_share_link_to_content');
 
 function akst_share_form() {
 	global $post, $social_sites, $current_user, $akst_limit_mail_recipients;
+	
+	$tabs = get_option('akst_tabs');
+	$tabs = explode(',', $tabs);
 
 	if (isset($current_user)) {
 		$user = get_currentuserinfo();
@@ -482,10 +556,45 @@ function akst_share_form() {
 	<div id="akst_form">
 		<a href="javascript:void($('akst_form').style.display='none');" class="akst_close"><?php _e('Close', 'share-this'); ?></a>
 		<ul class="tabs">
-			<li id="akst_tab1" class="selected" onclick="akst_share_tab('1');"><?php _e('Social Web', 'share-this'); ?></li>
+<?php
+	ob_start();
+?>
+			<li id="akst_tab1" onclick="akst_share_tab('1');"><?php _e('Social Web', 'share-this'); ?></li>
+<?php
+	$tab_social = ob_get_contents();
+	ob_end_clean();
+	
+	ob_start();
+?>
 			<li id="akst_tab2" onclick="akst_share_tab('2');"><?php _e('E-mail', 'share-this'); ?></li>
+<?php
+	$tab_email = ob_get_contents();
+	ob_end_clean();
+
+	$i = 0;
+	foreach ($tabs as $tab) {
+		switch ($tab) {
+			case 'social':
+				if ($i == 0) {
+					$tab_social = str_replace(' onclick', ' class="selected" onclick', $tab_social);
+				}
+				print($tab_social);
+				break;
+			case 'email':
+				if ($i == 0) {
+					$tab_email = str_replace(' onclick', ' class="selected" onclick', $tab_email);
+				}
+				print($tab_email);
+				break;
+		}
+		$i++;
+	}
+?>
 		</ul>
 		<div class="clear"></div>
+<?php
+	ob_start();
+?>
 		<div id="akst_social">
 			<ul>
 <?php
@@ -496,6 +605,12 @@ function akst_share_form() {
 			</ul>
 			<div class="clear"></div>
 		</div>
+<?php
+	$body_social = ob_get_contents();
+	ob_end_clean();
+	
+	ob_start();
+?>
 		<div id="akst_email">
 			<form action="<?php bloginfo('wpurl'); ?>/index.php" method="post">
 				<fieldset>
@@ -522,6 +637,32 @@ function akst_share_form() {
 				</fieldset>
 			</form>
 		</div>
+<?php
+	$body_email = ob_get_contents();
+	ob_end_clean();
+
+	$i = 0;
+	foreach ($tabs as $tab) {
+		switch ($tab) {
+			case 'social':
+				if ($i > 0) {
+					$body_social = str_replace(' id="akst_social"', ' style="display: none;" id="akst_social"', $body_social);
+				}
+				print($body_social);
+				break;
+			case 'email':
+				if ($i > 0) {
+					$body_email = str_replace(' id="akst_email"', ' style="display: none;" id="akst_email"', $body_email);
+				}
+				print($body_email);
+				break;
+		}
+		$i++;
+	}
+	
+	ob_start();
+?>
+		<div id="akst_credit"><img src="http://r.sharethis.com/powered-by.php" alt="Powered by ShareThis" /></div>
 	</div>
 	<!-- Share This END -->
 <?php
@@ -646,6 +787,11 @@ function akst_send_mail() {
 		.__('Enjoy.', 'share-this')."\n\n"
 		.'--'."\n"
 		.get_bloginfo('home')."\n";
+
+	require_once(ABSPATH.WPINC.'/class-snoopy.php');
+	$snoop = new Snoopy;
+	$snoop->agent = 'ShareThis Classic for WordPress';
+	$snoop->fetch('http://r.sharethis.com/email.php?url='.urlencode(get_permalink($post_id)));
 	
 	foreach ($to as $recipient) {
 		@wp_mail($recipient, $subject, $message, $headers);
@@ -667,6 +813,94 @@ function akst_send_mail() {
 function akst_hide_pop() {
 	return false;
 }
+
+function akst_options_form() {
+	$tabs = get_option('akst_tabs');
+	$tabs = explode(',', $tabs);
+
+	if (in_array('social', $tabs)) {
+		$social_tab = ' checked="checked"';
+	}
+	else {
+		$social_tab = '';
+	}
+	if (in_array('email', $tabs)) {
+		$email_tab = ' checked="checked"';
+	}
+	else {
+		$email_tab = '';
+	}
+	switch ($tabs[0]) {
+		case 'social':
+			$social_order = ' checked="checked"';
+			$email_order = '';
+			break;
+		case 'email':
+			$social_order = '';
+			$email_order = ' checked="checked"';
+			break;
+	}
+
+	print('
+			<div class="wrap">
+				<h2>'.__('ShareThis Options', 'share-this').'</h2>
+				<form id="ak_sharethis" name="ak_sharethis" action="'.get_bloginfo('wpurl').'/wp-admin/index.php" method="post">
+					<fieldset class="options">
+
+						<p>Which tabs do you want to include?</p>
+
+						<ul>
+							<li>
+								<input type="checkbox" name="akst_tabs_to_show[]" value="social" id="akst_tabs_to_show_social"'.$social_tab.' />
+						
+								<label for="akst_tabs_to_show_social">Social Web</label>
+							</li>
+							<li>
+								<input type="checkbox" name="akst_tabs_to_show[]" value="email" id="akst_tabs_to_show_email" '.$email_tab.' />
+								<label for="akst_tabs_to_show_email">E-mail</label>
+							</li>
+						</ul>
+						
+						<div id="tab_order">
+						
+						<p>Which tab should be first?</p>
+						
+						<ul>
+							<li>
+								<input type="radio" name="tab_order" value="social" id="tab_order_social"'.$social_order.' />
+								<label for="tab_order_social">Social Web</label>
+							</li>
+							<li>
+								<input type="radio" name="tab_order" value="email" id="tab_order_email"'.$email_order.' />
+						
+								<label for="tab_order_email">E-mail</label>
+							</li>
+						</ul>
+						
+						</div>
+
+					</fieldset>
+					<p class="submit">
+						<input type="submit" name="submit" value="'.__('Update ShareThis Options', 'share-this').'" />
+					</p>
+					<input type="hidden" name="akst_action" value="akst_update_settings" />
+				</form>
+			</div>
+	');
+}
+
+function akst_menu_items() {
+	if (current_user_can('manage_options')) {
+		add_options_page(
+			__('ShareThis Options', 'share-this')
+			, __('ShareThis', 'share-this')
+			, 10
+			, basename(__FILE__)
+			, 'akst_options_form'
+		);
+	}
+}
+add_action('admin_menu', 'akst_menu_items');
 
 function akst_page() {
 	global $social_sites, $akst_action, $current_user, $post, $akst_limit_mail_recipients;
@@ -859,7 +1093,7 @@ function akst_page() {
 			)
 			, $data['url']
 		);
-		print('				<li><a href="'.$link.'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
+		print('				<li><a href="http://r.sharethis.com/web.php?destination='.urlencode($link).'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
 	}
 ?>
 			</ul>
@@ -910,7 +1144,7 @@ function akst_page() {
 	</div>
 	
 	<div id="footer">
-		<p><?php _e('Powered by <a href="http://alexking.org/projects/wordpress">Share This</a>', 'share-this'); ?></p>
+		<p><?php _e('Powered by <a href="http://sharethis.com">ShareThis</a>', 'share-this'); ?></p>
 	</div>
 
 </div>
