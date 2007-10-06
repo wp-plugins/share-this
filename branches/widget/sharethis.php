@@ -50,17 +50,23 @@ function st_install() {
 	}
 }
 
+function st_widget_head() {
+	print('<script type="text/javascript" src="http://sharethis.com/widget?publisher='.get_option('st_pubid').'"></script>'."\n");
+}
+add_action('wp_head', 'st_widget_head');
+
 function st_widget() {
 	global $post;
 	
 	$sharethis = '
 
 <script type="text/javascript">
-	stPub = "'.str_replace('"', '\"', get_option('st_pubid')).'";
-	stTitle = "'.str_replace('"', '\"', get_the_title()).'";
-	stURL = "'.get_permalink($post->ID).'";
+SHARETHIS.addEntry({
+Ê Ê title: "'.str_replace('"', '\"', get_option('st_pubid')).'",
+Ê Ê summary: "'.str_replace('"', '\"', get_the_title()).'",
+	url: "'.get_permalink($post->ID).'"
+});
 </script>
-<script type="text/javascript" src="http://sharethis.com/widget"></script>
 	';
 
 	return $sharethis;
@@ -123,6 +129,8 @@ function st_options_form() {
 				<h2>'.__('ShareThis Options', 'share-this').'</h2>
 				<form id="ak_sharethis" name="ak_sharethis" action="'.get_bloginfo('wpurl').'/wp-admin/index.php" method="post">
 					<fieldset class="options">
+
+						<script src="http://sharethis.com/widget/wordpress/config?publisher='.get_option('st_pubid').'" type="text/javascript"></script>
 					
 						<div id="st_widget">
 
