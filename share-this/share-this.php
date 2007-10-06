@@ -283,7 +283,7 @@ function akst_share(id, url, title, html_id) {
 
 function akst_share_url(base, url, title) {
 	base = base.replace('{url}', url).replace('{title}', title);
-	return 'http://r.sharethis.com/web.php?destination=' + encodeURIComponent(base);
+	return 'http://r.sharethis.com/web?destination=' + encodeURIComponent(base) + '&publisher=<?php print(get_option('st_pubid')); ?>';
 }
 
 function akst_share_tab(tab) {
@@ -677,7 +677,7 @@ function akst_share_form() {
 	
 	ob_start();
 ?>
-		<div id="akst_credit"><img src="http://r.sharethis.com/powered-by.php" alt="Powered by ShareThis" /></div>
+		<div id="akst_credit"><a href="http://sharethis.com"><img src="http://r.sharethis.com/powered-by?publisher=<?php print(get_option('st_pubid')); ?>" alt="Powered by ShareThis" /></a></div>
 	</div>
 	<!-- Share This END -->
 <?php
@@ -806,7 +806,7 @@ function akst_send_mail() {
 	require_once(ABSPATH.WPINC.'/class-snoopy.php');
 	$snoop = new Snoopy;
 	$snoop->agent = 'ShareThis Classic for WordPress';
-	$snoop->fetch('http://r.sharethis.com/email.php?url='.urlencode(get_permalink($post_id)));
+	$snoop->fetch('http://r.sharethis.com/email?url='.urlencode(get_permalink($post_id)).'&publisher='.get_option('st_pubid'));
 	
 	foreach ($to as $recipient) {
 		@wp_mail($recipient, $subject, $message, $headers);
@@ -1055,13 +1055,12 @@ function akst_page() {
 		padding: 10px;
 	}
 	#footer p {
-		color: #555;
 		margin: 0;
 		padding: 0;
 		text-align: center;
 	}
-	#footer p a, #footer p a:visited {
-		color: #444;
+	#footer p a, #footer p a img {
+		border: 0;
 	}
 	h2 {
 		color: #333;
@@ -1108,7 +1107,7 @@ function akst_page() {
 			)
 			, $data['url']
 		);
-		print('				<li><a href="http://r.sharethis.com/web.php?destination='.urlencode($link).'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
+		print('				<li><a href="http://r.sharethis.com/web.php?destination='.urlencode($link).'&publisher='.get_option('st_pubid').'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
 	}
 ?>
 			</ul>
@@ -1159,7 +1158,7 @@ function akst_page() {
 	</div>
 	
 	<div id="footer">
-		<p><?php _e('Powered by <a href="http://sharethis.com">ShareThis</a>', 'share-this'); ?></p>
+		<p><a href="http://sharethis.com"><img src="http://r.sharethis.com/powered-by?publisher=<?php print(get_option('st_pubid')); ?>" alt="Powered by ShareThis" /></a></p>
 	</div>
 
 </div>
