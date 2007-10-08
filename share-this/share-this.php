@@ -251,7 +251,7 @@ if (!empty($_REQUEST['akst_action'])) {
 		case 'js':
 			header("Content-type: text/javascript");
 ?>
-function akst_share(id, url, title, html_id) {
+function akst_share(id, url, title, html_id, pubid) {
 	var form = $('akst_form');
 	var post_id = $('akst_post_id');
 	
@@ -267,7 +267,7 @@ function akst_share(id, url, title, html_id) {
 
 <?php
 	foreach ($social_sites as $key => $data) {
-		print('		$("akst_'.$key.'").href = akst_share_url("'.$data['url'].'", url, title);'."\n");
+		print('		$("akst_'.$key.'").href = akst_share_url("'.$data['url'].'", url, title, pubid);'."\n");
 	}
 ?>
 	}
@@ -281,9 +281,9 @@ function akst_share(id, url, title, html_id) {
 	form.style.display = 'block';
 }
 
-function akst_share_url(base, url, title) {
+function akst_share_url(base, url, title, pubid) {
 	base = base.replace('{url}', url).replace('{title}', title);
-	return 'http://r.sharethis.com/web?destination=' + encodeURIComponent(base) + '&publisher=<?php print(get_option('st_pubid')); ?>';
+	return 'http://r.sharethis.com/web?destination=' + encodeURIComponent(base) + '&publisher=' + pubid;
 }
 
 function akst_share_tab(tab) {
@@ -430,6 +430,8 @@ foreach ($social_sites as $key => $data) {
 }
 #akst_credit {
 	background: #fff;
+	border-top: 1px solid #ddd;
+	padding: 3px;
 }
 <?php
 if (AKST_SHOWICON) {
@@ -515,7 +517,7 @@ function akst_share_link($action = 'print', $id_ext = '') {
 		$onclick = '';
 	}
 	else {
-		$onclick = 'onclick="akst_share(\''.$post->ID.'\', \''.urlencode(get_permalink($post->ID)).'\', \''.urlencode(get_the_title()).'\', \''.$post->ID.$id_ext.'\'); return false;"';
+		$onclick = 'onclick="akst_share(\''.$post->ID.'\', \''.urlencode(get_permalink($post->ID)).'\', \''.urlencode(get_the_title()).'\', \''.$post->ID.$id_ext.'\', \''.get_option('st_pubid').'\'); return false;"';
 	}
 	global $post;
 	ob_start();
@@ -1050,7 +1052,7 @@ function akst_page() {
 		text-align: center;
 	}
 	#footer {
-		background: #eee;
+		background: #fff;
 		border-top: 1px solid #ddd;
 		padding: 10px;
 	}
