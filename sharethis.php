@@ -62,8 +62,8 @@ function st_widget() {
 
 <script type="text/javascript">
 SHARETHIS.addEntry({
-Ê Ê title: "'.str_replace('"', '\"', get_option('st_pubid')).'",
-Ê Ê summary: "'.str_replace('"', '\"', get_the_title()).'",
+	title: "'.str_replace('"', '\"', get_option('st_pubid')).'",
+	summary: "'.str_replace('"', '\"', get_the_title()).'",
 	url: "'.get_permalink($post->ID).'"
 });
 </script>
@@ -131,7 +131,7 @@ function st_options_form() {
 					<fieldset class="options">
 
 						<script src="http://sharethis.com/widget/wordpress/config?publisher='.get_option('st_pubid').'" type="text/javascript"></script>
-					
+
 						<div id="st_widget">
 
 							<p>Paste your widget code in here:</p>
