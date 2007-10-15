@@ -75,7 +75,7 @@ SHARETHIS.addEntry({
 function st_link() {
 	global $post;
 
-	$sharethis = '<p><a href="http://sharethis.com/item?pub='
+	$sharethis = '<p><a href="http://sharethis.com/item?publisher='
 		.get_option('st_pubid').'&title='
 		.urlencode(get_the_title()).'&url='
 		.urlencode(get_permalink($post->ID)).'">ShareThis</a></p>';
