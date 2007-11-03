@@ -24,8 +24,9 @@
 Plugin Name: ShareThis
 Plugin URI: http://sharethis.com
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 1.0dev
-Author: <a href="http://sharethis.com">ShareThis</a> and <a href="http://crowdfavorite.com">Crowd Favorite</a>
+Version: 2.0
+Author: ShareThis and Crowd Favorite (crowdfavorite.com)
+Author URI: http://sharethis.com
 */
 
 if (!function_exists('ak_uuid')) {
@@ -45,25 +46,90 @@ if (!function_exists('ak_uuid')) {
 }
 
 function st_install() {
-	if (get_option('st_pubid') == '') {
-		add_option('st_pubid', ak_uuid());
+	$publisher_id = get_option('st_pubid');
+	$widget = get_option('st_widget');
+	if ($publisher_id != "") {
+		if ($widget != "") {
+			$pattern = "/([\&\?])publisher\=([^\&\"]*)/";
+			preg_match($pattern, $widget, $matches);
+			if ($matches[0] == "") {
+				$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&publisher=".$publisher_id."\"></script>", $widget);
+				$widget = preg_replace("/widget\/\&publisher\=/", "widget/?publisher=", $widget);
+			} elseif ($matches[2] == "") {
+				$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
+			} else {
+				if ($publisher_id != $matches[2]) {
+					$publisher_id = $matches[2];
+				}
+			}
+		} else {
+			$widget = st_default_widget();
+			$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "?publisher=".$publisher_id."\"></script>", $widget);
+		}
+	} else {
+		if ($widget != "") {
+			$pattern = "/([\&\?])publisher\=([^\&\"]*)/";
+			preg_match($pattern, $widget, $matches);
+			if ($matches[0] == "") {
+				$publisher_id = ak_uuid();
+				$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&publisher=".$publisher_id."\"></script>", $widget);
+				$widget = preg_replace("/widget\/\&publisher\=/", "widget/?publisher=", $widget);
+			} elseif ($matches[2] == "") {
+				$publisher_id = ak_uuid();
+				$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
+                        } else {
+				$publisher_id = $matches[2];
+                        }
+		} else {
+			$publisher_id = ak_uuid();
+			$widget = st_default_widget();
+			$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "?publisher=".$publisher_id."\"></script>", $widget);
+		}
 	}
+
+	preg_match("/\<script\s[^\>]*charset\=\"utf\-8\"[^\>]*/", $widget, $matches);
+	if ($matches[0] == "") {
+		preg_match("/\<script\s[^\>]*charset\=\"[^\"]*\"[^\>]*/", $widget, $matches);
+		if ($matches[0] == "") {
+			$widget = preg_replace("/\<script\s/", "<script charset=\"utf-8\" ", $widget);
+		}
+		else {
+			$widget = preg_replace("/\scharset\=\"[^\"]*\"/", " charset=\"utf-8\"", $widget);
+		}
+	}
+	preg_match("/\<script\s[^\>]*type\=\"text\/javascript\"[^\>]*/", $widget, $matches);
+	if ($matches[0] == "") {
+		preg_match("/\<script\s[^\>]*type\=\"[^\"]*\"[^\>]*/", $widget, $matches);
+		if ($matches[0] == "") {
+			$widget = preg_replace("/\<script\s/", "<script type=\"text/javascript\" ", $widget);
+		}
+		else {
+			$widget = preg_replace("/\stype\=\"[^\"]*\"/", " type=\"text/javascript\"", $widget);
+		}
+	}
+
+        update_option('st_pubid', $publisher_id);
+        update_option('st_widget', $widget);
 }
 
 function st_widget_head() {
-	print('<script type="text/javascript" src="http://sharethis.com/widget?publisher='.get_option('st_pubid').'"></script>'."\n");
+	$widget = get_option('st_widget');
+	if ($widget == '') {
+		$widget = st_default_widget();
+	}
+	print($widget);
 }
 add_action('wp_head', 'st_widget_head');
 
 function st_widget() {
 	global $post;
-	
+
 	$sharethis = '
 
 <script type="text/javascript">
-SHARETHIS.addEntry({
-	publisher: "'.str_replace('"', '\"', get_option('st_pubid')).'",
-	title: "'.str_replace('"', '\"', get_the_title()).'",
+SHARETHIS.addEntry(
+{
+        title: "'.str_replace('"', '\"', get_the_title()).'",
 	url: "'.get_permalink($post->ID).'"
 });
 </script>
@@ -84,7 +150,6 @@ function st_link() {
 }
 
 function st_add_link($content) {
-	$doit = false;
 	if (is_feed()) {
 		return $content.st_link();
 	}
@@ -95,28 +160,121 @@ function st_add_link($content) {
 add_action('the_content', 'st_add_link');
 add_action('the_content_rss', 'st_add_link');
 
+function st_remove_st_add_link($content) {
+    remove_action('the_content', 'st_add_link');
+    return $content;
+}
+
+function st_add_st_add_link($content) {
+    add_action('the_content', 'st_add_link');
+    $content .= st_widget();
+    return $content;
+}
+add_filter('the_excerpt', 'st_remove_st_add_link', 9);
+add_filter('the_excerpt', 'st_add_st_add_link', 11);
+
 if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
 	st_install();
 }
 
 function st_default_widget() {
-	return '<script type="text/javascript" src="http://sharethis.com/widget"></script>';
+	return '<script type="text/javascript" charset="utf-8" src="http://sharethis.com/widget/"></script>';
+}
+
+if (!function_exists('ak_can_update_options')) {
+	function ak_can_update_options() {
+		if (function_exists('current_user_can')) {
+			if (current_user_can('manage_options')) {
+				return true;
+			}
+		}
+		else {
+			global $user_level;
+			if ($user_level >= 6) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
 function st_request_handler() {
 	if (!empty($_REQUEST['st_action'])) {
 		switch ($_REQUEST['st_action']) {
 			case 'st_update_settings':
-				if (!empty($_POST['st_widget'])) {
-					$widget = stripslashes($_POST['st_widget']);
+				if (ak_can_update_options()) {
+					if (!empty($_POST['st_widget'])) { // have widget
+						$widget = stripslashes($_POST['st_widget']);
+						$pattern = "/([\&\?])publisher\=([^\&\"]*)/";
+						preg_match($pattern, $widget, $matches);
+						if ($matches[0] == "") { // widget does not have publisher parameter at all
+							$publisher_id = get_option('st_pubid');
+							if ($publisher_id != "") { 
+								$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&publisher=".$publisher_id."\"></script>", $widget);
+								$widget = preg_replace("/widget\/\&publisher\=/", "widget/?publisher=", $widget);
+							} else {
+								$publisher_id = ak_uuid();
+								$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&publisher=".$publisher_id."\"></script>", $widget);
+								$widget = preg_replace("/widget\/\&publisher\=/", "widget/?publisher=", $widget);
+							}
+						}
+						elseif ($matches[2] == "") { // widget does not have pubid in publisher parameter
+							$publisher_id = get_option('st_pubid');
+							if ($publisher_id != "") {
+								$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
+							} else {
+								$publisher_id = ak_uuid(); 
+								$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
+							}
+						} else { // widget has pubid in publisher parameter
+							$publisher_id = get_option('st_pubid');
+							if ($publisher_id != "") {
+								if ($publisher_id != $matches[2]) {
+									$publisher_id = $matches[2];
+								}
+							}  else {
+								$publisher_id = $matches[2];
+							}
+						}
+					}
+					else { // does not have widget
+						$publisher_id = get_option('st_pubid');
+						if ($publisher_id == "") {
+							$publisher_id = ak_uuid();
+						}
+						$widget = st_default_widget();
+						$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "?publisher=".$publisher_id."\"></script>", $widget);
+						$widget = preg_replace("/widget\/\&publisher\=/", "widget/?publisher=", $widget);
+					}
+	
+					preg_match("/\<script\s[^\>]*charset\=\"utf\-8\"[^\>]*/", $widget, $matches);
+					if ($matches[0] == "") {
+						preg_match("/\<script\s[^\>]*charset\=\"[^\"]*\"[^\>]*/", $widget, $matches);
+						if ($matches[0] == "") {
+							$widget = preg_replace("/\<script\s/", "<script charset=\"utf-8\" ", $widget);
+						}
+						else {
+							$widget = preg_replace("/\scharset\=\"[^\"]*\"/", " charset=\"utf-8\"", $widget);
+						}
+					}
+					preg_match("/\<script\s[^\>]*type\=\"text\/javascript\"[^\>]*/", $widget, $matches);
+					if ($matches[0] == "") {
+						preg_match("/\<script\s[^\>]*type\=\"[^\"]*\"[^\>]*/", $widget, $matches);
+						if ($matches[0] == "") {
+							$widget = preg_replace("/\<script\s/", "<script type=\"text/javascript\" ", $widget);
+						}
+						else {
+							$widget = preg_replace("/\stype\=\"[^\"]*\"/", " type=\"text/javascript\"", $widget);
+						}
+					}
+	
+					update_option('st_pubid', $publisher_id);
+					update_option('st_widget', $widget);
+					
+					header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=sharethis.php&updated=true');
+					die();
 				}
-				else {
-					$widget = st_default_widget();
-				}
-				update_option('st_widget', $widget);
 				
-				header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=sharethis.php&updated=true');
-				die();
 				break;
 		}
 	}
@@ -151,7 +309,7 @@ function st_options_form() {
 }
 
 function st_menu_items() {
-	if (current_user_can('manage_options')) {
+	if (ak_can_update_options()) {
 		add_options_page(
 			__('ShareThis Options', 'share-this')
 			, __('ShareThis', 'share-this')
