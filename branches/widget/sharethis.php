@@ -62,8 +62,8 @@ function st_widget() {
 
 <script type="text/javascript">
 SHARETHIS.addEntry({
-	title: "'.str_replace('"', '\"', get_option('st_pubid')).'",
-	summary: "'.str_replace('"', '\"', get_the_title()).'",
+	publisher: "'.str_replace('"', '\"', get_option('st_pubid')).'",
+	title: "'.str_replace('"', '\"', get_the_title()).'",
 	url: "'.get_permalink($post->ID).'"
 });
 </script>
