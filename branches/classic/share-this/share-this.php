@@ -246,6 +246,23 @@ if (!function_exists('ak_uuid')) {
 	}
 }
 
+if (!function_exists('ak_can_update_options')) {
+	function ak_can_update_options() {
+		if (function_exists('current_user_can')) {
+			if (current_user_can('manage_options')) {
+				return true;
+			}
+		}
+		else {
+			global $user_level;
+			if ($user_level >= 6) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
 if (!empty($_REQUEST['akst_action'])) {
 	switch ($_REQUEST['akst_action']) {
 		case 'js':
@@ -457,33 +474,35 @@ function akst_request_handler() {
 				akst_send_mail();			
 				break;
 			case 'akst_update_settings':
-				if (empty($_POST['akst_tabs_to_show'])) {
-					$_POST['akst_tabs_to_show'] = array('social', 'email');
-				}
-				if (empty($_POST['tab_order'])) {
-					$_POST['tab_order'] = 'social';
-				}
-				$tabs = array();
-				if (count($_POST['akst_tabs_to_show']) > 1) {
-					switch ($_POST['tab_order']) {
-						case 'social':
-							$tabs[] = 'social';
-							break;
-						case 'email':
-							$tabs[] = 'email';
-							break;
+				if (ak_can_update_options()) {
+					if (empty($_POST['akst_tabs_to_show'])) {
+						$_POST['akst_tabs_to_show'] = array('social', 'email');
 					}
+					if (empty($_POST['tab_order'])) {
+						$_POST['tab_order'] = 'social';
+					}
+					$tabs = array();
+					if (count($_POST['akst_tabs_to_show']) > 1) {
+						switch ($_POST['tab_order']) {
+							case 'social':
+								$tabs[] = 'social';
+								break;
+							case 'email':
+								$tabs[] = 'email';
+								break;
+						}
+					}
+					if (!in_array('social', $tabs) && in_array('social', $_POST['akst_tabs_to_show'])) {
+						$tabs[] = 'social';
+					}
+					if (!in_array('email', $tabs) && in_array('email', $_POST['akst_tabs_to_show'])) {
+						$tabs[] = 'email';
+					}
+					update_option('akst_tabs', implode(',', $tabs));
+					
+					header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=share-this.php&updated=true');
+					die();
 				}
-				if (!in_array('social', $tabs) && in_array('social', $_POST['akst_tabs_to_show'])) {
-					$tabs[] = 'social';
-				}
-				if (!in_array('email', $tabs) && in_array('email', $_POST['akst_tabs_to_show'])) {
-					$tabs[] = 'email';
-				}
-				update_option('akst_tabs', implode(',', $tabs));
-				
-				header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=share-this.php&updated=true');
-				die();
 				break;
 		}
 	}
@@ -907,7 +926,7 @@ function akst_options_form() {
 }
 
 function akst_menu_items() {
-	if (current_user_can('manage_options')) {
+	if (ak_can_update_options()) {
 		add_options_page(
 			__('ShareThis Classic Options', 'share-this')
 			, __('ShareThis Classic', 'share-this')
