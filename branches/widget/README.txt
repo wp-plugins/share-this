@@ -1,11 +1,15 @@
 === ShareThis ===
-Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, facebook, myspace, social, socialize, stumbleupon, aim
-Contributors: alexkingorg
+Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, facebook, myspace, social, socialize, stumbleupon, aim, google bookmarks, windows live, yahoo my web
+Contributors: alexkingorg, ShareThis
 Requires at least: 1.5
 Tested up to: 2.3.1
 Stable tag: 2.0
 
-ShareThis is a service that provides an unobtrusive way for your visitors to add your post to various social bookmarking sites, or send a link via e-mail to a friend.
+ShareThis plugin allows users to add your post to many social bookmarking sites, or to send your post link via email, AIM, Facebook, MySpace and more.
+
+== Description ==
+
+The ShareThis WordPress plugin provides a quick, simple to use, and unobtrusive way for users to add your post to many social bookmarking sites, or to send your post link via email, AIM, Facebook, MySpace and more.  ShareThis also provides tools to customize the look of the ShareThis widget on your site as well as tracking for sharing events.
 
 == Installation ==
 
@@ -23,4 +27,10 @@ then copy the code provided and paste it into the box in Options > ShareThis and
 
 Please see our FAQs online:
 
-http://sharethis.com/support/
+http://support.sharethis.com/publishers
+
+== Screenshots ==
+
+1. A view of the ShareThis button on your posts
+2. The configuration page for the widget that displays when your ShareThis button is clicked
+3. Sample tracking reports available to registered ShareThis publishers
