@@ -77,9 +77,9 @@ function st_install() {
 			} elseif ($matches[2] == "") {
 				$publisher_id = ak_uuid();
 				$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
-                        } else {
+						} else {
 				$publisher_id = $matches[2];
-                        }
+						}
 		} else {
 			$publisher_id = ak_uuid();
 			$widget = st_default_widget();
@@ -108,8 +108,8 @@ function st_install() {
 		}
 	}
 
-        update_option('st_pubid', $publisher_id);
-        update_option('st_widget', $widget);
+	update_option('st_pubid', $publisher_id);
+	update_option('st_widget', $widget);
 }
 
 function st_widget_head() {
@@ -127,9 +127,8 @@ function st_widget() {
 	$sharethis = '
 
 <script type="text/javascript">
-SHARETHIS.addEntry(
-{
-        title: "'.str_replace('"', '\"', get_the_title()).'",
+SHARETHIS.addEntry({
+	title: "'.str_replace('"', '\"', get_the_title()).'",
 	url: "'.get_permalink($post->ID).'"
 });
 </script>
@@ -161,17 +160,23 @@ add_action('the_content', 'st_add_link');
 add_action('the_content_rss', 'st_add_link');
 
 function st_remove_st_add_link($content) {
-    remove_action('the_content', 'st_add_link');
-    return $content;
+	remove_action('the_content', 'st_add_link');
+	return $content;
 }
 
 function st_add_st_add_link($content) {
-    add_action('the_content', 'st_add_link');
-    $content .= st_widget();
-    return $content;
+	add_action('the_content', 'st_add_link');
+	$content .= st_widget();
+	return $content;
 }
-add_filter('the_excerpt', 'st_remove_st_add_link', 9);
-add_filter('the_excerpt', 'st_add_st_add_link', 11);
+add_filter('get_the_excerpt', 'st_remove_st_add_link', 9);
+
+if (substr(get_bloginfo('version'), 0, 3) == "1.5" || substr(get_bloginfo('version'), 0, 3) == "2.0") {
+	add_filter('the_excerpt', 'st_add_st_add_link', 11);
+}
+else {
+	add_filter('get_the_excerpt', 'st_add_st_add_link', 11);
+}
 
 if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
 	st_install();
@@ -190,7 +195,8 @@ if (!function_exists('ak_can_update_options')) {
 		}
 		else {
 			global $user_level;
-			if ($user_level >= 6) {
+			get_currentuserinfo();
+			if ($user_level >= 8) {
 				return true;
 			}
 		}
@@ -300,7 +306,7 @@ function st_options_form() {
 
 					</fieldset>
 					<p class="submit">
-						<input type="submit" name="submit" value="'.__('Update ShareThis Options', 'share-this').'" />
+						<input type="submit" name="submit_button" value="'.__('Update', 'share-this').'" />
 					</p>
 					<input type="hidden" name="st_action" value="st_update_settings" />
 				</form>
@@ -313,7 +319,7 @@ function st_menu_items() {
 		add_options_page(
 			__('ShareThis Options', 'share-this')
 			, __('ShareThis', 'share-this')
-			, 10
+			, 8 
 			, basename(__FILE__)
 			, 'st_options_form'
 		);

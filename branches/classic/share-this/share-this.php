@@ -255,6 +255,7 @@ if (!function_exists('ak_can_update_options')) {
 		}
 		else {
 			global $user_level;
+			get_currentuserinfo();
 			if ($user_level >= 6) {
 				return true;
 			}
@@ -917,7 +918,7 @@ function akst_options_form() {
 
 					</fieldset>
 					<p class="submit">
-						<input type="submit" name="submit" value="'.__('Update ShareThis Options', 'share-this').'" />
+						<input type="submit" name="submit_button" value="'.__('Update ShareThis Options', 'share-this').'" />
 					</p>
 					<input type="hidden" name="akst_action" value="akst_update_settings" />
 				</form>
@@ -930,7 +931,7 @@ function akst_menu_items() {
 		add_options_page(
 			__('ShareThis Classic Options', 'share-this')
 			, __('ShareThis Classic', 'share-this')
-			, 10
+			, 8
 			, basename(__FILE__)
 			, 'akst_options_form'
 		);
