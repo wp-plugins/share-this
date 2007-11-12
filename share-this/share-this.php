@@ -1129,7 +1129,7 @@ function akst_page() {
 			)
 			, $data['url']
 		);
-		print('				<li><a href="http://r.sharethis.com/web.php?destination='.urlencode($link).'&publisher='.get_option('st_pubid').'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
+		print('				<li><a href="http://r.sharethis.com/web?destination='.urlencode($link).'&publisher='.get_option('st_pubid').'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
 	}
 ?>
 			</ul>
