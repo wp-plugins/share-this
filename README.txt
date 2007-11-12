@@ -3,7 +3,7 @@ Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, te
 Contributors: alexkingorg
 Requires at least: 1.5
 Tested up to: 2.3
-Stable tag: 1.5
+Stable tag: 1.5.1
 
 Share This is a plugin that provides an unobtrusive way for your visitors to add your post to various social bookmarking sites, or send a link via e-mail to a friend.
 
