@@ -2,8 +2,7 @@
 
 // ShareThis Classic
 //
-// Copyright (c) 2006-2007 Alex King
-// http://alexking.org/projects/wordpress
+// Copyright (c) 2006-2007 Nextumi, Inc.
 //
 // Released under the GPL license
 // http://www.opensource.org/licenses/gpl-license.php
@@ -19,10 +18,11 @@
 
 /*
 Plugin Name: ShareThis Classic
-Plugin URI: http://alexking.org/projects/wordpress
+Plugin URI: http://alexking.org/projects/share-this
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=share-this.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 1.5dev
-Author: <a href="http://sharethis.com">ShareThis</a> and <a href="http://crowdfavorite.com">Crowd Favorite</a>
+Version: 1.5.1
+Author: ShareThis and Crowd Favorite (crowdfavorite.com)
+Author URI: http://sharethis.com
 */
 
 @define('AKST_ADDTOCONTENT', true);
@@ -884,33 +884,33 @@ function akst_options_form() {
 				<form id="ak_sharethis" name="ak_sharethis" action="'.get_bloginfo('wpurl').'/wp-admin/index.php" method="post">
 					<fieldset class="options">
 
-						<p>Which tabs do you want to include?</p>
+						<p>'.__('Which tabs do you want to include?', 'share-this').'</p>
 
 						<ul>
 							<li>
 								<input type="checkbox" name="akst_tabs_to_show[]" value="social" id="akst_tabs_to_show_social"'.$social_tab.' />
 						
-								<label for="akst_tabs_to_show_social">Social Web</label>
+								<label for="akst_tabs_to_show_social">'.__('Social Web', 'share-this').'</label>
 							</li>
 							<li>
 								<input type="checkbox" name="akst_tabs_to_show[]" value="email" id="akst_tabs_to_show_email" '.$email_tab.' />
-								<label for="akst_tabs_to_show_email">E-mail</label>
+								<label for="akst_tabs_to_show_email">'.__('E-mail', 'share-this').'</label>
 							</li>
 						</ul>
 						
 						<div id="tab_order">
 						
-						<p>Which tab should be first?</p>
+						<p>'.__('Which tab should be first?', 'share-this').'</p>
 						
 						<ul>
 							<li>
 								<input type="radio" name="tab_order" value="social" id="tab_order_social"'.$social_order.' />
-								<label for="tab_order_social">Social Web</label>
+								<label for="tab_order_social">'.__('Social Web', 'share-this').'</label>
 							</li>
 							<li>
 								<input type="radio" name="tab_order" value="email" id="tab_order_email"'.$email_order.' />
 						
-								<label for="tab_order_email">E-mail</label>
+								<label for="tab_order_email">'.__('E-mail', 'share-this').'</label>
 							</li>
 						</ul>
 						
