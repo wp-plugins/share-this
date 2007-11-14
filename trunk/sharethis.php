@@ -24,7 +24,7 @@
 Plugin Name: ShareThis
 Plugin URI: http://sharethis.com
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 2.0
+Version: 2.1dev
 Author: ShareThis and Crowd Favorite (crowdfavorite.com)
 Author URI: http://sharethis.com
 */
@@ -110,6 +110,7 @@ function st_install() {
 
 	update_option('st_pubid', $publisher_id);
 	update_option('st_widget', $widget);
+	update_option('st_add_to_content', 'yes');
 }
 
 function st_widget_head() {
@@ -156,8 +157,6 @@ function st_add_link($content) {
 		return $content.st_widget();
 	}
 }
-add_action('the_content', 'st_add_link');
-add_action('the_content_rss', 'st_add_link');
 
 function st_remove_st_add_link($content) {
 	remove_action('the_content', 'st_add_link');
@@ -169,13 +168,19 @@ function st_add_st_add_link($content) {
 	$content .= st_widget();
 	return $content;
 }
+
+add_action('the_content_rss', 'st_add_link');
 add_filter('get_the_excerpt', 'st_remove_st_add_link', 9);
 
-if (substr(get_bloginfo('version'), 0, 3) == "1.5" || substr(get_bloginfo('version'), 0, 3) == "2.0") {
-	add_filter('the_excerpt', 'st_add_st_add_link', 11);
-}
-else {
-	add_filter('get_the_excerpt', 'st_add_st_add_link', 11);
+$st_add_to_content = get_option('st_add_to_content');
+if ($st_add_to_content != 'no') {
+	add_filter('the_content', 'st_add_link');
+	if (substr(get_bloginfo('version'), 0, 3) == "1.5" || substr(get_bloginfo('version'), 0, 3) == "2.0") {
+		add_filter('the_excerpt', 'st_add_st_add_link', 11);
+	}
+	else {
+		add_filter('get_the_excerpt', 'st_add_st_add_link', 11);
+	}
 }
 
 if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
@@ -277,6 +282,10 @@ function st_request_handler() {
 					update_option('st_pubid', $publisher_id);
 					update_option('st_widget', $widget);
 					
+					if (isset($_POST['st_add_to_content']) && in_array($_POST['st_add_to_content'], array('yes', 'no'))) {
+						update_option('st_add_to_content', $_POST['st_add_to_content']);
+					}
+					
 					header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=sharethis.php&updated=true');
 					die();
 				}
@@ -288,9 +297,19 @@ function st_request_handler() {
 add_action('init', 'st_request_handler', 9999);	
 
 function st_options_form() {
+	$st_add_to_content = get_option('st_add_to_content');
+
+	if (empty($st_add_to_content) || $st_add_to_content == 'yes') {
+		$st_add_to_content_yes = ' selected="selected"';
+		$st_add_to_content_no = '';
+	}
+	else {
+		$st_add_to_content_no = ' selected="selected"';
+		$st_add_to_content_yes = '';
+	}
 	print('
 			<div class="wrap">
-				<h2>'.__('ShareThis Options', 'share-this').'</h2>
+				<h2>'.__('ShareThis Options', 'sharethis').'</h2>
 				<form id="ak_sharethis" name="ak_sharethis" action="'.get_bloginfo('wpurl').'/wp-admin/index.php" method="post">
 					<fieldset class="options">
 
@@ -303,10 +322,20 @@ function st_options_form() {
 							<p><textarea id="st_widget" name="st_widget">'.htmlspecialchars(get_option('st_widget')).'</textarea></p>
 						
 						</div>
+						
+						<p>
+							<label for="st_add_to_content">'.__('Automatically Add ShareThis to your posts and pages?*', 'sharethis').'</label>
+							<select name="st_add_to_content" id="st_add_to_content">
+								<option value="yes"'.$st_add_to_content_yes.'>'.__('Yes', 'sharethis').'</option>
+								<option value="no"'.$st_add_to_content_no.'>'.__('No', 'sharethis').'</option>
+							</select>
+						</p>
+						
+						<p>'.__('* Note, if you turn this off, you will want to add the <a href="http://support.sharethis.com/...">ShareThis template tag</a> to your theme.', 'sharethis').'</p>
 
 					</fieldset>
 					<p class="submit">
-						<input type="submit" name="submit_button" value="'.__('Update', 'share-this').'" />
+						<input type="submit" name="submit_button" value="'.__('Update', 'sharethis').'" />
 					</p>
 					<input type="hidden" name="st_action" value="st_update_settings" />
 				</form>
@@ -317,8 +346,8 @@ function st_options_form() {
 function st_menu_items() {
 	if (ak_can_update_options()) {
 		add_options_page(
-			__('ShareThis Options', 'share-this')
-			, __('ShareThis', 'share-this')
+			__('ShareThis Options', 'sharethis')
+			, __('ShareThis', 'sharethis')
 			, 8 
 			, basename(__FILE__)
 			, 'st_options_form'
