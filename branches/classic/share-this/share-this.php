@@ -93,7 +93,7 @@ $social_sites = array(
 
 	, 'google_bmarks' => array(
 		'name' => 'Google Bookmarks'
-		, 'url' => '  http://www.google.com/bookmarks/mark?op=edit&bkmk={url}&title={title}'
+		, 'url' => 'http://www.google.com/bookmarks/mark?op=edit&bkmk={url}&title={title}'
 	)
 
 	, 'yahoo_myweb' => array(
@@ -143,7 +143,7 @@ $social_sites = array(
 
 	, 'propeller' => array(
 		'name' => 'Propeller'
-		, 'url' => ' http://www.propeller.com/submit/?U={url}&T={title}'
+		, 'url' => 'http://www.propeller.com/submit/?U={url}&T={title}'
 	)
 
 	, 'bizz_buzz' => array(
