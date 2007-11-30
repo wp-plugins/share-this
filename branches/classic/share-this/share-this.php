@@ -965,6 +965,9 @@ function akst_page() {
 		$email = $user['comment_author_email'];
 	}
 	query_posts('p='.$id);
+	if (!have_posts()) {
+		query_posts('page_id='.$id);
+	}
 	if (have_posts()) : 
 		while (have_posts()) : 
 			the_post();
