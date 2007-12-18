@@ -50,6 +50,7 @@ function st_install() {
 	$widget = get_option('st_widget');
 	if ($publisher_id != "") {
 		if ($widget != "") {
+			$widget = preg_replace("/\&amp;/", "&", $widget);
 			$pattern = "/([\&\?])publisher\=([^\&\"]*)/";
 			preg_match($pattern, $widget, $matches);
 			if ($matches[0] == "") {
@@ -64,10 +65,11 @@ function st_install() {
 			}
 		} else {
 			$widget = st_default_widget();
-			$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "?publisher=".$publisher_id."\"></script>", $widget);
+			$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&publisher=".$publisher_id."\"></script>", $widget);
 		}
 	} else {
 		if ($widget != "") {
+			$widget = preg_replace("/\&amp;/", "&", $widget);
 			$pattern = "/([\&\?])publisher\=([^\&\"]*)/";
 			preg_match($pattern, $widget, $matches);
 			if ($matches[0] == "") {
@@ -77,13 +79,13 @@ function st_install() {
 			} elseif ($matches[2] == "") {
 				$publisher_id = ak_uuid();
 				$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
-						} else {
+			} else {
 				$publisher_id = $matches[2];
-						}
+			}
 		} else {
 			$publisher_id = ak_uuid();
 			$widget = st_default_widget();
-			$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "?publisher=".$publisher_id."\"></script>", $widget);
+			$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&publisher=".$publisher_id."\"></script>", $widget);
 		}
 	}
 
@@ -108,6 +110,10 @@ function st_install() {
 		}
 	}
 
+	$widget = st_widget_add_wp_version($widget);
+	$widget = st_widget_fix_domain($widget);
+	$widget = preg_replace("/\&/", "&amp;", $widget);
+
 	update_option('st_pubid', $publisher_id);
 	update_option('st_widget', $widget);
 	update_option('st_add_to_content', 'yes');
@@ -118,6 +124,10 @@ function st_widget_head() {
 	if ($widget == '') {
 		$widget = st_default_widget();
 	}
+
+	$widget = st_widget_add_wp_version($widget);
+	$widget = st_widget_fix_domain($widget);
+	$widget = preg_replace("/\&/", "&amp;", $widget);
 	print($widget);
 }
 add_action('wp_head', 'st_widget_head');
@@ -125,8 +135,10 @@ add_action('wp_head', 'st_widget_head');
 function st_widget() {
 	global $post;
 
-	$sharethis = '
+	// TODO if popup
+	// TODO if embed
 
+	$sharethis = '
 <script type="text/javascript">
 SHARETHIS.addEntry({
 	title: "'.str_replace('"', '\"', get_the_title()).'",
@@ -141,7 +153,7 @@ SHARETHIS.addEntry({
 function st_link() {
 	global $post;
 
-	$sharethis = '<p><a href="http://sharethis.com/item?publisher='
+	$sharethis = '<p><a href="http://w.sharethis.com/item?publisher='
 		.get_option('st_pubid').'&title='
 		.urlencode(get_the_title()).'&url='
 		.urlencode(get_permalink($post->ID)).'">ShareThis</a></p>';
@@ -154,7 +166,7 @@ function st_add_link($content) {
 		return $content.st_link();
 	}
 	else {
-		return $content.st_widget();
+		return $content.'<p>'.st_widget().'</p>';
 	}
 }
 
@@ -187,8 +199,30 @@ if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
 	st_install();
 }
 
+
+function st_widget_fix_domain($widget)
+{
+	$widget = preg_replace("/\<script\s([^\>]*)src\=\"http\:\/\/sharethis/", "<script $1src=\"http://w.sharethis", $widget);
+
+	return $widget;
+}
+
+function st_widget_add_wp_version($widget)
+{
+	preg_match("/([\&\?])wp\=([^\&\"]*)/", $widget, $matches);
+	if ($matches[0] == "") {
+		$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&wp=".get_bloginfo('version')."\"></script>", $widget);
+		$widget = preg_replace("/widget\/\&wp\=/", "widget/?wp=", $widget);
+	}
+	else
+	{
+		$widget = preg_replace("/([\&\?])wp\=([^\&\"]*)/", "$1wp=".get_bloginfo('version'), $widget);
+	}
+	return $widget;
+}
+
 function st_default_widget() {
-	return '<script type="text/javascript" charset="utf-8" src="http://sharethis.com/widget/"></script>';
+	return '<script type="text/javascript" charset="utf-8" src="http://w.sharethis.com/widget/?wp='.get_bloginfo('version').'"></script>';
 }
 
 if (!function_exists('ak_can_update_options')) {
@@ -216,6 +250,7 @@ function st_request_handler() {
 				if (ak_can_update_options()) {
 					if (!empty($_POST['st_widget'])) { // have widget
 						$widget = stripslashes($_POST['st_widget']);
+						$widget = preg_replace("/\&amp;/", "&", $widget);
 						$pattern = "/([\&\?])publisher\=([^\&\"]*)/";
 						preg_match($pattern, $widget, $matches);
 						if ($matches[0] == "") { // widget does not have publisher parameter at all
@@ -254,7 +289,7 @@ function st_request_handler() {
 							$publisher_id = ak_uuid();
 						}
 						$widget = st_default_widget();
-						$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "?publisher=".$publisher_id."\"></script>", $widget);
+						$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&publisher=".$publisher_id."\"></script>", $widget);
 						$widget = preg_replace("/widget\/\&publisher\=/", "widget/?publisher=", $widget);
 					}
 	
@@ -278,7 +313,10 @@ function st_request_handler() {
 							$widget = preg_replace("/\stype\=\"[^\"]*\"/", " type=\"text/javascript\"", $widget);
 						}
 					}
-	
+
+					$widget = st_widget_add_wp_version($widget);
+					$widget = st_widget_fix_domain($widget);
+					$widget = preg_replace("/\&/", "&amp;", $widget);
 					update_option('st_pubid', $publisher_id);
 					update_option('st_widget', $widget);
 					
@@ -297,15 +335,22 @@ function st_request_handler() {
 add_action('init', 'st_request_handler', 9999);	
 
 function st_options_form() {
-	$st_add_to_content = get_option('st_add_to_content');
-
-	if (empty($st_add_to_content) || $st_add_to_content == 'yes') {
-		$st_add_to_content_yes = ' selected="selected"';
-		$st_add_to_content_no = '';
-	}
-	else {
-		$st_add_to_content_no = ' selected="selected"';
-		$st_add_to_content_yes = '';
+	$options = array(
+		'st_add_to_content'
+		, 'st_popup'
+		, 'st_embed'
+	);
+	foreach ($options as $option) {
+		$$option = get_option($option);
+	
+		if (empty($$option) || $$option == 'yes') {
+			eval('$'.$option.'_yes = \' selected="selected"\';');
+			eval('$'.$option.'_no = \'\';');
+		}
+		else {
+			eval('$'.$option.'_yes = \'\';');
+			eval('$'.$option.'_no = \' selected="selected"\';');
+		}
 	}
 	print('
 			<div class="wrap">
@@ -313,7 +358,7 @@ function st_options_form() {
 				<form id="ak_sharethis" name="ak_sharethis" action="'.get_bloginfo('wpurl').'/wp-admin/index.php" method="post">
 					<fieldset class="options">
 
-						<script src="http://sharethis.com/widget/wordpress/config?publisher='.get_option('st_pubid').'" type="text/javascript"></script>
+						<script src="http://w.sharethis.com/widget/wordpress/config?publisher='.get_option('st_pubid').'" type="text/javascript"></script>
 
 						<div id="st_widget">
 
