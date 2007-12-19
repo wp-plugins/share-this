@@ -24,10 +24,12 @@
 Plugin Name: ShareThis
 Plugin URI: http://sharethis.com
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 2.1dev
+Version: 2.1b1
 Author: ShareThis and Crowd Favorite (crowdfavorite.com)
 Author URI: http://sharethis.com
 */
+
+load_plugin_textdomain('sharethis');
 
 if (!function_exists('ak_uuid')) {
 	function ak_uuid() {
@@ -117,6 +119,8 @@ function st_install() {
 	update_option('st_pubid', $publisher_id);
 	update_option('st_widget', $widget);
 	update_option('st_add_to_content', 'yes');
+	update_option('st_popup', 'no');
+	update_option('st_embed', 'no');
 }
 
 function st_widget_head() {
@@ -135,15 +139,29 @@ add_action('wp_head', 'st_widget_head');
 function st_widget() {
 	global $post;
 
-	// TODO if popup
-	// TODO if embed
+	if (get_option('st_popup') == 'yes') {
+		$popup = ', { popup: true }';
+	}
+	else {
+		$popup = '';
+	}
+	if (get_option('st_embed') == 'yes') {
+		$embed = ', { embed: true }';
+	}
+	else {
+		$embed = '';
+	}
 
 	$sharethis = '
 <script type="text/javascript">
-SHARETHIS.addEntry({
+SHARETHIS.addEntry(
+	{
 	title: "'.str_replace('"', '\"', get_the_title()).'",
 	url: "'.get_permalink($post->ID).'"
-});
+	}
+	'.$popup.'
+	'.$embed.'
+);
 </script>
 	';
 
@@ -153,12 +171,17 @@ SHARETHIS.addEntry({
 function st_link() {
 	global $post;
 
-	$sharethis = '<p><a href="http://w.sharethis.com/item?publisher='
-		.get_option('st_pubid').'&title='
-		.urlencode(get_the_title()).'&url='
+	$sharethis = '<p><a href="http://sharethis.com/item?&wp='
+		.get_bloginfo('version').'&amp;publisher='
+		.get_option('st_pubid').'&amp;title='
+		.urlencode(get_the_title()).'&amp;url='
 		.urlencode(get_permalink($post->ID)).'">ShareThis</a></p>';
 
 	return $sharethis;
+}
+
+function sharethis_button() {
+	echo st_widget();
 }
 
 function st_add_link($content) {
@@ -200,22 +223,21 @@ if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
 }
 
 
-function st_widget_fix_domain($widget)
-{
-	$widget = preg_replace("/\<script\s([^\>]*)src\=\"http\:\/\/sharethis/", "<script $1src=\"http://w.sharethis", $widget);
-
-	return $widget;
+function st_widget_fix_domain($widget) {
+	return preg_replace(
+		"/\<script\s([^\>]*)src\=\"http\:\/\/sharethis/"
+		, "<script $1src=\"http://w.sharethis"
+		, $widget
+	);
 }
 
-function st_widget_add_wp_version($widget)
-{
+function st_widget_add_wp_version($widget) {
 	preg_match("/([\&\?])wp\=([^\&\"]*)/", $widget, $matches);
 	if ($matches[0] == "") {
 		$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&wp=".get_bloginfo('version')."\"></script>", $widget);
 		$widget = preg_replace("/widget\/\&wp\=/", "widget/?wp=", $widget);
 	}
-	else
-	{
+	else {
 		$widget = preg_replace("/([\&\?])wp\=([^\&\"]*)/", "$1wp=".get_bloginfo('version'), $widget);
 	}
 	return $widget;
@@ -320,8 +342,15 @@ function st_request_handler() {
 					update_option('st_pubid', $publisher_id);
 					update_option('st_widget', $widget);
 					
-					if (isset($_POST['st_add_to_content']) && in_array($_POST['st_add_to_content'], array('yes', 'no'))) {
-						update_option('st_add_to_content', $_POST['st_add_to_content']);
+					$options = array(
+						'st_add_to_content'
+						, 'st_popup'
+						, 'st_embed'
+					);
+					foreach ($options as $option) {
+						if (isset($_POST[$option]) && in_array($_POST[$option], array('yes', 'no'))) {
+							update_option($option, $_POST[$option]);
+						}
 					}
 					
 					header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=sharethis.php&updated=true');
@@ -335,23 +364,6 @@ function st_request_handler() {
 add_action('init', 'st_request_handler', 9999);	
 
 function st_options_form() {
-	$options = array(
-		'st_add_to_content'
-		, 'st_popup'
-		, 'st_embed'
-	);
-	foreach ($options as $option) {
-		$$option = get_option($option);
-	
-		if (empty($$option) || $$option == 'yes') {
-			eval('$'.$option.'_yes = \' selected="selected"\';');
-			eval('$'.$option.'_no = \'\';');
-		}
-		else {
-			eval('$'.$option.'_yes = \'\';');
-			eval('$'.$option.'_no = \' selected="selected"\';');
-		}
-	}
 	print('
 			<div class="wrap">
 				<h2>'.__('ShareThis Options', 'sharethis').'</h2>
@@ -367,20 +379,38 @@ function st_options_form() {
 							<p><textarea id="st_widget" name="st_widget">'.htmlspecialchars(get_option('st_widget')).'</textarea></p>
 						
 						</div>
-						
+	');
+	$options = array(
+		'st_add_to_content' => __('Automatically Add ShareThis to your posts and pages?*', 'sharethis')
+		, 'st_popup' => __('Show ShareThis in a separate pop-up window?', 'sharethis')
+		, 'st_embed' => __('Show Flash embeds when showing the ShareThis window?', 'sharethis')
+	);
+	foreach ($options as $option => $description) {
+		$$option = get_option($option);
+		if (empty($$option) || $$option == 'yes') {
+			$yes = ' selected="selected"';
+			$no = '';
+		}
+		else {
+			$yes = '';
+			$no = ' selected="selected"';
+		}
+		print('
 						<p>
-							<label for="st_add_to_content">'.__('Automatically Add ShareThis to your posts and pages?*', 'sharethis').'</label>
-							<select name="st_add_to_content" id="st_add_to_content">
-								<option value="yes"'.$st_add_to_content_yes.'>'.__('Yes', 'sharethis').'</option>
-								<option value="no"'.$st_add_to_content_no.'>'.__('No', 'sharethis').'</option>
+							<label for="'.$option.'">'.$description.'</label>
+							<select name="'.$option.'" id="'.$option.'">
+								<option value="yes"'.$yes.'>'.__('Yes', 'sharethis').'</option>
+								<option value="no"'.$no.'>'.__('No', 'sharethis').'</option>
 							</select>
 						</p>
-						
+		');
+	}
+	print('
 						<p>'.__('* Note, if you turn this off, you will want to add the <a href="http://support.sharethis.com/...">ShareThis template tag</a> to your theme.', 'sharethis').'</p>
 
 					</fieldset>
 					<p class="submit">
-						<input type="submit" name="submit_button" value="'.__('Update', 'sharethis').'" />
+						<input type="submit" name="submit_button" value="'.__('Update ShareThis Options', 'sharethis').'" />
 					</p>
 					<input type="hidden" name="st_action" value="st_update_settings" />
 				</form>
