@@ -145,7 +145,7 @@ function st_widget() {
 		$popup = '';
 	}
 	if (get_option('st_embed') == 'yes') {
-		$embed = ', { embed: true }';
+		$embed = ', { embeds: true }';
 	}
 	else {
 		$embed = '';
@@ -155,7 +155,7 @@ function st_widget() {
 <script type="text/javascript">
 SHARETHIS.addEntry(
 	{
-	title: "'.str_replace('"', '\"', get_the_title()).'",
+	title: "'.str_replace('"', '\"', strip_tags(get_the_title())).'",
 	url: "'.get_permalink($post->ID).'"
 	}
 	'.$popup.'
@@ -404,7 +404,7 @@ function st_options_form() {
 		');
 	}
 	print('
-						<p>'.__('* Note, if you turn this off, you will want to add the <a href="http://support.sharethis.com/...">ShareThis template tag</a> to your theme.', 'sharethis').'</p>
+						<p>'.__('* Note, if you turn this off, you will want to add the <a href="http://support.sharethis.com/publishers/publishers-faq/wordpress/66">ShareThis template tag</a> to your theme.', 'sharethis').'</p>
 
 					</fieldset>
 					<p class="submit">
