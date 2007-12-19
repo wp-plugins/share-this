@@ -379,7 +379,7 @@ function st_options_form() {
 						</div>
 	');
 	$options = array(
-		'st_add_to_content' => __('Automatically Add ShareThis to your posts and pages?*', 'sharethis')
+		'st_add_to_content' => __('Automatically add ShareThis to your posts and pages?*', 'sharethis')
 		, 'st_popup' => __('Show ShareThis in a separate pop-up window?', 'sharethis')
 		, 'st_embed' => __('Show Flash embeds when showing the ShareThis window?', 'sharethis')
 	);
