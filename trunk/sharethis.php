@@ -112,9 +112,8 @@ function st_install() {
 		}
 	}
 
-	$widget = st_widget_add_wp_version($widget);
+// note: do not convert & to &amp; or append WP version here
 	$widget = st_widget_fix_domain($widget);
-	$widget = preg_replace("/\&/", "&amp;", $widget);
 
 	update_option('st_pubid', $publisher_id);
 	update_option('st_widget', $widget);
@@ -336,9 +335,8 @@ function st_request_handler() {
 						}
 					}
 
-					$widget = st_widget_add_wp_version($widget);
+// note: do not convert & to &amp; or append WP version here
 					$widget = st_widget_fix_domain($widget);
-					$widget = preg_replace("/\&/", "&amp;", $widget);
 					update_option('st_pubid', $publisher_id);
 					update_option('st_widget', $widget);
 					
