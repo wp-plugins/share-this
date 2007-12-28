@@ -151,18 +151,7 @@ function st_widget() {
 		$embed = '';
 	}
 
-	$sharethis = '
-<script type="text/javascript">
-SHARETHIS.addEntry(
-	{
-	title: "'.str_replace('"', '\"', strip_tags(get_the_title())).'",
-	url: "'.get_permalink($post->ID).'"
-	}
-	'.$popup.'
-	'.$embed.'
-);
-</script>
-	';
+	$sharethis = '<script type="text/javascript">SHARETHIS.addEntry({ title: "'.str_replace('"', '\"', strip_tags(get_the_title())).'", url: "'.get_permalink($post->ID).'" } '.$popup.' '.$embed.');</script>';
 
 	return $sharethis;
 }
