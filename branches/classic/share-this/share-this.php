@@ -20,7 +20,7 @@
 Plugin Name: ShareThis Classic
 Plugin URI: http://alexking.org/projects/share-this
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=share-this.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 1.5.1
+Version: 1.5.2dev
 Author: ShareThis and Crowd Favorite (crowdfavorite.com)
 Author URI: http://sharethis.com
 */
@@ -155,6 +155,7 @@ $social_sites = array(
 
 $akst_limit_mail_recipients = 5;
 
+$akst_default_tabs = 'social,email';
 
 // NO NEED TO EDIT BELOW THIS LINE
 // ============================================================
@@ -573,9 +574,12 @@ add_action('the_content', 'akst_add_share_link_to_content');
 add_action('the_content_rss', 'akst_add_share_link_to_content');
 
 function akst_share_form() {
-	global $post, $social_sites, $current_user, $akst_limit_mail_recipients;
+	global $post, $social_sites, $current_user, $akst_limit_mail_recipients, $akst_default_tabs;
 	
 	$tabs = get_option('akst_tabs');
+	if ($tabs == '') {
+		$tabs = $akst_default_tabs;
+	}
 	$tabs = explode(',', $tabs);
 
 	if (isset($current_user)) {
@@ -1197,8 +1201,12 @@ function akst_page() {
 }
 
 function akst_install() {
+	global $akst_default_tabs;
 	if (get_option('st_pubid') == '') {
 		add_option('st_pubid', ak_uuid());
+	}
+	if (get_option('akst_tabs') == '') {
+		add_option('akst_tabs', $akst_default_tabs);
 	}
 }
 
