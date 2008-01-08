@@ -115,11 +115,24 @@ function st_install() {
 // note: do not convert & to &amp; or append WP version here
 	$widget = st_widget_fix_domain($widget);
 
-	update_option('st_pubid', $publisher_id);
-	update_option('st_widget', $widget);
-	update_option('st_add_to_content', 'yes');
-	update_option('st_popup', 'no');
-	update_option('st_embed', 'no');
+	if (get_option('st_pubid') == '') {
+		update_option('st_pubid', $publisher_id);
+	}
+	if (get_option('st_widget') == '') {
+		update_option('st_widget', $widget);
+	}
+	if (get_option('st_add_to_content') == '') {
+		update_option('st_add_to_content', 'yes');
+	}
+	if (get_option('st_popup') == '') {
+		update_option('st_popup', 'no');
+	}
+	if (get_option('st_embed') == '') {
+		update_option('st_embed', 'no');
+	}
+}
+if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
+	st_install();
 }
 
 function st_widget_head() {
@@ -205,11 +218,6 @@ if ($st_add_to_content != 'no') {
 		add_filter('get_the_excerpt', 'st_add_st_add_link', 11);
 	}
 }
-
-if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
-	st_install();
-}
-
 
 function st_widget_fix_domain($widget) {
 	return preg_replace(
