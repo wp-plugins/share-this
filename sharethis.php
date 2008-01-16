@@ -24,7 +24,7 @@
 Plugin Name: ShareThis
 Plugin URI: http://sharethis.com
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 2.1b1
+Version: 2.1b2
 Author: ShareThis and Crowd Favorite (crowdfavorite.com)
 Author URI: http://sharethis.com
 */
@@ -124,11 +124,8 @@ function st_install() {
 	if (get_option('st_add_to_content') == '') {
 		update_option('st_add_to_content', 'yes');
 	}
-	if (get_option('st_popup') == '') {
-		update_option('st_popup', 'no');
-	}
-	if (get_option('st_embed') == '') {
-		update_option('st_embed', 'no');
+	if (get_option('st_add_to_page') == '') {
+		update_option('st_add_to_page', 'yes');
 	}
 }
 if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
@@ -151,20 +148,7 @@ add_action('wp_head', 'st_widget_head');
 function st_widget() {
 	global $post;
 
-	if (get_option('st_popup') == 'yes') {
-		$popup = ', { popup: true }';
-	}
-	else {
-		$popup = '';
-	}
-	if (get_option('st_embed') == 'yes') {
-		$embed = ', { embeds: true }';
-	}
-	else {
-		$embed = '';
-	}
-
-	$sharethis = '<script type="text/javascript">SHARETHIS.addEntry({ title: "'.str_replace('"', '\"', strip_tags(get_the_title())).'", url: "'.get_permalink($post->ID).'" } '.$popup.' '.$embed.');</script>';
+	$sharethis = '<script type="text/javascript">SHARETHIS.addEntry({ title: "'.str_replace('"', '\"', strip_tags(get_the_title())).'", url: "'.get_permalink($post->ID).'" });</script>';
 
 	return $sharethis;
 }
@@ -189,11 +173,16 @@ function st_add_link($content) {
 	if (is_feed()) {
 		return $content.st_link();
 	}
-	else {
+	else if (
+		(is_page() && get_option('st_add_to_page') != 'no')
+		|| (!is_page() && get_option('st_add_to_content') != 'no')
+		) {
 		return $content.'<p>'.st_widget().'</p>';
 	}
+	else {
+		return $content;
+	}
 }
-
 function st_remove_st_add_link($content) {
 	remove_action('the_content', 'st_add_link');
 	return $content;
@@ -205,11 +194,9 @@ function st_add_st_add_link($content) {
 	return $content;
 }
 
-add_action('the_content_rss', 'st_add_link');
-add_filter('get_the_excerpt', 'st_remove_st_add_link', 9);
-
-$st_add_to_content = get_option('st_add_to_content');
-if ($st_add_to_content != 'no') {
+if (get_option('st_add_to_content') != 'no' || get_option('st_add_to_page') != 'no') {
+	add_action('the_content_rss', 'st_add_link');
+	add_filter('get_the_excerpt', 'st_remove_st_add_link', 9);
 	add_filter('the_content', 'st_add_link');
 	if (substr(get_bloginfo('version'), 0, 3) == "1.5" || substr(get_bloginfo('version'), 0, 3) == "2.0") {
 		add_filter('the_excerpt', 'st_add_st_add_link', 11);
@@ -339,8 +326,7 @@ function st_request_handler() {
 					
 					$options = array(
 						'st_add_to_content'
-						, 'st_popup'
-						, 'st_embed'
+						, 'st_add_to_page'
 					);
 					foreach ($options as $option) {
 						if (isset($_POST[$option]) && in_array($_POST[$option], array('yes', 'no'))) {
@@ -376,9 +362,8 @@ function st_options_form() {
 						</div>
 	');
 	$options = array(
-		'st_add_to_content' => __('Automatically add ShareThis to your posts and pages?*', 'sharethis')
-		, 'st_popup' => __('Show ShareThis in a separate pop-up window?', 'sharethis')
-		, 'st_embed' => __('Show Flash embeds when showing the ShareThis window?', 'sharethis')
+		'st_add_to_content' => __('Automatically add ShareThis to your posts?*', 'sharethis')
+		, 'st_add_to_page' => __('Automatically add ShareThis to your pages?*', 'sharethis')
 	);
 	foreach ($options as $option => $description) {
 		$$option = get_option($option);
