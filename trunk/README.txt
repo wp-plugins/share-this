@@ -28,6 +28,7 @@ to customize the look of the ShareThis widget on your site as well as register f
 http://sharethis.com/publisher?type=wpplugin
 
 then copy the code provided and paste it into the box in Options > ShareThis and click the update button.
+5. (Optional) On the ShareThis Options page, choose if you want to automatically add ShareThis to your posts and pages, or if you want to add the template tag to your theme.
 
 
 == Frequently Asked Questions ==
