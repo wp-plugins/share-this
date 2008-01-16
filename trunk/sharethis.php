@@ -24,7 +24,7 @@
 Plugin Name: ShareThis
 Plugin URI: http://sharethis.com
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 2.1b2
+Version: 2.1
 Author: ShareThis and Crowd Favorite (crowdfavorite.com)
 Author URI: http://sharethis.com
 */
@@ -357,7 +357,7 @@ function st_options_form() {
 
 							<p>Paste your widget code in here:</p>
 	
-							<p><textarea id="st_widget" name="st_widget">'.htmlspecialchars(get_option('st_widget')).'</textarea></p>
+							<p><textarea id="st_widget" name="st_widget" style="height: 80px; width: 500px;">'.htmlspecialchars(get_option('st_widget')).'</textarea></p>
 						
 						</div>
 	');
