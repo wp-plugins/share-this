@@ -2,7 +2,7 @@
 
 // ShareThis
 //
-// Copyright (c) 2007 Nextumi, Inc.
+// Copyright (c) 2007-2008 Nextumi, Inc.
 // http://sharethis.com
 //
 // Based in part on code Copyright (c) 2006-2007 Alex King
