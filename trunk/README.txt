@@ -3,7 +3,7 @@ Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, te
 Contributors: alexkingorg, ShareThis
 Requires at least: 1.5
 Tested up to: 2.3.1
-Stable tag: 2.1b1
+Stable tag: 2.1
 
 ShareThis plugin allows users to add your post to many social bookmarking sites, or to send your post link via email, AIM, Facebook, MySpace and more.
 
@@ -36,6 +36,20 @@ then copy the code provided and paste it into the box in Options > ShareThis and
 Please see our FAQs online:
 
 http://support.sharethis.com/publishers
+
+
+== Support ==
+
+Have questions or suggestions for us? Perhaps it's already answered or being discussed in the ShareThis forums:
+
+http://forums.sharethis.com
+
+
+== What's Changed? ==
+
+We maintain a list of changes to the ShareThis WordPress plugin and the ShareThis widget here:
+
+http://sharethis.com/versionhistory
 
 
 == Screenshots ==
