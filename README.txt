@@ -13,7 +13,7 @@ The ShareThis WordPress plugin provides a quick, simple to use, and unobtrusive 
 
 Be sure to start here:
 
-<a href="http://sharethis.com/publisher?type=wpplugin">http://sharethis.com/publisher?type=wpplugin</a>
+http://sharethis.com/publisher?type=wpplugin
 
 to customize the look of the ShareThis widget on your site as well as register for tracking of your sharing events.
 
