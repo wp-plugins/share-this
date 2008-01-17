@@ -2,7 +2,7 @@
 Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, facebook, myspace, social, socialize, stumbleupon, aim, google bookmarks, windows live, yahoo my web
 Contributors: alexkingorg, ShareThis
 Requires at least: 1.5
-Tested up to: 2.3.1
+Tested up to: 2.3.2
 Stable tag: 2.1
 
 ShareThis plugin allows users to add your post to many social bookmarking sites, or to send your post link via email, AIM, Facebook, MySpace and more.
