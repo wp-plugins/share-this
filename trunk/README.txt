@@ -31,6 +31,13 @@ then copy the code provided and paste it into the box in Options > ShareThis and
 5. (Optional) On the ShareThis Options page, choose if you want to automatically add ShareThis to your posts and pages, or if you want to add the template tag to your theme.
 
 
+== Stats and Reporting ==
+
+If you would like to receive free stats and reporting, sign up for a publisher account:
+
+http://sharethis.com
+
+
 == Frequently Asked Questions ==
 
 Please see our FAQs online:
