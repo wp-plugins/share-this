@@ -164,7 +164,7 @@ $akst_default_tabs = 'social,email';
 @define('AKST_FILEPATH', '/wp-content/plugins/share-this/share-this.php');
 
 if (function_exists('load_plugin_textdomain')) {
-	load_plugin_textdomain('alexking.org');
+	load_plugin_textdomain('share-this', PLUGINDIR.'/share-this');
 }
 
 $akst_action = '';
@@ -269,6 +269,12 @@ if (!empty($_REQUEST['akst_action'])) {
 	switch ($_REQUEST['akst_action']) {
 		case 'js':
 			header("Content-type: text/javascript");
+			if (isset($_REQUEST['st_tracking']) && $_REQUEST['st_tracking'] == 'no') {
+				echo 'var akst_tracking = false;';
+			}
+			else {
+				echo 'var akst_tracking = true;';
+			}
 ?>
 function akst_share(id, url, title, html_id, pubid) {
 	var form = $('akst_form');
@@ -301,8 +307,11 @@ function akst_share(id, url, title, html_id, pubid) {
 }
 
 function akst_share_url(base, url, title, pubid) {
-	base = base.replace('{url}', url).replace('{title}', title);
-	return 'http://r.sharethis.com/web?destination=' + encodeURIComponent(base) + '&publisher=' + pubid;
+	base = base.replace('{url}', url).replace('{title}', title);	
+	if (akst_tracking) {
+		return 'http://r.sharethis.com/web?destination=' + encodeURIComponent(base) + '&publisher=' + pubid;
+	}
+	return base;
 }
 
 function akst_share_tab(tab) {
@@ -522,8 +531,9 @@ function akst_head() {
 	$wp = get_bloginfo('wpurl');
 	$url = $wp.AKST_FILEPATH;
 	ak_prototype();
+	$tracking = (get_option('st_tracking') == 'no') ? '&amp;st_tracking=no' : '';
 	print('
-	<script type="text/javascript" src="'.$url.'?akst_action=js"></script>
+	<script type="text/javascript" src="'.$url.'?akst_action=js'.$tracking.'"></script>
 	<link rel="stylesheet" type="text/css" href="'.$url.'?akst_action=css" />
 	');
 }
@@ -703,7 +713,15 @@ function akst_share_form() {
 	
 	ob_start();
 ?>
-		<div id="akst_credit"><a href="http://sharethis.com"><img src="http://r.sharethis.com/powered-by?publisher=<?php print(get_option('st_pubid')); ?>" alt="Powered by ShareThis" /></a></div>
+		<div id="akst_credit">
+			<a href="http://sharethis.com">
+				<?php if (get_option('st_tracking') != 'no') : ?>
+				<img src="http://r.sharethis.com/powered-by?publisher=<?php print(get_option('st_pubid')); ?>" alt="<?php _e('Powered by ShareThis', 'share-this'); ?>" />
+				<?php else : ?>
+				<img src="<?php bloginfo('wpurl'); ?>/wp-content/plugins/share-this/powered-by.gif" alt="<?php _e('Powered by ShareThis', 'share-this'); ?>" />
+				<?php endif; ?>
+			</a>
+		</div>
 	</div>
 	<!-- Share This END -->
 <?php
@@ -829,10 +847,12 @@ function akst_send_mail() {
 		.'--'."\n"
 		.get_bloginfo('home')."\n";
 
-	require_once(ABSPATH.WPINC.'/class-snoopy.php');
-	$snoop = new Snoopy;
-	$snoop->agent = 'ShareThis Classic for WordPress';
-	$snoop->fetch('http://r.sharethis.com/email?url='.urlencode(get_permalink($post_id)).'&publisher='.get_option('st_pubid'));
+	if (get_option('st_tracking') != 'no') {
+		require_once(ABSPATH.WPINC.'/class-snoopy.php');
+		$snoop = new Snoopy;
+		$snoop->agent = 'ShareThis Classic for WordPress';
+		$snoop->fetch('http://r.sharethis.com/email?url='.urlencode(get_permalink($post_id)).'&publisher='.get_option('st_pubid'));
+	}
 	
 	foreach ($to as $recipient) {
 		@wp_mail($recipient, $subject, $message, $headers);
@@ -842,8 +862,8 @@ function akst_send_mail() {
 		$url = $_SERVER['HTTP_REFERER'];
 	}
 	
-	wp_die(__('Thanks, we\'ve sent this article to your recipients via e-mail. <a href="'.get_permalink($post_id).'">Return to original page</a>.', 'share-this'));
-
+	wp_die(__('Thanks, we\'ve sent this article to your recipients via e-mail.', 'share-this').'<href="'.get_permalink($post_id).'">'.__('Return to original page', 'share-this').'</a>.');
+	
 /*	
 	header("Location: $url");
 	status_header('302');
@@ -1136,7 +1156,12 @@ function akst_page() {
 			)
 			, $data['url']
 		);
-		print('				<li><a href="http://r.sharethis.com/web?destination='.urlencode($link).'&publisher='.get_option('st_pubid').'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
+		if (get_option('st_tracking') != 'no') {
+			print('				<li><a href="http://r.sharethis.com/web?destination='.urlencode($link).'&publisher='.get_option('st_pubid').'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
+		}
+		else {
+			print('				<li><a href="'.$link.'" id="akst_'.$key.'">'.$data['name'].'</a></li>'."\n");
+		}
 	}
 ?>
 			</ul>
@@ -1187,7 +1212,15 @@ function akst_page() {
 	</div>
 	
 	<div id="footer">
-		<p><a href="http://sharethis.com"><img src="http://r.sharethis.com/powered-by?publisher=<?php print(get_option('st_pubid')); ?>" alt="Powered by ShareThis" /></a></p>
+		<p>
+			<a href="http://sharethis.com">
+				<?php if (get_option('st_tracking') != 'no') : ?>
+				<img src="http://r.sharethis.com/powered-by?publisher=<?php print(get_option('st_pubid')); ?>" alt="<?php _e('Powered by ShareThis', 'share-this'); ?>" />
+				<?php else : ?>
+				<img src="<?php bloginfo('wpurl'); ?>/wp-content/plugins/share-this/powered-by.gif" alt="<?php _e('Powered by ShareThis', 'share-this'); ?>" />
+				<?php endif; ?>					
+			</a>
+		</p>
 	</div>
 
 </div>
@@ -1207,6 +1240,9 @@ function akst_install() {
 	}
 	if (get_option('akst_tabs') == '') {
 		add_option('akst_tabs', $akst_default_tabs);
+	}
+	if (get_option('st_tracking') == '') {
+		add_option('st_tracking', 'yes');
 	}
 }
 
