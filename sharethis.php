@@ -190,12 +190,17 @@ function st_remove_st_add_link($content) {
 
 function st_add_st_add_link($content) {
 	add_action('the_content', 'st_add_link');
-	$content .= st_widget();
+	
+	// 2008-05-28 for javascript in rss feed
+	if (!is_feed()) { 
+		$content .= st_widget();
+	}
+	
 	return $content;
 }
 
 if (get_option('st_add_to_content') != 'no' || get_option('st_add_to_page') != 'no') {
-	add_action('the_content_rss', 'st_add_link');
+	add_filter('the_content_rss', 'st_add_link');
 	add_filter('get_the_excerpt', 'st_remove_st_add_link', 9);
 	add_filter('the_content', 'st_add_link');
 	if (substr(get_bloginfo('version'), 0, 3) == "1.5" || substr(get_bloginfo('version'), 0, 3) == "2.0") {
