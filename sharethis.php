@@ -169,46 +169,38 @@ function sharethis_button() {
 	echo st_widget();
 }
 
-function st_add_link($content) {
-	if (is_feed()) {
-		return $content.st_link();
-	}
-	else if (
-		(is_page() && get_option('st_add_to_page') != 'no')
-		|| (!is_page() && get_option('st_add_to_content') != 'no')
-		) {
-		return $content.'<p>'.st_widget().'</p>';
-	}
-	else {
-		return $content;
-	}
-}
 function st_remove_st_add_link($content) {
 	remove_action('the_content', 'st_add_link');
 	return $content;
 }
 
-function st_add_st_add_link($content) {
-	add_action('the_content', 'st_add_link');
-	
-	// 2008-05-28 for javascript in rss feed
-	if (!is_feed()) { 
-		$content .= st_widget();
-	}
-	
+// 2006-06-02 cleaned up the logic here, renamed function, added is_feed() check in st_add_feed_link() also
+// 2006-06-02 is_page() was returning TRUE always, so using is_single() to differentiate the two types of content	
+function st_add_widget($content) {
+	if ((is_single() && get_option('st_add_to_page') != 'no') || (!is_single() && get_option('st_add_to_content') != 'no')) {
+		if (!is_feed()) {
+			return $content.'<p>'.st_widget().'</p>';
+		}
+	}		
+
 	return $content;
 }
 
+// 2006-06-02 Renamed function from st_add_st_link() to st_add_feed_link()
+function st_add_feed_link($content) {
+	if (is_feed()) {
+		$content .= st_link();
+	}
+
+	return $content;
+}
+
+// 2006-06-02 Filters to Add Sharethis widget on content and/or link on RSS
 if (get_option('st_add_to_content') != 'no' || get_option('st_add_to_page') != 'no') {
-	add_filter('the_content_rss', 'st_add_link');
-	add_filter('get_the_excerpt', 'st_remove_st_add_link', 9);
-	add_filter('the_content', 'st_add_link');
-	if (substr(get_bloginfo('version'), 0, 3) == "1.5" || substr(get_bloginfo('version'), 0, 3) == "2.0") {
-		add_filter('the_excerpt', 'st_add_st_add_link', 11);
-	}
-	else {
-		add_filter('get_the_excerpt', 'st_add_st_add_link', 11);
-	}
+	add_filter('the_content', 'st_add_widget');
+
+	// 2006-06-02 Expected behavior is that the feed link will show up if an option is not 'no'
+	add_filter('get_the_excerpt', 'st_add_feed_link');
 }
 
 function st_widget_fix_domain($widget) {
