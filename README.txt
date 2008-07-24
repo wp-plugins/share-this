@@ -2,8 +2,8 @@
 Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, facebook, myspace, social, socialize, stumbleupon, aim, google bookmarks, windows live, yahoo my web
 Contributors: alexkingorg, ShareThis
 Requires at least: 1.5
-Tested up to: 2.3.2
-Stable tag: 2.1
+Tested up to: 2.6
+Stable tag: 2.2
 
 ShareThis plugin allows users to add your post to many social bookmarking sites, or to send your post link via email, AIM, Facebook, MySpace and more.
 
@@ -13,7 +13,7 @@ The ShareThis WordPress plugin provides a quick, simple to use, and unobtrusive 
 
 Be sure to start here:
 
-http://sharethis.com/publisher?type=wpplugin
+http://sharethis.com/wordpress
 
 to customize the look of the ShareThis widget on your site as well as register for tracking of your sharing events.
 
@@ -25,7 +25,7 @@ to customize the look of the ShareThis widget on your site as well as register f
 3. Go to the Plugins page in your WordPress Administration area and click 'Activate' for ShareThis.
 4. (Optional) Use the the customizing tool to choose options for how to display your ShareThis window:
 
-http://sharethis.com/publisher?type=wpplugin
+http://sharethis.com/wordpress
 
 then copy the code provided and paste it into the box in Options > ShareThis and click the update button.
 5. (Optional) On the ShareThis Options page, choose if you want to automatically add ShareThis to your posts and pages, or if you want to add the template tag to your theme.
@@ -35,7 +35,7 @@ then copy the code provided and paste it into the box in Options > ShareThis and
 
 If you would like to receive free stats and reporting, sign up for a publisher account:
 
-http://sharethis.com
+http://sharethis.com/register
 
 
 == Frequently Asked Questions ==
