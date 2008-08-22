@@ -24,7 +24,7 @@
 Plugin Name: ShareThis
 Plugin URI: http://sharethis.com
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 2.1
+Version: 2.3
 Author: ShareThis and Crowd Favorite (crowdfavorite.com)
 Author URI: http://sharethis.com
 */
@@ -171,13 +171,12 @@ function sharethis_button() {
 
 function st_remove_st_add_link($content) {
 	remove_action('the_content', 'st_add_link');
+	remove_action('the_content', 'st_add_widget');
 	return $content;
 }
 
-// 2006-06-02 cleaned up the logic here, renamed function, added is_feed() check in st_add_feed_link() also
-// 2006-06-02 is_page() was returning TRUE always, so using is_single() to differentiate the two types of content	
 function st_add_widget($content) {
-	if ((is_single() && get_option('st_add_to_page') != 'no') || (!is_single() && get_option('st_add_to_content') != 'no')) {
+	if ((is_page() && get_option('st_add_to_page') != 'no') || (!is_page() && get_option('st_add_to_content') != 'no')) {
 		if (!is_feed()) {
 			return $content.'<p>'.st_widget().'</p>';
 		}
@@ -196,11 +195,13 @@ function st_add_feed_link($content) {
 }
 
 // 2006-06-02 Filters to Add Sharethis widget on content and/or link on RSS
+// 2006-06-02 Expected behavior is that the feed link will show up if an option is not 'no'
 if (get_option('st_add_to_content') != 'no' || get_option('st_add_to_page') != 'no') {
 	add_filter('the_content', 'st_add_widget');
 
-	// 2006-06-02 Expected behavior is that the feed link will show up if an option is not 'no'
-	add_filter('get_the_excerpt', 'st_add_feed_link');
+	// 2008-08-15 Excerpts don't play nice due to strip_tags().
+	add_filter('get_the_excerpt', 'st_remove_st_add_link',9);
+	add_filter('the_excerpt', 'st_add_widget');
 }
 
 function st_widget_fix_domain($widget) {
