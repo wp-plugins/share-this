@@ -79,3 +79,7 @@ At ShareThis we are always trying to develop a sharing product with our users an
 
 == Screenshots ==
 Check out some shots of our new widget in action!
+
+1. A view of the ShareThis button on your posts
+2. The configuration page for the widget that displays when your ShareThis button is clicked
+3. Sample tracking reports available to registered ShareThis publishers
