@@ -22,7 +22,7 @@
 Plugin Name: ShareThis
 Plugin URI: http://sharethis.com
 Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 3.0
+Version: 3.0.1
 Author: ShareThis
 Author URI: http://sharethis.com
 */
@@ -51,8 +51,14 @@ function install_ShareThis(){
 			$newUser=true;
 		}
 	}
-	
-	sendWelcomeEmail($newUser);
+	$st_sent=get_option('st_sent');
+	if(empty($st_sent)){
+		update_option('st_sent','true');
+		$st_sent=get_option('st_sent'); //confirm if value has been set
+		if(!(empty($st_sent))){
+			sendWelcomeEmail($newUser);
+		}
+	}
 
 	if (get_option('st_add_to_content') == '') {
 		update_option('st_add_to_content', 'yes');
@@ -131,7 +137,7 @@ function sendWelcomeEmail($newUser){
 	$body = "The ShareThis plugin on your website has been activated on ".get_option('siteurl')."\n\n"
 			."If you have not already registered and if you would like to customize the look of your widget or get reporting go to http://sharethis.com/wordpress and customize your widget\n\n"
 			."Next go to $updatePage and update the ShareThis configuration\n\n"
-			."If you have any addidional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
+			."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
 	
 	$subject = "ShareThis WordPress Plugin";
 	
@@ -144,7 +150,7 @@ function sendWelcomeEmail($newUser){
 					."Step 1: Go to http://sharethis.com/wordpress and get the code for you blog\n\n"
 					."Step 2: Go to $updatePage and update the ShareThis configuration with the code you received in step 1\n"
 					."That's it!\n\n"
-					."If you have any addidional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";							
+					."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";							
 	}
 	
 	$headers = "From: ShareThis Support <support@sharethis.com>\r\n" ."X-Mailer: php";
@@ -163,8 +169,11 @@ function st_widget() {
 	$widget=get_option('st_widget');
 	$st_sent=get_option('st_sent');
 	if(empty($st_sent)){
-		sendWelcomeEmail($newUser);
 		update_option('st_sent','true');
+		$st_sent=get_option('st_sent'); //confirm if value has been set
+		if(!(empty($st_sent))){
+			sendWelcomeEmail(true);
+		}
 	}
 
 	if(!empty($widget)){
