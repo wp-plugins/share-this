@@ -365,7 +365,7 @@ if(empty($publisher_id)){
 $toShow="";		
 }
 else{
-	$toShow==get_option('st_widget');
+	$toShow=get_option('st_widget');
 }
 	print('
 			<div class="wrap">
