@@ -20,8 +20,8 @@ You can customize the ShareThis widget on your site as well as register for a da
 1. Download the plugin archive and expand it (you've likely already done this).
 2. Put the 'sharethis.php' file into your wp-content/plugins/ directory.
 3. Go to the Plugins page in your WordPress Administration area and click 'Activate' for ShareThis.
-4. (Optional) Go to http://sharethis.com/wordpress to customize your widget, then copy the code provided and paste it into the box in Options > ShareThis and click the update button.
-5. (Optional) On the ShareThis Options page, choose if you want to automatically add ShareThis to your posts and pages, or if you want to add the template tag to your theme.
+4. Go to http://sharethis.com/wordpress to customize your widget, then copy the code provided and paste it into the box in Options > ShareThis and click the update button.
+5. On the ShareThis Options page, choose if you want to automatically add ShareThis to your posts and pages, or if you want to add the template tag to your theme.
 
 
 == Stats and Reporting ==
