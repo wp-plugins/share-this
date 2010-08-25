@@ -3,7 +3,7 @@ Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, te
 Contributors:ShareThis
 Requires at least: 1.5
 Tested up to: 3.0.x
-Stable tag: 3.0.1
+Stable tag: trunk
 
 Used by 850,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook and Twitter.
 
