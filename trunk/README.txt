@@ -19,7 +19,7 @@ Used by 850,000 sites, the ShareThis plugin allows users to share your content t
 - Users can now search for their favorite services.
 - ShareThis recommends other hot content on your site, after the share.
 
-To check out the ShareThis plugin for WordPress, visit: http://sharethis.com/wordpress
+To get more information about the ShareThis plugin for WordPress, visit: http://help.sharethis.com/integration/wordpress
 
 You can customize the ShareThis widget on your site and register with ShareThis (registration is optional) to get access to enhanced share related analytics for your site.
 
@@ -53,9 +53,10 @@ You can read more about what we do and what we think about the value of sharing 
 At ShareThis we are always trying to develop a sharing product with our users and publishers needs in mind. We continue to improve the sharing experience to include features that we hope you like. 
 
 In the most recent update we have some great features to share:
-- 	Simplified Wordpress installation: we now make registration optional and let you configure button options within Wordpress. 
+
+-	Simplified Wordpress installation: we now make registration optional and let you configure button options within Wordpress. 
 -	More choices & flexibility in layout and styling 
-- 	Visual customization of sharing buttons through your CSS stylesheet: you control the look & feel of these buttons in your own domain
+-	Visual customization of sharing buttons through your CSS stylesheet: you control the look & feel of these buttons in your own domain
 -	Native look and usage of the new Twitter button and Facebook button.
 -	New Social Reach button styles: this lets you show your visitors how popular your content is. Social Reach measures the social impact of your content by combining outbound sharing and inbound visits from friends on social networks. See example screenshots in the updated documentation.
 
@@ -79,8 +80,10 @@ Still got questions? If you need technical help, check out the support info belo
 
 Have questions or suggestions for us? Perhaps it's already answered or being discussed in the ShareThis forums or on ShareThis Support:
 
+
 http://forums.sharethis.com
-http://help.sharethis.com
+
+http://help.sharethis.com/integration/wordpress
 
 If you would like to contact the support team via email you can reach us at:
  
