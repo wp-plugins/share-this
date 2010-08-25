@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 4.0
+ Version: 4.0.1
  Author: ShareThis, Manu Mukerji <manu@sharethis.com>
  Author URI: http://sharethis.com
  */
