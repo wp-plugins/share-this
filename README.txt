@@ -3,7 +3,7 @@ Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, te
 Contributors:ShareThis
 Requires at least: 1.5
 Tested up to: 3.0.x
-Stable tag: 4.0.2
+Stable tag: 4.0.3
 
 Used by 850,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook and Twitter.
 
@@ -11,13 +11,13 @@ Used by 850,000 sites, the ShareThis plugin allows users to share your content t
 
 Used by 850,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, Stumbleupon and Google Buzz.  
 
--     	New! New Twitter buttons, counters, and large icon styles.
-- 	New! Registration with ShareThis is now optional for Wordpress users.
-- 	New! Improved analytics include Social Reach, social engagement and more. 
--	Widget is now 80% lighter.
- -	Users can login with Facebook, Twitter, Google or Yahoo! accounts.
--	Users can now search for their favorite services.
--	ShareThis recommends other hot content on your site, after the share.
+- New! New Twitter buttons, counters, and large icon styles.
+- New! Registration with ShareThis is now optional for Wordpress users.
+- New! Improved analytics include Social Reach, social engagement and more. 
+- Widget is now 80% lighter.
+- Users can login with Facebook, Twitter, Google or Yahoo! accounts.
+- Users can now search for their favorite services.
+- ShareThis recommends other hot content on your site, after the share.
 
 To check out the ShareThis plugin for WordPress, visit: http://sharethis.com/wordpress
 
