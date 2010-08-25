@@ -417,17 +417,17 @@ function st_options_form() {
 								    <li st_type="buttons"><div class="buttonType">Buttons (7/7)</div><img src="http://w.sharethis.com/images/wp_ex3.png"  alt="" /></li>
 								</ul>
 							</div>
-							
+							<br/>
 							<div class="services">
 								<span class="heading" onclick="javascript:$(\'#st_services\').toggle(\'slow\');"><span class="headingimg">[+]</span>Click to change order of social buttons or modify list of buttons.</span>&nbsp;(<a href="http://help.sharethis.com/customization/chicklets#supported-services" target="_blank">?</a>)<br/>
 								<textarea name="st_services" id="st_services" style="height: 30px; width: 400px;">'.htmlspecialchars($services).'</textarea>
 							</div>
-							
+							<br/>
 							<div class="tags">
 								<span class="heading" onclick="javascript:$(\'#st_tags\').toggle(\'slow\');"><span class="headingimg">[+]</span>Click to view/modify the HTML tags.</span><br/>
 								<textarea name="st_tags" id="st_tags" style="height: 100px; width: 500px;">'.htmlspecialchars(preg_replace("/<\/span>/","</span>\n", $tags)).'</textarea>
 							</div>
-							
+							<br/>
 							<div class="widget_code">
 								<span class="heading" onclick="javascript:$(\'#st_widget\').toggle(\'slow\');">
 									<span class="headingimg">[+]</span>
@@ -436,7 +436,7 @@ function st_options_form() {
 								<br/>
 								<textarea id="st_widget" name="st_widget" style="height: 80px; width: 500px;">'.htmlspecialchars($toShow).'</textarea>
 							</div>
-							
+							<br/>
 							<div>
 								<span class="heading" onclick="javascript:$(\'#st_pkey\').toggle(\'slow\');"><span class="headingimg">[+]</span>Your Publisher Key:</span><br/>	
 								<textarea name="st_pkey" id="st_pkey" style="height: 30px; width: 400px;">'.htmlspecialchars($publisher_id).'</textarea>
