@@ -5,11 +5,19 @@ Requires at least: 1.5
 Tested up to: 3.0.x
 Stable tag: 3.0.1
 
-ShareThis plugin is a sharing widget that allows users to share your content through email, 50+ social networks including Facebook, Twitter, Google Buzz, and through text message and AIM. 
+Used by 850,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook and Twitter.
 
 == Description ==
 
-ShareThis plugin is a sharing widget that allows users to share your content through email, 50+ social networks including Facebook, Twitter, Google Buzz, and through text message and AIM. ShareThis now provides several layout and styling options to make is simple and easy for your users to share your site content to popular social networks. 
+Used by 850,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, Stumbleupon and Google Buzz.  
+
+-     	New! New Twitter buttons, counters, and large icon styles.
+- 	New! Registration with ShareThis is now optional for Wordpress users.
+- 	New! Improved analytics include Social Reach, social engagement and more. 
+-	Widget is now 80% lighter.
+ -	Users can login with Facebook, Twitter, Google or Yahoo! accounts.
+-	Users can now search for their favorite services.
+-	ShareThis recommends other hot content on your site, after the share.
 
 To check out the ShareThis plugin for WordPress, visit: http://sharethis.com/wordpress
 
@@ -34,22 +42,22 @@ You can also integrate your ShareThis button with Google Analytics. Visit http:/
 
 == A Little About Us==
 
-At ShareThis, we think sharing should be simple. We aim to bring sharing to everyone and that means being able to share different kinds of content to a variety of sources quickly and easily.  
+At ShareThis, we think sharing should be simple. We help more than 850,000 sites share their content everywhere on the web, increase their social traffic, and know more about their social visitors. We’re used by popular blogs and large publishers alike.
 
-With the ShareThis widget, users can send blog posts, text, and pictures to others in their network via many social networking and social media options, as well as email, SMS/text message, and AIM. 
+The new ShareThis plugin for Wordpress allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, Stumbleupon and Google Buzz.   
 
-Whether posting to Facebook or MySpace, tweeting via Twitter, Digging it or Sharing to Google Buzz, users can make the most of the content on blogs through a single widget with a wealth of options.
+You can read more about what we do and what we think about the value of sharing at www.sharethis.com or blog.sharethis.com.
 
 == Recent Feature Updates ==
 
-At ShareThis we are always trying to develop a sharing product with our users and publishers needs in mind. Through our support forums, outreach on social media sites and personal experiences, we continue to cultivate the widget and sharing experience to include features and functionalities that we hope you like. 
+At ShareThis we are always trying to develop a sharing product with our users and publishers needs in mind. We continue to improve the sharing experience to include features that we hope you like. 
 
 In the most recent update we have some great features to share:
--	More choices & flexibility in layout and styling of social sharing buttons on your page. Visit the new ShareThis Options page in your WordPress admin area to learn more.
-- 	Visual customization of sharing buttons through your CSS stylesheet. This means you control the look & feel of these buttons in your own domain.
+- 	Simplified Wordpress installation: we now make registration optional and let you configure button options within Wordpress. 
+-	More choices & flexibility in layout and styling 
+- 	Visual customization of sharing buttons through your CSS stylesheet: you control the look & feel of these buttons in your own domain
 -	Native look and usage of the new Twitter button and Facebook button.
--	New Social Reach button styles to show your visitors how popular your content is based on others sharing. Simply put, Social Reach measures how popular a story is with users by counting outbound sharing and inbound visits from friends on social networks for these shared links. A number is displayed on your pages. See example screenshots in the update documentation.
-- 	Lastly, we've significantly simplified the WordPress installation by making registration optional and letting you configure ShareThis button options within Wordpress. We encourage you to register with ShareThis to get sharing stats from your site and other new social metrics that we are busy working on.
+-	New Social Reach button styles: this lets you show your visitors how popular your content is. Social Reach measures the social impact of your content by combining outbound sharing and inbound visits from friends on social networks. See example screenshots in the updated documentation.
 
 Some of our prior updates are below, with the promise of many more to come!
 
@@ -61,22 +69,22 @@ Some of our prior updates are below, with the promise of many more to come!
 
 == Frequently Asked Questions ==
 
-Got questions, we've got (some) answers! For frequently asked questions, check out this page and see if we've already got you covered:
+Check out our support area at http://help.sharethis.com and our Wordpress customization area here: http://help.sharethis.com/integration/wordpress
 
-http://help.sharethis.com
+Still got questions? If you need technical help, check out the support info below or email us at support@sharethis.com.
 
-Still got questions? If you need technical help, check out the support info below. For someone in marketing, please email marketing@sharethis.com
 
 
 == Support ==
 
-Have questions or suggestions for us? Perhaps it's already answered or being discussed in the ShareThis forums:
+Have questions or suggestions for us? Perhaps it's already answered or being discussed in the ShareThis forums or on ShareThis Support:
 
 http://forums.sharethis.com
+http://help.sharethis.com
 
 If you would like to contact the support team via email you can reach us at:
  
-feedback@sharethis.com
+support@sharethis.com
 
 == Screenshots ==
 Check out some screenshots of our new widget in action!
