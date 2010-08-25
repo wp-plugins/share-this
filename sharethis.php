@@ -2,7 +2,7 @@
 
 // ShareThis
 //
-// Copyright (c) 2009 ShareThis, Inc.
+// Copyright (c) 2010 ShareThis, Inc.
 // http://sharethis.com
 //
 //
@@ -15,17 +15,17 @@
 // **********************************************************************
 // This program is distributed in the hope that it will be useful, but
 // WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 // *****************************************************************
 
 /*
-Plugin Name: ShareThis
-Plugin URI: http://sharethis.com
-Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
-Version: 3.2
-Author: ShareThis
-Author URI: http://sharethis.com
-*/
+ Plugin Name: ShareThis
+ Plugin URI: http://sharethis.com
+ Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
+ Version: 4.0
+ Author: ShareThis, Manu Mukerji <manu@sharethis.com>
+ Author URI: http://sharethis.com
+ */
 
 load_plugin_textdomain('sharethis');
 
@@ -34,14 +34,13 @@ function install_ShareThis(){
 	$publisher_id = get_option('st_pubid'); //pub key value
 	$widget = get_option('st_widget'); //entire script tag
 	$newUser=false;
-	$widget=getNewTag($widget);
-	update_option('st_widget', $widget);
-	
+
 	if(empty($publisher_id)){
-		if(!empty($widget)){	
+		if(!empty($widget)){
 			$newPkey=getKeyFromTag();
 			if($newPkey==false){
 				$newUser=true;
+				update_option('st_pubid',trim(makePkey()));
 			}
 			else{
 				update_option('st_pubid',$newPkey); //pkey found set old key
@@ -51,6 +50,15 @@ function install_ShareThis(){
 			$newUser=true;
 		}
 	}
+	
+	if($widget==false || !preg_match('/stLight.options/',$widget)){
+		$pkey2=get_option('st_pubid'); 
+		$widget="<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script>";
+		$widget.="<script type=\"text/javascript\">stLight.options({publisher:'$pkey2'});var st_type='wordpress".trim(get_bloginfo('version'))."';</script>";
+		update_option('st_widget',$widget);
+	}
+	
+	
 	$st_sent=get_option('st_sent');
 	if(empty($st_sent)){
 		update_option('st_sent','true');
@@ -66,8 +74,8 @@ function install_ShareThis(){
 	if (get_option('st_add_to_page') == '') {
 		update_option('st_add_to_page', 'yes');
 	}
-	
-			
+
+		
 }
 
 function getKeyFromTag(){
@@ -101,7 +109,7 @@ function getNewTag($oldTag){
 		$newUrl="http://w.sharethis.com/button/sharethis.js#$qs";
 	}
 	else{
-		$newUrl=$url;	
+		$newUrl=$url;
 	}
 	return $newTag='<script type="text/javascript" charset="utf-8" src="'.$newUrl.'"></script>';
 }
@@ -118,9 +126,9 @@ function st_widget_head() {
 	if ($widget == '') {
 	}
 	else{
-		$widget = st_widget_add_wp_version($widget);
+		//$widget = st_widget_add_wp_version($widget);
 		$widget = st_widget_fix_domain($widget);
-		$widget = preg_replace("/\&/", "&amp;", $widget);		
+		$widget = preg_replace("/\&/", "&amp;", $widget);
 	}
 
 	print($widget);
@@ -131,72 +139,46 @@ function sendWelcomeEmail($newUser){
 	$to=get_option('admin_email');
 	$updatePage=get_option('siteurl');
 	$updatePage.="/wp-admin/options-general.php?page=sharethis.php";
-	
-	$newUserBody="";
-	
+
 	$body = "The ShareThis plugin on your website has been activated on ".get_option('siteurl')."\n\n"
-			."If you have not already registered and if you would like to customize the look of your widget or get reporting go to http://sharethis.com/wordpress and customize your widget\n\n"
-			."Next go to $updatePage and update the ShareThis configuration\n\n"
-			."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
-	
+	."If you would like to customize the look of your widget, go to the ShareThis Options page in your WordPress administration area. $updatePage\n\n" 
+	."Get more information on customization options at http://help.sharethis.com/integration/wordpress." 
+	."To get reporting on share data login to your account at http://sharethis.com/account and choose options in the Analytics section\n\n"
+    ."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
+
 	$subject = "ShareThis WordPress Plugin";
-	
+
 	if(empty($to)){
 		return false;
 	}
 	if($newUser){
-	$subject = "ShareThis WordPress Plugin Activation";
-		$body ="Thanks for installing the ShareThis plugin on your blog. In order to fully activate your plugin follow the steps below:- \n\n"
-					."Step 1: Go to http://sharethis.com/wordpress and get the code for you blog\n\n"
-					."Step 2: Go to $updatePage and update the ShareThis configuration with the code you received in step 1\n"
-					."That's it!\n\n"
-					."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";							
+		$subject = "ShareThis WordPress Plugin Activation";
+		$body ="Thanks for installing the ShareThis plugin on your blog.\n\n" 
+		."If you would like to customize the look of your widget, go to the ShareThis Options page in your WordPress administration area. $updatePage\n\n" 
+		."Get more information on customization options at http://help.sharethis.com/integration/wordpress.\n\n" 		
+		."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
 	}
-	
 	$headers = "From: ShareThis Support <support@sharethis.com>\r\n" ."X-Mailer: php";
 	update_option('st_sent','true');
 	mail($to, $subject, $body, $headers);
-	
 }
 
 
-add_action('wp_head', 'st_widget_head');
-
-//creates addEntry calls
-function st_widget() {
-	global $post;
-	$sharethis="";
-	$widget=get_option('st_widget');
-	$st_sent=get_option('st_sent');
-	if(empty($st_sent)){
-		update_option('st_sent','true');
-		$st_sent=get_option('st_sent'); //confirm if value has been set
-		if(!(empty($st_sent))){
-			sendWelcomeEmail(true);
-		}
-	}
-
-	if(!empty($widget)){
-		$sharethis = '<script type="text/javascript">SHARETHIS.addEntry({ title: "'.str_replace('"', '\"', strip_tags(get_the_title())).'", url: "'.get_permalink($post->ID).'" });</script>';
-	}
-		
-	return $sharethis;
-}
 
 function st_link() {
 	global $post;
 
 	$sharethis = '<p><a href="http://sharethis.com/item?&wp='
-		.get_bloginfo('version').'&amp;publisher='
-		.get_option('st_pubid').'&amp;title='
-		.urlencode(get_the_title()).'&amp;url='
-		.urlencode(get_permalink($post->ID)).'">ShareThis</a></p>';
+	.get_bloginfo('version').'&amp;publisher='
+	.get_option('st_pubid').'&amp;title='
+	.urlencode(get_the_title()).'&amp;url='
+	.urlencode(get_permalink($post->ID)).'">ShareThis</a></p>';
 
 	return $sharethis;
 }
 
 function sharethis_button() {
-	echo st_widget();
+	echo st_makeEntries();
 }
 
 function st_remove_st_add_link($content) {
@@ -208,9 +190,9 @@ function st_remove_st_add_link($content) {
 function st_add_widget($content) {
 	if ((is_page() && get_option('st_add_to_page') != 'no') || (!is_page() && get_option('st_add_to_content') != 'no')) {
 		if (!is_feed()) {
-			return $content.'<p>'.st_widget().'</p>';
+			return $content.'<p>'.st_makeEntries().'</p>';
 		}
-	}		
+	}
 
 	return $content;
 }
@@ -239,7 +221,7 @@ function st_widget_fix_domain($widget) {
 		"/\<script\s([^\>]*)src\=\"http\:\/\/sharethis/"
 		, "<script $1src=\"http://w.sharethis"
 		, $widget
-	);
+		);
 }
 
 function st_widget_add_wp_version($widget) {
@@ -274,45 +256,61 @@ if (!function_exists('ak_can_update_options')) {
 }
 
 function st_request_handler() {
+	global $firephp;
 	if (!empty($_REQUEST['st_action'])) {
 		switch ($_REQUEST['st_action']) {
 			case 'st_update_settings':
 				if (ak_can_update_options()) {
 					if (!empty($_POST['st_widget'])) { // have widget
-						$widget = stripslashes($_POST['st_widget']);
-						$widget = preg_replace("/\&amp;/", "&", $widget);
-//						$pattern = "/([\&\?])publisher\=([^\&\"]*)/";
-						$pattern = "/publisher\=([^\&\"]*)/";
-						preg_match($pattern, $widget, $matches);
-						if ($matches[0] == "") { // widget does not have publisher parameter at all
-							$publisher_id = get_option('st_pubid');
-							if ($publisher_id != "") { 
-								$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&publisher=".$publisher_id."\"></script>", $widget);
-								$widget = preg_replace("/widget\/\&publisher\=/", "widget/?publisher=", $widget);
-							}
-						}
-						elseif ($matches[1] == "") { // widget does not have pubid in publisher parameter
-							$publisher_id = get_option('st_pubid');
-							if ($publisher_id != "") {
-								$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
-							} else {
-								$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
-							}
-						} else { // widget has pubid in publisher parameter
-							$publisher_id = get_option('st_pubid');
-							if ($publisher_id != "") {
-								if ($publisher_id != $matches[1]) {
-									$publisher_id = $matches[1];
+							$widget = stripslashes($_POST['st_widget']);
+							$widget = preg_replace("/\&amp;/", "&", $widget);
+							if(!preg_match('/buttons.js/',$widget)){			
+								$pattern = "/publisher\=([^\&\"]*)/";
+								preg_match($pattern, $widget, $matches);
+								if ($matches[0] == "") { // widget does not have publisher parameter at all
+									$publisher_id = get_option('st_pubid');
+									if ($publisher_id != "") {
+										$widget = preg_replace("/\"\>\s*\<\/\s*script\s*\>/", "&publisher=".$publisher_id."\"></script>", $widget);
+										$widget = preg_replace("/widget\/\&publisher\=/", "widget/?publisher=", $widget);
+									}
 								}
-							}  else {
-								$publisher_id = $matches[1];
+								elseif ($matches[1] == "") { // widget does not have pubid in publisher parameter
+									$publisher_id = get_option('st_pubid');
+									if ($publisher_id != "") {
+										$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
+									} else {
+										$widget = preg_replace("/([\&\?])publisher\=/", "$1publisher=".$publisher_id, $widget);
+									}
+								} else { // widget has pubid in publisher parameter
+									$publisher_id = get_option('st_pubid');
+									if ($publisher_id != "") {
+										if ($publisher_id != $matches[1]) {
+											$publisher_id = $matches[1];
+										}
+									}  else {
+										$publisher_id = $matches[1];
+									}
+								}
+							}else{
+								$publisher_id = get_option('st_pubid');
+								$pkeyUpdated=false;
+								if(!empty($_POST['st_pkey']) && $publisher_id!==$_POST['st_pkey'] ){
+									update_option('st_pubid', $_POST['st_pkey']);
+									$publisher_id=$_POST['st_pkey'];
+									$pkeyUpdated=true;
+								}
+								
+								if(!preg_match('/stLight.options/',$widget) || $pkeyUpdated==true){
+									$widget="<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script>";
+									$widget.="<script type=\"text/javascript\">stLight.options({publisher:'$publisher_id'});var st_type='wordpress".trim(get_bloginfo('version'))."';</script>";
+									update_option('st_widget',$widget);
+								}
 							}
-						}
 					}
 					else { // does not have widget
 						$publisher_id = get_option('st_pubid');
 					}
-	
+
 					preg_match("/\<script\s[^\>]*charset\=\"utf\-8\"[^\>]*/", $widget, $matches);
 					if ($matches[0] == "") {
 						preg_match("/\<script\s[^\>]*charset\=\"[^\"]*\"[^\>]*/", $widget, $matches);
@@ -334,56 +332,126 @@ function st_request_handler() {
 						}
 					}
 
-// note: do not convert & to &amp; or append WP version here
+					// note: do not convert & to &amp; or append WP version here
 					$widget = st_widget_fix_domain($widget);
 					update_option('st_pubid', $publisher_id);
 					update_option('st_widget', $widget);
 					
+					if(!empty($_POST['st_pkey'])){
+						update_option('st_pubid', $_POST['st_pkey']);
+					}
+					if(!empty($_POST['st_tags'])){
+						$tagsin=$_POST['st_tags'];
+						$tagsin=preg_replace("/\\n|\\t/","</span>", $tagsin);
+						$tagsin=preg_replace("/\\\'/","'", $tagsin);
+						//$tagsin=htmlspecialchars_decode($tagsin);
+						$tagsin=trim($tagsin);
+						update_option('st_tags',$tagsin);
+					}
+					if(!empty($_POST['st_services'])){
+						update_option('st_services', $_POST['st_services']);
+					}
+						
 					$options = array(
 						'st_add_to_content'
 						, 'st_add_to_page'
-					);
-					foreach ($options as $option) {
-						if (isset($_POST[$option]) && in_array($_POST[$option], array('yes', 'no'))) {
-							update_option($option, $_POST[$option]);
+						);
+						foreach ($options as $option) {
+							if (isset($_POST[$option]) && in_array($_POST[$option], array('yes', 'no'))) {
+								update_option($option, $_POST[$option]);
+							}
 						}
-					}
-					
-					header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=sharethis.php&updated=true');
-					die();
+							
+						header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=sharethis.php&updated=true');
+						die();
 				}
-				
+
 				break;
 		}
 	}
 }
-add_action('init', 'st_request_handler', 9999);	
+
 
 function st_options_form() {
-$publisher_id = get_option('st_pubid');
-if(empty($publisher_id)){
-$toShow="";		
-}
-else{
-	$toShow=get_option('st_widget');
-}
+	$publisher_id = get_option('st_pubid');
+	$services = get_option('st_services');
+	$tags = get_option('st_tags');
+	if(empty($services)){
+		$services="facebook,twitter,email,sharethis";
+	}
+	if(empty($tags)){
+		foreach(explode(',',$services) as $svc){
+			$tags.="<span class='st_".$svc."_vcount' st_title='{title}' st_url='{url}' displayText='share'></span>";
+		}
+	}
+	
+	
+	if(empty($publisher_id)){
+		$toShow="";
+	}
+	else{
+		$toShow=get_option('st_widget');
+	}
 	print('
+		<script type="text/javascript" src="http://w.sharethis.com/widget/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="http://w.sharethis.com/widget/jquery.carousel.min.js"></script>
+		<script type="text/javascript" src="http://w.sharethis.com/widget/wp_opt.js"></script> 
+		<link rel="stylesheet" href="http://w.sharethis.com/widget/wp_ex.css" type="text/css" media="screen" />
+		
 			<div class="wrap">
+			
 				<h2>'.__('ShareThis Options', 'sharethis').'</h2>
 				<form id="ak_sharethis" name="ak_sharethis" action="'.get_bloginfo('wpurl').'/wp-admin/index.php" method="post">
 					<fieldset class="options">
-
-						<div id="st_widget">
-
-							<p>Paste your widget code in here:</p>
-	
-							<p><textarea id="st_widget" name="st_widget" style="height: 80px; width: 500px;">'.htmlspecialchars($toShow).'</textarea></p>
-						
+						<div class="st_options">
+													
+							<div class="carousel_div">
+								<span class="heading">Choose the display style for your social buttons.<br/>Selected Choice: <span id="curr_type" style="display:none"></span><span id="currentType"></span></span>
+								<ul id="carousel" class="jcarousel-skin-tango">
+									<li st_type="large"><div class="buttonType">Large Icons (1/7)</div><img src="http://w.sharethis.com/images/wp_ex4.png"  alt="" /></li>
+									<li st_type="hcount"><div class="buttonType">Horizontal Count (2/7)</div><img src="http://w.sharethis.com/images/wp_ex2.png"  alt="" /></li>
+									<li st_type="vcount"><div class="buttonType">Vertical Count (3/7)</div><img src="http://w.sharethis.com/images/wp_ex1.png"  alt="" /></li>
+									<li st_type="sharethis"><div class="buttonType">Classic (4/7)</div><img src="http://w.sharethis.com/images/wp_ex7.png" alt="" /></li>
+								    <li st_type="chicklet"><div class="buttonType">Regular Buttons (5/7)</div><img src="http://w.sharethis.com/images/wp_ex5.png"  alt="" /></li>								    
+								    <li st_type="chicklet2"><div class="buttonType">Regular Button No-Text (6/7)</div><img src="http://w.sharethis.com/images/wp_ex6.png"  alt="" /></li>
+								    <li st_type="buttons"><div class="buttonType">Buttons (7/7)</div><img src="http://w.sharethis.com/images/wp_ex3.png"  alt="" /></li>
+								</ul>
+							</div>
+							
+							<div class="services">
+								<span class="heading" onclick="javascript:$(\'#st_services\').toggle(\'slow\');"><span class="headingimg">[+]</span>Click to change order of social buttons or modify list of buttons.</span>&nbsp;(<a href="http://help.sharethis.com/customization/chicklets#supported-services" target="_blank">?</a>)<br/>
+								<textarea name="st_services" id="st_services" style="height: 30px; width: 400px;">'.htmlspecialchars($services).'</textarea>
+							</div>
+							
+							<div class="tags">
+								<span class="heading" onclick="javascript:$(\'#st_tags\').toggle(\'slow\');"><span class="headingimg">[+]</span>Click to view/modify the HTML tags.</span><br/>
+								<textarea name="st_tags" id="st_tags" style="height: 100px; width: 500px;">'.htmlspecialchars(preg_replace("/<\/span>/","</span>\n", $tags)).'</textarea>
+							</div>
+							
+							<div class="widget_code">
+								<span class="heading" onclick="javascript:$(\'#st_widget\').toggle(\'slow\');">
+									<span class="headingimg">[+]</span>
+									Click to modify other widget options.
+								</span>
+								<br/>
+								<textarea id="st_widget" name="st_widget" style="height: 80px; width: 500px;">'.htmlspecialchars($toShow).'</textarea>
+							</div>
+							
+							<div>
+								<span class="heading" onclick="javascript:$(\'#st_pkey\').toggle(\'slow\');"><span class="headingimg">[+]</span>Your Publisher Key:</span><br/>	
+								<textarea name="st_pkey" id="st_pkey" style="height: 30px; width: 400px;">'.htmlspecialchars($publisher_id).'</textarea>
+							</div>
+							
+							
+							
 						</div>
+						
+						
+						
 	');
 	$options = array(
 		'st_add_to_content' => __('Automatically add ShareThis to your posts?*', 'sharethis')
-		, 'st_add_to_page' => __('Automatically add ShareThis to your pages?*', 'sharethis')
+	, 'st_add_to_page' => __('Automatically add ShareThis to your pages?*', 'sharethis')
 	);
 	foreach ($options as $option => $description) {
 		$$option = get_option($option);
@@ -403,32 +471,69 @@ else{
 								<option value="no"'.$no.'>'.__('No', 'sharethis').'</option>
 							</select>
 						</p>
-		');
+					 
+		');		
 	}
+	echo '<br/><p>To learn more about other sharing features and available options, visit our <a href="http://help.sharethis.com/integration/wordpress" target="_blank">help center</a>.</p>';
 	print('
-						<p>'.__('* Note, if you turn this off, you will want to add the <a href="http://support.sharethis.com/publishers/publishers-faq/wordpress/66">ShareThis template tag</a> to your theme.', 'sharethis').'</p>
-
+						
 					</fieldset>
 					<p class="submit">
 						<input type="submit" name="submit_button" value="'.__('Update ShareThis Options', 'sharethis').'" />
 					</p>
+					
+
 					<input type="hidden" name="st_action" value="st_update_settings" />
 				</form>
+				
 			</div>
 	');
 }
 
+
 function st_menu_items() {
 	if (ak_can_update_options()) {
 		add_options_page(
-			__('ShareThis Options', 'sharethis')
-			, __('ShareThis', 'sharethis')
-			, 8 
-			, basename(__FILE__)
-			, 'st_options_form'
+		__('ShareThis Options', 'sharethis')
+		, __('ShareThis', 'sharethis')
+		, 8
+		, basename(__FILE__)
+		, 'st_options_form'
 		);
 	}
 }
+
+
+function st_makeEntries(){
+	global $post;
+	//$st_json='{"type":"vcount","services":"sharethis,facebook,twitter,email"}';
+	$out="";
+	$widget=get_option('st_widget');
+	$tags=get_option('st_tags');
+	if(!empty($widget)){
+		if(preg_match('/buttons.js/',$widget)){
+			if(!empty($tags)){
+				$tags=preg_replace("/\\\'/","'", $tags);
+				$tags=preg_replace("/{URL}/",get_permalink($post->ID), $tags);
+				$tags=preg_replace("/{TITLE}/",strip_tags(get_the_title()), $tags);
+			}else{
+				$tags="<span class='st_sharethis' st_title='".strip_tags(get_the_title())."' st_url='".get_permalink($post->ID)."' displayText='ShareThis'></span>";
+			}
+			$out=$tags;	
+		}else{
+			$out = '<script type="text/javascript">SHARETHIS.addEntry({ title: "'.strip_tags(get_the_title()).'", url: "'.get_permalink($post->ID).'" });</script>';
+		}
+	}
+	return $out;
+}
+
+
+function makePkey(){
+	return "wp.".sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),mt_rand( 0, 0x0fff ) | 0x4000,mt_rand( 0, 0x3fff ) | 0x8000,mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ) );
+}
+
+add_action('wp_head', 'st_widget_head');
+add_action('init', 'st_request_handler', 9999);
 add_action('admin_menu', 'st_menu_items');
 
 ?>
