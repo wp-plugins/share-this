@@ -2,8 +2,8 @@
 Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, facebook, myspace, social, socialize, stumbleupon, aim, google bookmarks, windows live, yahoo my web, twitter, google buzz, buzz, share, sharethis, addthis, addtoany, share this,google buzz, yahoo buzz
 Contributors:ShareThis
 Requires at least: 1.5
-Tested up to: 3.0.x
-Stable tag: 4.0.3
+Tested up to: 3.0.1
+Stable tag: trunk
 
 Used by 850,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook and Twitter.
 
@@ -79,7 +79,6 @@ Still got questions? If you need technical help, check out the support info belo
 == Support ==
 
 Have questions or suggestions for us? Perhaps it's already answered or being discussed in the ShareThis forums or on ShareThis Support:
-
 
 http://forums.sharethis.com
 

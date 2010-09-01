@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 4.0.1
+ Version: 4.0.4
  Author: ShareThis, Manu Mukerji <manu@sharethis.com>
  Author URI: http://sharethis.com
  */
@@ -41,13 +41,12 @@ function install_ShareThis(){
 			if($newPkey==false){
 				$newUser=true;
 				update_option('st_pubid',trim(makePkey()));
-			}
-			else{
+			}else{
 				update_option('st_pubid',$newPkey); //pkey found set old key
 			}
-		}
-		else{
+		}else{
 			$newUser=true;
+			update_option('st_pubid',trim(makePkey()));
 		}
 	}
 	
@@ -256,7 +255,6 @@ if (!function_exists('ak_can_update_options')) {
 }
 
 function st_request_handler() {
-	global $firephp;
 	if (!empty($_REQUEST['st_action'])) {
 		switch ($_REQUEST['st_action']) {
 			case 'st_update_settings':
@@ -349,9 +347,12 @@ function st_request_handler() {
 						update_option('st_tags',$tagsin);
 					}
 					if(!empty($_POST['st_services'])){
-						update_option('st_services', $_POST['st_services']);
+						update_option('st_services', trim($_POST['st_services'],",") );
 					}
 						
+					if(!empty($_POST['st_current_type'])){
+						update_option('st_current_type', trim($_POST['st_current_type'],",") );
+					}
 					$options = array(
 						'st_add_to_content'
 						, 'st_add_to_page'
@@ -376,6 +377,10 @@ function st_options_form() {
 	$publisher_id = get_option('st_pubid');
 	$services = get_option('st_services');
 	$tags = get_option('st_tags');
+	$st_current_type=get_option('st_current_type');
+	if(empty($st_current_type)){
+		$st_current_type="_large";
+	}
 	if(empty($services)){
 		$services="facebook,twitter,email,sharethis";
 	}
@@ -395,12 +400,12 @@ function st_options_form() {
 	print('
 		<script type="text/javascript" src="http://w.sharethis.com/widget/jquery-1.4.2.min.js"></script>
 		<script type="text/javascript" src="http://w.sharethis.com/widget/jquery.carousel.min.js"></script>
-		<script type="text/javascript" src="http://w.sharethis.com/widget/wp_opt.js"></script> 
 		<link rel="stylesheet" href="http://w.sharethis.com/widget/wp_ex.css" type="text/css" media="screen" />
 		
 			<div class="wrap">
 			
 				<h2>'.__('ShareThis Options', 'sharethis').'</h2>
+				<div style="padding:10px;border:1px solid #aaa;background-color:#9fde33;text-align:center;display:none;" id="st_updated">Your options were successfully updated</div>
 				<form id="ak_sharethis" name="ak_sharethis" action="'.get_bloginfo('wpurl').'/wp-admin/index.php" method="post">
 					<fieldset class="options">
 						<div class="st_options">
@@ -417,17 +422,17 @@ function st_options_form() {
 								    <li st_type="buttons"><div class="buttonType">Buttons (7/7)</div><img src="http://w.sharethis.com/images/wp_ex3.png"  alt="" /></li>
 								</ul>
 							</div>
-							
+							<br/>
 							<div class="services">
 								<span class="heading" onclick="javascript:$(\'#st_services\').toggle(\'slow\');"><span class="headingimg">[+]</span>Click to change order of social buttons or modify list of buttons.</span>&nbsp;(<a href="http://help.sharethis.com/customization/chicklets#supported-services" target="_blank">?</a>)<br/>
 								<textarea name="st_services" id="st_services" style="height: 30px; width: 400px;">'.htmlspecialchars($services).'</textarea>
 							</div>
-							
+							<br/>
 							<div class="tags">
 								<span class="heading" onclick="javascript:$(\'#st_tags\').toggle(\'slow\');"><span class="headingimg">[+]</span>Click to view/modify the HTML tags.</span><br/>
 								<textarea name="st_tags" id="st_tags" style="height: 100px; width: 500px;">'.htmlspecialchars(preg_replace("/<\/span>/","</span>\n", $tags)).'</textarea>
 							</div>
-							
+							<br/>
 							<div class="widget_code">
 								<span class="heading" onclick="javascript:$(\'#st_widget\').toggle(\'slow\');">
 									<span class="headingimg">[+]</span>
@@ -436,19 +441,23 @@ function st_options_form() {
 								<br/>
 								<textarea id="st_widget" name="st_widget" style="height: 80px; width: 500px;">'.htmlspecialchars($toShow).'</textarea>
 							</div>
-							
+							<br/>
 							<div>
 								<span class="heading" onclick="javascript:$(\'#st_pkey\').toggle(\'slow\');"><span class="headingimg">[+]</span>Your Publisher Key:</span><br/>	
 								<textarea name="st_pkey" id="st_pkey" style="height: 30px; width: 400px;">'.htmlspecialchars($publisher_id).'</textarea>
 							</div>
-							
-							
+							<input type="hidden" id="st_current_type" name="st_current_type" value="'.$st_current_type.'"/>
 							
 						</div>
-						
+						<script type="text/javascript">var st_current_type="'.$st_current_type.'";</script>
 						
 						
 	');
+	
+	$plugin_location=WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
+	$opt_js_location=$plugin_location."wp_st_opt.js";
+	print("<script type=\"text/javascript\" src=\"$opt_js_location\"></script>");
+	
 	$options = array(
 		'st_add_to_content' => __('Automatically add ShareThis to your posts?*', 'sharethis')
 	, 'st_add_to_page' => __('Automatically add ShareThis to your pages?*', 'sharethis')
