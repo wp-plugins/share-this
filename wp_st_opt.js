@@ -60,6 +60,64 @@ jQuery(document).ready(function() {
 		stpkeytimeout=setTimeout(function(){makeHeadTag();},500);
 	})
 
+	var services=$('#st_services').val();
+	svc=services.split(",");
+	for(var i=0;i<svc.length;i++){
+		if (svc[i]=="fblike"){
+			$('#st_fblike').attr('checked','checked');
+		} else if (svc[i]=="plusone"){
+			$('#st_plusone').attr('checked','checked');
+		}
+	}
+	
+	$('#st_fblike').bind('click', function(){
+		if ($('#st_fblike').attr('checked')) {
+			if ($('#st_services').val().indexOf("fblike")==-1) {
+				var pos=$('#st_services').val().indexOf("plusone");
+				if (pos==-1)
+					$('#st_services').val($('#st_services').val()+",fblike");
+				else {
+					var str=$('#st_services').val();
+					if (pos==0)
+						$('#st_services').val("fblike,"+str.substr(pos));
+					else
+						$('#st_services').val(str.substr(0,pos-1)+",fblike"+str.substr(pos-1));
+				}
+			}
+		}
+		else {
+			var pos=$('#st_services').val().indexOf("fblike");
+			if (pos!=-1) {
+				var str=$('#st_services').val();
+				if (pos==0)
+					$('#st_services').val(str.substr(pos+7));
+				else
+					$('#st_services').val(str.substr(0,pos-1)+str.substr(pos+6));
+			}
+		}
+		clearTimeout(stpkeytimeout);
+		stpkeytimeout=setTimeout(function(){makeTags();},500);
+	})
+	
+	$('#st_plusone').bind('click', function(){
+		if ($('#st_plusone').attr('checked')) {
+			if ($('#st_services').val().indexOf("plusone")==-1) {
+				$('#st_services').val($('#st_services').val()+",plusone");
+			}
+		}
+		else {
+			var pos=$('#st_services').val().indexOf("plusone");
+			if (pos!=-1) {
+				var str=$('#st_services').val();
+				if (pos==0)
+					$('#st_services').val(str.substr(pos+8));
+				else
+					$('#st_services').val(str.substr(0,pos-1)+str.substr(pos+7));
+			}
+		}
+		clearTimeout(stpkeytimeout);
+		stpkeytimeout=setTimeout(function(){makeTags();},500);
+	})
 });
 
 var stkeytimeout=null;
@@ -103,6 +161,7 @@ function makeTags(){
 function carDoneCB(a,elem){
 	var type=elem.getAttribute("st_type");
 	$('.services').show()
+	$('.fblikeplusone').show();
 	if(type=="vcount"){
 		$('#curr_type').html("_vcount");$("#st_current_type").val("_vcount");
 		$('#currentType').html("<span class='type_name'>Vertical Count</span>");
@@ -123,6 +182,7 @@ function carDoneCB(a,elem){
 			$('#currentType').html("<span class='type_name'>Regular Buttons No-Text</span>");
 	}else if(type=="sharethis"){
 			$('.services').hide();
+			$('.fblikeplusone').hide();
 			$('#curr_type').html("classic");$("#st_current_type").val("classic");
 			$('#currentType').html("<span class='type_name'>Classic</span>");
 	}	

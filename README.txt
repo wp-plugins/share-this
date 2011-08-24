@@ -1,27 +1,23 @@
 === ShareThis ===
-Tags: email, e-mail, bookmark, social, network, digg, del.icio.us, ma.gnolia, technorati, reddit, tailrank, furl, blinklist, blogmarks, newsvine, facebook, myspace, social, socialize, stumbleupon, aim, google bookmarks, windows live, yahoo my web, twitter, google buzz, buzz, share, sharethis, addthis, addtoany, share this,google buzz, yahoo buzz
+Tags:share, share this, sharethis, addthis, addtoany, share this, bookmark facebook
+
 Contributors:ShareThis
 Requires at least: 1.5
 Tested up to: 3.0.1
 Stable tag: trunk
 
-Used on over 1,000,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, StumbleUpon and Google Buzz.
+Used on over 1,000,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, StumbleUpon and Reddit.
 
 == Description ==
 
 Increase your audience engagement with our innovative sharing tools!
 
-Used on over 1,000,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, StumbleUpon and Google Buzz.
+Used on over 1,000,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, StumbleUpon and Reddit.
 
 Now with simultaneous sharing to Facebook, Twitter, Email and more: you can broadcast your message more easily and widely than ever before.
 
 New Features:
-- Users can now share without leaving your website
-- Post to a friend's Facebook wall
-- Custom themes and colors
-- SSL/HTTPS security
-- Lightweight file size: ~20k
-- Plugin will remember your user's preferences
+- Added Facebook Like and Google +1 options
 
 To get more information about the ShareThis plugin for WordPress, visit: http://help.sharethis.com/integration/wordpress
 
@@ -48,7 +44,7 @@ You can also integrate your ShareThis button with Google Analytics. Visit http:/
 
 At ShareThis, we think sharing should be simple. We help more than 850,000 sites share their content everywhere on the web, increase their social traffic, and know more about their social visitors. We’re used by popular blogs and large publishers alike.
 
-The new ShareThis plugin for Wordpress allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, Stumbleupon and Google Buzz.   
+The new ShareThis plugin for Wordpress allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, Stumbleupon and Reddit.   
 
 You can read more about what we do and what we think about the value of sharing at www.sharethis.com or blog.sharethis.com.
 

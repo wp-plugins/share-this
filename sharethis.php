@@ -22,13 +22,14 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 4.1.0
+ Version: 5.0.0
  Author: ShareThis, Manu Mukerji <manu@sharethis.com>
  Author URI: http://sharethis.com
  */
 
 load_plugin_textdomain('sharethis');
 
+$_stversion=5.0;
 
 function install_ShareThis(){
 	$publisher_id = get_option('st_pubid'); //pub key value
@@ -87,8 +88,6 @@ function install_ShareThis(){
 	if (get_option('st_add_to_page') == '') {
 		update_option('st_add_to_page', 'yes');
 	}
-
-		
 }
 
 function getKeyFromTag(){
@@ -430,11 +429,16 @@ function st_options_form() {
 	$tags = get_option('st_tags');
 	$st_current_type=get_option('st_current_type');
 	$st_widget_version = get_option('st_version');
+	$st_prompt = get_option('st_prompt');
 	if(empty($st_current_type)){
-		$st_current_type="_large";
+		$st_current_type="_buttons";
 	}
 	if(empty($services)){
 		$services="facebook,twitter,email,sharethis";
+	}
+	if(empty($st_prompt)){
+		$services.=",fblike,plusone";
+		update_option('st_prompt', 'true');
 	}
 	if(empty($tags)){
 		foreach(explode(',',$services) as $svc){
@@ -493,6 +497,14 @@ function st_options_form() {
 								    <li st_type="chicklet2"><div class="buttonType">Regular Button No-Text (6/7)</div><img src="http://w.sharethis.com/images/wp_ex6.png"  alt="" /></li>
 								    <li st_type="buttons"><div class="buttonType">Buttons (7/7)</div><img src="http://w.sharethis.com/images/wp_ex3.png"  alt="" /></li>
 								</ul>
+							</div>
+							<br/>
+							<div class="fblikeplusone">
+								<span class="heading">Include Facebook Like and Google +1.<br/></span><br/>
+								<label>Add Facebook Like</label>
+								<input type="checkbox" id="st_fblike" name="st_fblike" value="1" ></input>
+								<label>Add Google +1</label>
+								<input type="checkbox" id="st_plusone" name="st_plusone" value="1" ></input>
 							</div>
 							<br/>
 							<div class="version">
@@ -614,7 +626,7 @@ function st_makeEntries(){
 				$tags=preg_replace("/{TITLE}/",strip_tags(get_the_title()), $tags);
 			}else{
 				$tags="<span class='st_sharethis' st_title='".strip_tags(get_the_title())."' st_url='".get_permalink($post->ID)."' displayText='ShareThis'></span>";
-				$tags="<span class='st_facebook_large' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span><span class='st_twitter_large' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span><span class='st_email_large' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span><span class='st_sharethis_large' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span>";	
+				$tags="<span class='st_facebook_buttons' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span><span class='st_twitter_buttons' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span><span class='st_email_buttons' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span><span class='st_sharethis_buttons' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span><span class='st_fblike_buttons' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span><span class='st_plusone_buttons' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='share'></span>";	
 				$tags=preg_replace("/<\?php the_permalink\(\); \?>/",get_permalink($post->ID), $tags);
 				$tags=preg_replace("/<\?php the_title\(\); \?>/",strip_tags(get_the_title()), $tags);		
 			}
