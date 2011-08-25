@@ -1,4 +1,4 @@
-=== ShareThis Share,Email,Tweet,Like Made Simple ===
+=== ShareThis: Share, Email, Tweet, Like, +1 Made Simple ===
 Tags:share, share this, sharethis, addthis, addtoany, share this, bookmark facebook, like, send,google plus, +1, sharing
 
 Contributors:ShareThis
