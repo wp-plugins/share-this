@@ -1,12 +1,12 @@
-=== ShareThis ===
-Tags:share, share this, sharethis, addthis, addtoany, share this, bookmark facebook
+=== ShareThis Share,Email,Tweet,Like Made Simple ===
+Tags:share, share this, sharethis, addthis, addtoany, share this, bookmark facebook, like, send,google plus, +1, sharing
 
 Contributors:ShareThis
 Requires at least: 1.5
 Tested up to: 3.0.1
 Stable tag: trunk
 
-Used on over 1,000,000 sites, the ShareThis plugin allows users to share your content through email and 50+ social networks including Facebook, Twitter, Digg, StumbleUpon and Reddit.
+The ShareThis plugin seamlessly enables users to share your content through Email,Facebook,Twitter, Google +1, Like, Send and many more.
 
 == Description ==
 
