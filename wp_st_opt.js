@@ -75,6 +75,31 @@ jQuery(document).ready(function() {
 		}
 	}
 	
+	var tag=$('#st_widget').val();
+	if (tag.match(/new sharethis\.widgets\.serviceWidget/)){
+		$('#st_sharenow').attr('checked','checked');
+	}
+	var matches3 = tag.match(/"style": "(\d)*"/); 
+	if (matches3!=null && typeof(matches3[1])!="undefined"){
+		$('ul#themeList').find('li.selected').removeClass('selected');
+		$.each($('ul#themeList').find('li'), function(index, value) {
+			if ($(value).attr('data-value') == matches3[1]) {
+				$(value).addClass('selected');
+			}
+		}); 
+	}
+	
+	var markup=$('#st_tags').val();
+	var matches=markup.match(/st_via='(\w*)'/); 
+	if (matches!=null && typeof(matches[1])!="undefined"){
+		$('#st_via').val(matches[1]);
+	} 
+	
+	var matches2=markup.match(/st_username='(\w*)'/); 
+	if (matches2!=null && typeof(matches2[1])!="undefined"){
+		$('#st_related').val(matches2[1]);
+	} 
+	
 	$('#st_fblike').bind('click', function(){
 		if ($('#st_fblike').attr('checked')) {
 			if ($('#st_services').val().indexOf("fblike")==-1) {
@@ -144,15 +169,57 @@ jQuery(document).ready(function() {
 		stpkeytimeout=setTimeout(function(){makeTags();},500);
 	})
 	
+	$('#st_sharenow').bind('click', function(){
+		generateShareNow();
+	});
+	
+	$('#st_via').bind('keyup', function(){
+		makeTags();
+	})
+	
+	$('#st_related').bind('keyup', function(){
+		makeTags();
+	})
 	
 	$(".registerLink").live('click',function() {
 		createOverlay();
 	});
 	
+	$('ul#themeList li').click(function(){
+		$('ul#themeList').find('li.selected').removeClass('selected');
+		$(this).addClass('selected');
+		updateShareNowStyle($(this).attr('data-value'));
+	});
 });
 
 var stkeytimeout=null;
 var stpkeytimeout=null;
+
+function generateShareNow(){
+	var pubkey = $('#st_pkey').val();
+	if (pubkey == "") {
+		if ($('#st_pkey_hidden').val() != "")
+			pubkey = $('#st_pkey_hidden').val();
+	}
+	var tag='<script charset="utf-8" type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>';
+	tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"});</script>';
+	if ($('#st_sharenow').attr('checked')) {
+		tag+='<script charset="utf-8" type="text/javascript" src="http://s.sharethis.com/loader.js"></script>';
+		tag+='<script charset="utf-8" type="text/javascript">var options={ "service": "facebook", "timer": { "countdown": 30, "interval": 10, "enable": false}, "frictionlessShare": false, "style": "3", publisher:"'+pubkey+'"};var st_service_widget = new sharethis.widgets.serviceWidget(options);</script>';
+	}
+	$('#st_widget').val(tag);
+	$.each($('ul#themeList').find('li'), function(index, value) {
+		if ($(value).hasClass("selected")) {
+			updateShareNowStyle($(value).attr('data-value'));
+		}
+	}); 
+}
+
+function updateShareNowStyle(themeid){
+	var tag=$('#st_widget').val();
+	tag=tag.replace(/"style": "\d*"/, "\"style\": \""+themeid+"\"");
+	$('#st_widget').val(tag);
+}
 
 function makeHeadTag(){
 	var val=$('#st_pkey').val();
@@ -181,10 +248,23 @@ function makeTags(){
 	}
 	for(var i=0;i<svc.length;i++){
 		if(svc[i].length>2){
+			var via = "";
+			var related = "";
+			
+			if (svc[i]=="twitter") {
+				via=$('#st_via').val();
+				related=$('#st_related').val();
+				if (via!='') {
+					via=" st_via='"+via+"'";
+				}
+				if (related!='') {
+					related=" st_username='"+related+"'";
+				}
+			}
 			if(type =="chicklet2")
-				tags+="<span class='st_"+svc[i]+"' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>'></span>";
+				tags+="<span"+via+""+related+" class='st_"+svc[i]+"' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>'></span>";
 			else
-				tags+="<span class='st_"+svc[i]+type+"' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='"+svc[i]+"'></span>";
+				tags+="<span"+via+""+related+" class='st_"+svc[i]+type+"' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='"+svc[i]+"'></span>";
 		}
 	}
 	$('#st_tags').val(tags);
