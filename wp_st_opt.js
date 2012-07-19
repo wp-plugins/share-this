@@ -8,6 +8,9 @@ if (!window.console || !console.firebug) {
 
 var startPos=1;
 
+// Do not make tags on page load. call Make Tags once the user changes any settings.
+var makeTagsEnabled = false;
+
 function st_log() {
 	_gaq.push(['_trackEvent', 'WordPressPlugin', 'ConfigOptionsUpdated']);
 	_gaq.push(['_trackEvent', 'WordPressPlugin', "Type_" + $("#st_current_type").val()]);
@@ -43,7 +46,7 @@ jQuery(document).ready(function() {
 		scroll:1,
 		visible:1,
 		start:startPos,
-		wrap:"circular",
+		wrap:"both",
 		itemFirstInCallback: {
 		  onAfterAnimation: carDoneCB
 		},
@@ -60,10 +63,163 @@ jQuery(document).ready(function() {
 		stpkeytimeout=setTimeout(function(){makeHeadTag();},500);
 	})
 
+	var services=$('#st_services').val();
+	svc=services.split(",");
+	for(var i=0;i<svc.length;i++){
+		if (svc[i]=="fblike"){
+			$('#st_fblike').attr('checked','checked');
+		} else if (svc[i]=="plusone"){
+			$('#st_plusone').attr('checked','checked');
+		} else if (svc[i]=="pinterest"){
+			$('#st_pinterest').attr('checked','checked');
+		}
+	}
+	
+	var tag=$('#st_widget').val();
+	if (tag.match(/new sharethis\.widgets\.serviceWidget/)){
+		$('#st_sharenow').attr('checked','checked');
+	}
+	var matches3 = tag.match(/"style": "(\d)*"/); 
+	if (matches3!=null && typeof(matches3[1])!="undefined"){
+		$('ul#themeList').find('li.selected').removeClass('selected');
+		$.each($('ul#themeList').find('li'), function(index, value) {
+			if ($(value).attr('data-value') == matches3[1]) {
+				$(value).addClass('selected');
+			}
+		}); 
+	}
+	
+	var markup=$('#st_tags').val();
+	var matches=markup.match(/st_via='(\w*)'/); 
+	if (matches!=null && typeof(matches[1])!="undefined"){
+		$('#st_via').val(matches[1]);
+	} 
+	
+	var matches2=markup.match(/st_username='(\w*)'/); 
+	if (matches2!=null && typeof(matches2[1])!="undefined"){
+		$('#st_related').val(matches2[1]);
+	} 
+	
+	$('#st_fblike').bind('click', function(){
+		if ($('#st_fblike').attr('checked')) {
+			if ($('#st_services').val().indexOf("fblike")==-1) {
+				var pos=$('#st_services').val().indexOf("plusone");
+				if (pos==-1)
+					$('#st_services').val($('#st_services').val()+",fblike");
+				else {
+					var str=$('#st_services').val();
+					if (pos==0)
+						$('#st_services').val("fblike,"+str.substr(pos));
+					else
+						$('#st_services').val(str.substr(0,pos-1)+",fblike"+str.substr(pos-1));
+				}
+			}
+		}
+		else {
+			var pos=$('#st_services').val().indexOf("fblike");
+			if (pos!=-1) {
+				var str=$('#st_services').val();
+				if (pos==0)
+					$('#st_services').val(str.substr(pos+7));
+				else
+					$('#st_services').val(str.substr(0,pos-1)+str.substr(pos+6));
+			}
+		}
+		clearTimeout(stpkeytimeout);
+		stpkeytimeout=setTimeout(function(){makeTags();},500);
+	})
+	
+	$('#st_plusone').bind('click', function(){
+		if ($('#st_plusone').attr('checked')) {
+			if ($('#st_services').val().indexOf("plusone")==-1) {
+				$('#st_services').val($('#st_services').val()+",plusone");
+			}
+		}
+		else {
+			var pos=$('#st_services').val().indexOf("plusone");
+			if (pos!=-1) {
+				var str=$('#st_services').val();
+				if (pos==0)
+					$('#st_services').val(str.substr(pos+8));
+				else
+					$('#st_services').val(str.substr(0,pos-1)+str.substr(pos+7));
+			}
+		}
+		clearTimeout(stpkeytimeout);
+		stpkeytimeout=setTimeout(function(){makeTags();},500);
+	})
+	
+	$('#st_pinterest').bind('click', function(){
+		if ($('#st_pinterest').attr('checked')) {
+			if ($('#st_services').val().indexOf("pinterest")==-1) {
+				$('#st_services').val($('#st_services').val()+",pinterest");
+			}
+		}
+		else {
+			var pos=$('#st_services').val().indexOf("pinterest");
+			if (pos!=-1) {
+				var str=$('#st_services').val();
+				if (pos==0)
+					$('#st_services').val(str.substr(pos+10));
+				else
+					$('#st_services').val(str.substr(0,pos-1)+str.substr(pos+9));
+			}
+		}
+		clearTimeout(stpkeytimeout);
+		stpkeytimeout=setTimeout(function(){makeTags();},500);
+	})
+	
+	$('#st_sharenow').bind('click', function(){
+		generateShareNow();
+	});
+	
+	$('#st_via').bind('keyup', function(){
+		makeTags();
+	})
+	
+	$('#st_related').bind('keyup', function(){
+		makeTags();
+	})
+	
+	$(".registerLink").live('click',function() {
+		createOverlay();
+	});
+	
+	$('ul#themeList li').click(function(){
+		$('ul#themeList').find('li.selected').removeClass('selected');
+		$(this).addClass('selected');
+		updateShareNowStyle($(this).attr('data-value'));
+	});
 });
 
 var stkeytimeout=null;
 var stpkeytimeout=null;
+
+function generateShareNow(){
+	var pubkey = $('#st_pkey').val();
+	if (pubkey == "") {
+		if ($('#st_pkey_hidden').val() != "")
+			pubkey = $('#st_pkey_hidden').val();
+	}
+	var tag='<script charset="utf-8" type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>';
+	tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"});</script>';
+	if ($('#st_sharenow').attr('checked')) {
+		tag+='<script charset="utf-8" type="text/javascript" src="http://s.sharethis.com/loader.js"></script>';
+		tag+='<script charset="utf-8" type="text/javascript">var options={ "service": "facebook", "timer": { "countdown": 30, "interval": 10, "enable": false}, "frictionlessShare": false, "style": "3", publisher:"'+pubkey+'"};var st_service_widget = new sharethis.widgets.serviceWidget(options);</script>';
+	}
+	$('#st_widget').val(tag);
+	$.each($('ul#themeList').find('li'), function(index, value) {
+		if ($(value).hasClass("selected")) {
+			updateShareNowStyle($(value).attr('data-value'));
+		}
+	}); 
+}
+
+function updateShareNowStyle(themeid){
+	var tag=$('#st_widget').val();
+	tag=tag.replace(/"style": "\d*"/, "\"style\": \""+themeid+"\"");
+	$('#st_widget').val(tag);
+}
 
 function makeHeadTag(){
 	var val=$('#st_pkey').val();
@@ -87,12 +243,28 @@ function makeTags(){
 		$('#st_tags').val(tags);
 		return true;
 	}
-	if(type=="chicklet" || type=="chicklet2" || type=="classic"){
+	if(type=="chicklet" || type=="classic"){
 		type="";
 	}
 	for(var i=0;i<svc.length;i++){
 		if(svc[i].length>2){
-			tags+="<span class='st_"+svc[i]+type+"' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' "+dt+"></span>";
+			var via = "";
+			var related = "";
+			
+			if (svc[i]=="twitter") {
+				via=$('#st_via').val();
+				related=$('#st_related').val();
+				if (via!='') {
+					via=" st_via='"+via+"'";
+				}
+				if (related!='') {
+					related=" st_username='"+related+"'";
+				}
+			}
+			if(type =="chicklet2")
+				tags+="<span"+via+""+related+" class='st_"+svc[i]+"' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>'></span>";
+			else
+				tags+="<span"+via+""+related+" class='st_"+svc[i]+type+"' st_title='<?php the_title(); ?>' st_url='<?php the_permalink(); ?>' displayText='"+svc[i]+"'></span>";
 		}
 	}
 	$('#st_tags').val(tags);
@@ -103,6 +275,7 @@ function makeTags(){
 function carDoneCB(a,elem){
 	var type=elem.getAttribute("st_type");
 	$('.services').show()
+	$('.fblikeplusone').show();
 	if(type=="vcount"){
 		$('#curr_type').html("_vcount");$("#st_current_type").val("_vcount");
 		$('#currentType').html("<span class='type_name'>Vertical Count</span>");
@@ -123,10 +296,14 @@ function carDoneCB(a,elem){
 			$('#currentType').html("<span class='type_name'>Regular Buttons No-Text</span>");
 	}else if(type=="sharethis"){
 			$('.services').hide();
+			$('.fblikeplusone').hide();
 			$('#curr_type').html("classic");$("#st_current_type").val("classic");
 			$('#currentType').html("<span class='type_name'>Classic</span>");
 	}	
+	if(makeTagsEnabled == true) {
 	makeTags();	
+}
+	makeTagsEnabled = true;
 }
 
 $(".versionItem").click(function() {
@@ -134,4 +311,20 @@ $(".versionItem").click(function() {
 	$(this).addClass("versionSelect");	
 });
 
+var container = null;
+function createOverlay () {
+		container = $('<div id="registratorCodeModal" class="registratorCodeModal"></div><div class="registratorModalWindowContainer"><div id="registratorModalWindow"></div></div>');
+		$("body").append(container);
 
+		var div = container.find("#registratorModalWindow");
+		var html = "<div class='registratorContainer'>";
+		html += "<div onclick=javascript:container.remove(); class='registratorCloser'></div>";
+		html += "<iframe height='341px' width='551px' src='http://sharethis.com/external-login' />";
+		div.append(html);
+}
+
+$(document).keydown(function(e) {
+		if (e.keyCode == 27 && container!=null) { 
+			container.remove(); 
+		}
+});
