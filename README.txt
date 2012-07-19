@@ -1,32 +1,31 @@
-=== ShareThis: Share, Email, Tweet, Like, +1 Made Simple ===
-Tags:share, share this, sharethis, addthis, addtoany, share this, bookmark facebook, like, send,google plus, +1, sharing, pinterest
+=== ShareThis: Share Buttons and Sharing Analytics ===
+Tags:share, share this, sharethis, addthis, addtoany, share this, bookmark facebook, like, send, google plus, +1, sharing, pinterest, sharenow
 
 Contributors:ShareThis
 Requires at least: 1.5
 Tested up to: 3.4
 Stable tag: trunk
 
-The ShareThis plugin is a quick and easy sharing service that encourages your users to share your content. You get access to 120 social channels including Facebook, Twitter, LinkedIn, and Pinterest.
-
-Just added: ShareNow – a new sharing tool that leverages frictionless sharing and puts your users in control over of how they share content.
+The ShareThis plugin is a quick and easy sharing service that allows your users to share your content to 120 social channels. Also features ShareNow.
 
 == Description ==
 
 Increase social activity on your site with the ShareThis and ShareNow widgets.
 
-With access to 120 social channels, The ShareThis widget is a quick and easy sharing solution for your site to keep your audience engaged in your content and increase traffic to your site. You can also customize your widget for seamless integration to your site. You have the option to use small or large buttons, add counters and place the widget in a clear location for your users to share.
+With access to *120 social channels* (including Facebook, Twitter, Like, +1, Email and more), The ShareThis widget is a quick and easy sharing solution for your site to keep your audience engaged in your content and increase traffic to your site. You can also customize your widget for seamless integration to your site. You have the option to use small or large buttons, add counters and place the widget in a clear location for your users to share.
 
-*NEW*
-ShareNow (http://sharethis.com/publishers/get-sharenow) is the new social tool that allows you to leverage frictionless sharing without having to create your own custom solution and puts your users in control over how they share content. Placed on the right or left side of your content, ShareNow makes it easier for your users to share, delete and re-share to their social network timeline. Increase sharing activity on your site and add ShareNow!
+**NEW**
+[ShareNow] (http://sharethis.com/publishers/get-sharenow) is the new social tool that allows you to leverage *frictionless sharing* without having to create your own custom solution and puts your users in control over how they share content. Placed on the right or left side of your content, ShareNow makes it easier for your users to share, delete and re-share to their social network timeline. Increase sharing activity on your site and add ShareNow!
 
 Join the ShareThis Publisher Network of 1.4M sites and get access to your analytics:
-• Daily sharing activity per registered domain
-• Detailed reports on the top shared URLs (content) of your site(s)
-• Top social channel reports
-• Analysis of the social quality of your site via SQI – Social Quality Index (http://sharethis.com/sqi).
+* Daily sharing activity per registered domain
+* Detailed reports on the top shared URLs (content) of your site(s)
+* Top social channel reports
+* Analysis of the social quality of your site via [SQI – Social Quality Index] (http://sharethis.com/sqi).
 
-More information about the ShareThis plugin for WordPress (http://help.sharethis.com/integration/wordpress).
-More information about the ShareNow plugin for WordPress (http://support.sharethis.com/customer/portal/articles/542253-sharenow-by-sharethis).
+More information about the [ShareThis plugin for WordPress] (http://help.sharethis.com/integration/wordpress).
+
+More information about the [ShareNow plugin for WordPress] (http://support.sharethis.com/customer/portal/articles/542253-sharenow-by-sharethis).
 
 == Installation ==
 
@@ -34,8 +33,17 @@ More information about the ShareNow plugin for WordPress (http://support.shareth
 2. Put the 'sharethis.php' file into your wp-content/plugins/ directory.
 3. Go to the Plugins page in your WordPress Administration area and click 'Activate' for ShareThis.
 4. In the WordPress Administration area, open the ShareThis Options page, and customize the sharing buttons based on your need.
+5. To enable ShareNow, go to the ShareThis Options page and scroll down check the 'Enable ShareNow' button.
 
-== Stats and Reporting ==
+== Changelog ==
+
+5.2.1
+
+1. Introducing ShareNow to the plugin. [Learn more] (http://sharethis.com/publishers/get-sharenow) 
+2. Ability to promote your twitter handle using the 'via', 'related' options on the Twitter share button.
+3. Bug Fixes
+
+== Sharing Analytics ==
 
 Once you join the the ShareThis Publisher Network, you get access to ShareThis Analytics.  Create your account and register your domain to access your site’s sharing activity. 
 
@@ -43,11 +51,11 @@ Reports include:
 1. Daily sharing activity per registered domain
 2. Detailed reports on the top shared URLs (content) of your site(s)
 3. Top social channel reports
-4. Analysis of the social quality of your site via SQI – Social Quality Index (http://sharethis.com/sqi)
+4. Analysis of the social quality of your site via [SQI – Social Quality Index] (http://sharethis.com/sqi)
 
 What are you waiting for? Download the ShareThis plugin today and get access to your ShareThis Analytics!
 
-== A Little About Us==
+== About Us ==
 
 ShareThis’ mission is to make the world more connected, trusted and valuable through sharing. Our goal is to provide websites with solutions to improve and drive value from the social engagement of their site. 
 
