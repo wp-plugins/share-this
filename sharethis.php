@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 5.2
+ Version: 5.3
  Author: ShareThis,next2manu, Manu Mukerji <manu@sharethis.com>
  Author URI: http://sharethis.com
  */
@@ -351,10 +351,48 @@ function st_request_handler() {
 								if(!preg_match('/stLight.options/',$widget) || $pkeyUpdated==true){
 									$widgetTemp="<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script>";
 									$widgetTemp.="<script type=\"text/javascript\">stLight.options({publisher:'$publisher_id'});var st_type='wordpress".trim(get_bloginfo('version'))."';</script>";
-									if (preg_match('/loader.js/',$widget)) {
+									
+									// In case of button style = sharethis (4/7) default. 
+									// Remove FBLike, Google+,Pinterest from hoverbar services
+									$defaultServices = '"facebook","twitter","linkedin","email","sharethis"';
+									$st_services_values = '';
+									
+									if($_POST["st_current_type"] == 'classic') {
+										$st_services_values = $defaultServices;
+									}
+									else{
+										// Adding double quotes for each service separated by comma
+										$chickletServicesArray = explode(',', trim($_POST['st_services']));
+										$newchickletServicesArray = array();
+										for($i=0; $i<count($chickletServicesArray); $i++){
+											// Skip FbLike and PlusOne in HoverBar
+											if(trim($chickletServicesArray[$i]) != 'plusone' && trim($chickletServicesArray[$i]) != 'fblike') {
+												$newchickletServicesArray[$i] = trim($chickletServicesArray[$i]);
+											}
+										}		
+										$st_services_values = '"'. implode('","', $newchickletServicesArray) .'"';
+									}
+									
+									if (preg_match('/serviceWidget/',$widget) &&  preg_match('/hoverbuttons/',$widget)) {
+										
+										$widgetTemp.="<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://s.sharethis.com/loader.js\"></script>";
+										$widgetTemp.="<script charset=\"utf-8\" type=\"text/javascript\">var options={ \"service\": \"facebook\", \"timer\": { \"countdown\": 30, \"interval\": 10, \"enable\": false}, \"frictionlessShare\": false, \"style\": \"3\", publisher:\"".$publisher_id."\"};var st_service_widget = new sharethis.widgets.serviceWidget(options);</script>";
+										
+										$widgetTemp.="<script charset=\"utf-8\" type=\"text/javascript\">var options={ \"publisher\":\"".$publisher_id."\", \"position\": \"right\", \"chicklets\": { \"items\": [".$st_services_values."] } }; var st_hover_widget = new sharethis.widgets.hoverbuttons(options);</script>";
+										
+									}
+									else if (preg_match('/serviceWidget/',$widget)) {
+										
 										$widgetTemp.="<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://s.sharethis.com/loader.js\"></script>";
 										$widgetTemp.="<script charset=\"utf-8\" type=\"text/javascript\">var options={ \"service\": \"facebook\", \"timer\": { \"countdown\": 30, \"interval\": 10, \"enable\": false}, \"frictionlessShare\": false, \"style\": \"3\", publisher:\"".$publisher_id."\"};var st_service_widget = new sharethis.widgets.serviceWidget(options);</script>";
 									}
+									else if (preg_match('/hoverbuttons/',$widget)) {
+									
+										$widgetTemp.="<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://s.sharethis.com/loader.js\"></script>";
+										$widgetTemp.="<script charset=\"utf-8\" type=\"text/javascript\">var options={ \"publisher\":\"".$publisher_id."\", \"position\": \"left\", \"chicklets\": { \"items\": [".$st_services_values."] } }; var st_hover_widget = new sharethis.widgets.hoverbuttons(options);</script>";
+										
+									}
+									
 									update_option('st_widget',$widgetTemp);
 									$widget = stripslashes(get_option('st_widget'));
 								}
@@ -470,7 +508,7 @@ function st_options_form() {
 		$st_current_type="_buttons";
 	}
 	if(empty($services)){
-		$services="facebook,twitter,email,sharethis";
+		$services="facebook,twitter,linkedin,email,sharethis";
 	}
 	if(empty($st_prompt)){
 		$services.=",fblike,plusone,pinterest";
@@ -548,26 +586,27 @@ function st_options_form() {
 								</ul>
 							</div>
 							<br/>
-							<div class="fblikeplusone">
+							<div class="fblikeplusone" id="additionalServices">
 								<span class="heading">Include Facebook Like, Google +1 and Pinterest.<br/></span><br/>
-								<label id="fblike_label">Add Facebook Like</label>&nbsp;
-								<input type="checkbox" id="st_fblike" name="st_fblike" value="1" ></input>
+								<input type="checkbox" id="st_fblike" name="st_fblike" value="1" ></input>&nbsp;
+								<label id="fblike_label">Add Facebook Like</label>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<label id="plusone_label">Add Google +1</label>&nbsp;
-								<input type="checkbox" id="st_plusone" name="st_plusone" value="1" ></input>
+								<input type="checkbox" id="st_plusone" name="st_plusone" value="1" ></input>&nbsp;
+								<label id="plusone_label">Add Google +1</label>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<label id="pinterest_label">Add Pinterest</label>&nbsp;
-								<input type="checkbox" id="st_pinterest" name="st_pinterest" value="1" ></input>
+								<input type="checkbox" id="st_pinterest" name="st_pinterest" value="1" ></input>&nbsp;
+								<label id="pinterest_label">Add Pinterest</label>
 							</div>
 							<br/>
 							<div class="version">
 								<span class="heading">Choose which version of the widget you would like to use:</span><br /><br />
 								
+								<input type="radio" id="get5x" ' . $fiveCheck . ' name="st_version" value="5x" class="versionItem '.$fiveTag.'" onclick="$(\'.versionImage\').attr(\'src\', \'http://www.sharethis.com/images/Image_Multi_Post-1.png\');"></input>&nbsp;
 								<label id="multipost_label">Multi-Post</label>
-								<input type="radio" id="get5x" ' . $fiveCheck . ' name="st_version" value="5x" class="versionItem '.$fiveTag.'" onclick="$(\'.versionImage\').attr(\'src\', \'http://www.sharethis.com/images/Image_Multi_Post-1.png\');"></input>
+								
 								&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type="radio" id="get4x" ' . $fourCheck . '  name="st_version" value="4x" class="versionItem '.$fourTag.'" onclick="$(\'.versionImage\').attr(\'src\', \'http://www.sharethis.com/images/Image_Classic-1.png\');"></input>&nbsp;
 								<label id="classic_label">Classic</label>
-								<input type="radio" id="get4x" ' . $fourCheck . '  name="st_version" value="4x" class="versionItem '.$fourTag.'" onclick="$(\'.versionImage\').attr(\'src\', \'http://www.sharethis.com/images/Image_Classic-1.png\');"></input>
 								
 								<br />
 								<img class="versionImage" src="http://www.sharethis.com/images/' . $wImage . '"></img>
@@ -654,12 +693,30 @@ function st_options_form() {
 					 
 		');		
 	}
+	
+	print('
+		<br/>
+		<div class="hoverbar">
+			<span class="heading">Hovering Bar</span>&nbsp;(<a href="http://support.sharethis.com/customer/portal/articles/507855" target="_blank">?</a>)<br/><br/>
+			<input type="checkbox" id="st_hoverbar" name="st_hoverbar" value="0" ></input>&nbsp;
+			<label id="hoverbar_label">Enable Hovering Bar</label>
+			<div style="width: 900px;">
+				<p class="explainText">Would you like your sharing buttons to be persistent and remain on the page as the user scrolls? Well, then Hovering Bar is for you. It shows the sharing services on the left side to present a non-intrusive yet always available experience.</p>				
+				<img src="http://sharethis.com/images/new/get-sharing-tools/PREVIEW_Hover.png">
+			
+		</div><br/><br/>
+			<div>
+			<p class="explainText">Note: If you enable ShareNow below, then the hovering bar is automatically moved to right side of the page for optimal experience. You can manually change the code <br/>above for it to also appear on the left side if you like.</p>
+			</div>
+		</div>	
+		');
+		
 	print('
 		<br/>
 		<div class="sharenow">
 			<span class="heading">ShareNow</span>&nbsp;(<a href="http://sharethis.com/publishers/get-sharenow" target="_blank">?</a>)<br/><br/>
-			<label id="sharenow_label">Enable ShareNow</label>&nbsp;
-			<input type="checkbox" id="st_sharenow" name="st_sharenow" value="0" ></input>
+			<input type="checkbox" id="st_sharenow" name="st_sharenow" value="0" ></input>&nbsp;
+			<label id="sharenow_label">Enable ShareNow</label>
 			<div style="width: 900px;">
 				<p class="explainText">ShareNow is the first-to-market social tool that allows any publisher to leverage <a href="http://developers.facebook.com/docs/opengraph/" target="_blank">frictionless sharing </a> without having to invest in and create their own custom solution. ShareNow allows publishers to put users in control over how they share content to their social networking timelines by allowing them to either continually share or click-to-share content with a simple &#39;on&#39; and &#39;off&#39; switch.</p>
 				<div style="font-size: 1em;margin-bottom: 5px;"><a href="http://support.sharethis.com/customer/portal/articles/542253-sharenow-by-sharethis" target="_blank">ShareNow FAQ</a> | <a href="mailto:support@sharethis.com" target="_blank">Contact Us</a></div>

@@ -22,8 +22,8 @@
 }
 
 #registratorModalWindow {
-	width:550px;
-	height: 339px;
+	width:639px;
+	height: 390px;
 	background: #f0f0f0; 
 	margin:auto;
 	top:60px;
@@ -139,4 +139,20 @@ font-size: 14px;
 	-moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
+}
+.hoverbar {
+    border: 1px solid #4D4D4D;
+    border-radius: 5px 5px 5px 5px;
+    padding: 20px 0 20px 30px;
+    width: 950px;
+}
+
+
+.st_options div {
+    margin-bottom: 0px !important;
+}
+
+.jcarousel-skin-tango .jcarousel-container-horizontal {
+    padding: 0 20px 20px 40px !important;
+    width: 470px !important;
 }

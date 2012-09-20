@@ -7,7 +7,7 @@ if (!window.console || !console.firebug) {
 
 
 var startPos=1;
-
+var defaultServices = '"facebook","twitter","linkedin","email","sharethis"';
 // Do not make tags on page load. call Make Tags once the user changes any settings.
 var makeTagsEnabled = false;
 

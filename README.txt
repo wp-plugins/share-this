@@ -6,7 +6,7 @@ Requires at least: 1.5
 Tested up to: 3.4
 Stable tag: trunk
 
-The ShareThis plugin is a quick and easy sharing service that allows your users to share your content to 120 social channels. Also features ShareNow.
+Quick and easy sharing service that allows your users to share your content to 120 social channels - features Open Graph Sharing and Floating Buttons
 
 == Description ==
 
@@ -14,10 +14,14 @@ Increase social activity on your site with the ShareThis and ShareNow widgets.
 
 With access to *120 social channels* (including Facebook, Twitter, Like, +1, Email and more), The ShareThis widget is a quick and easy sharing solution for your site to keep your audience engaged in your content and increase traffic to your site. You can also customize your widget for seamless integration to your site. You have the option to use small or large buttons, add counters and place the widget in a clear location for your users to share.
 
-**NEW**
-[ShareNow] (http://sharethis.com/publishers/get-sharenow) is the new social tool that allows you to leverage *frictionless sharing* without having to create your own custom solution and puts your users in control over how they share content. Placed on the right or left side of your content, ShareNow makes it easier for your users to share, delete and re-share to their social network timeline. Increase sharing activity on your site and add ShareNow!
+= NEW =
+
+**Hovering Bar** is now available to WordPress users! Always present on the left or right side of content, the Hovering Bar makes it easier for your users to share. It's always in view - even when your users scroll up and down the page. [Get the Hovering Bar Now!](http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration#Plugin-Options)
+
+**[ShareNow](http://sharethis.com/publishers/get-sharenow)** is the new social tool that allows you to leverage *frictionless sharing* without having to create your own custom solution and puts your users in control over how they share content. Placed on the right or left side of your content, ShareNow makes it easier for your users to share, delete and re-share to their social network timeline. Increase sharing activity on your site and add ShareNow!
 
 Join the ShareThis Publisher Network of 1.4M sites and get access to your analytics:
+
 * Daily sharing activity per registered domain
 * Detailed reports on the top shared URLs (content) of your site(s)
 * Top social channel reports
@@ -34,8 +38,14 @@ More information about the [ShareNow plugin for WordPress] (http://support.share
 3. Go to the Plugins page in your WordPress Administration area and click 'Activate' for ShareThis.
 4. In the WordPress Administration area, open the ShareThis Options page, and customize the sharing buttons based on your need.
 5. To enable ShareNow, go to the ShareThis Options page and scroll down check the 'Enable ShareNow' button.
+6. To enable Hovering Bar (floating share buttons), go to the ShareThis Options page and scroll down check the 'Enable Hovering Bar' button.
 
 == Changelog ==
+
+5.3
+
+1. Introducing floating sharing buttons - Our Hovering Bar.
+2. Bug Fixes
 
 5.2.1
 
@@ -65,7 +75,7 @@ Learn More at http://www.sharethis.com
 
 == Frequently Asked Questions ==
 
-Check out our support area at http://help.sharethis.com and our Wordpress customization area here: http://help.sharethis.com/integration/wordpress
+Check out [our support](http://help.sharethis.com) and [our Wordpress customization area](http://help.sharethis.com/integration/wordpress)
 
 Still got questions? If you need technical help, check out the support info below or email us at support@sharethis.com.
 
@@ -73,9 +83,9 @@ Still got questions? If you need technical help, check out the support info belo
 
 Have questions or suggestions for us? Perhaps it's already answered or being discussed in the ShareThis forums or on ShareThis Support:
 
-http://forums.sharethis.com
+[Forums](http://forums.sharethis.com)
 
-http://help.sharethis.com/integration/wordpress
+[Documentation](http://help.sharethis.com/integration/wordpress)
 
 If you would like to contact the support team via email you can reach us at:
  
@@ -88,5 +98,4 @@ Check out some screenshots of our new widget in action!
 2. Screenshot of the ShareNow widget.
 3. Screenshot of the ShareThis widget above content.
 4. Example of the ShareThis widget with counters.
-
-
+5. Example of the Hovering Bar.
