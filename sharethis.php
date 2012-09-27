@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 5.3
+ Version: 5.4
  Author: ShareThis,next2manu, Manu Mukerji <manu@sharethis.com>
  Author URI: http://sharethis.com
  */
@@ -327,13 +327,13 @@ function st_request_handler() {
 							}else{
 								$publisher_id = get_option('st_pubid');
 								$pkeyUpdated=false;
-								if(!empty($_POST['st_pkey']) && $publisher_id!==$_POST['st_pkey'] && preg_match('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/',$_POST['st_pkey'])){
+								if(!empty($_POST['st_pkey']) && $publisher_id!==$_POST['st_pkey'] && preg_match('/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/',$_POST['st_pkey'])){
 									update_option('st_pubid', $_POST['st_pkey']);
 									$publisher_id=$_POST['st_pkey'];
 									$pkeyUpdated=true;
 								}
 								else{
-									if(substr($_POST['st_pkey_hidden'], 0, 3) == "wp." && $publisher_id!==$_POST['st_pkey_hidden'] && preg_match('/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/',$_POST['st_pkey_hidden'])) {
+									if(substr($_POST['st_pkey_hidden'], 0, 3) == "wp." && $publisher_id!==$_POST['st_pkey_hidden'] && preg_match('/^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$/',$_POST['st_pkey_hidden'])) {
 										update_option('st_pubid', $_POST['st_pkey_hidden']);
 										$publisher_id=$_POST['st_pkey_hidden'];
 										$pkeyUpdated=true;
@@ -345,7 +345,7 @@ function st_request_handler() {
 										$pkeyUpdated=true;
 									}
 								}
-								if (preg_match('/publisher:"\w{8}-\w{4}-\w{4}-\w{4}-\w{12}"/',$widget) || preg_match("/publisher:'\w{8}-\w{4}-\w{4}-\w{4}-\w{12}'/",$widget) || preg_match("/publisher:'wp\.\w{8}-\w{4}-\w{4}-\w{4}-\w{12}'/",$widget)) {
+								if (preg_match("/publisher:['\"]\w{8}-\w{4}-\w{4}-\w{4}-\w{12}['\"]/",$widget) || preg_match("/publisher:['\"]wp\.\w{8}-\w{4}-\w{4}-\w{4}-\w{12}['\"]/",$widget)) {
 									$pkeyUpdated=false;
 								}
 								if(!preg_match('/stLight.options/',$widget) || $pkeyUpdated==true){
@@ -694,6 +694,19 @@ function st_options_form() {
 		');		
 	}
 	
+	print('
+		<br/>
+		<div class="copyNShare">
+			<span class="heading">CopyNShare Beta</span>&nbsp;(<a href="http://support.sharethis.com/customer/portal/articles/517332#copynshare" target="_blank">?</a>)<br/><br/>
+			<input style="display:none;" type="checkbox" class="cnsCheck" id="st_copynshare" name="st_copynshare" value="0" ></input>
+			<label style="display:none;" class="cnsCheck" id="copynshare_label">&nbsp;Enable CopyNShare Beta</label>
+			<span class="cnsRegister">This feature can be enabled only once you register.</span><span class="cnsRegister heading registerLink"> Click here to Register. </span>
+			<div style="width: 900px;">
+				<p class="explainText">CopyNShare is the new ShareThis widget feature in open beta that enables you to track the shares that occur when a user copies and pastes your website\'s URL or content. ShareThis adds a special #hashtag at the end of your address bar URL to keep track of where your content is being shared on the web, from Facebook, Twitter to emails, etc. When a user copies text within your site, a "See more: yourURL.com#SThashtag" will appear after the pasted text. Enable CopyNShare for your widget! <a href="http://support.sharethis.com/customer/portal/articles/517332#copynshare" target="_blank">FAQ</a>.</p>				
+			</div>
+		</div>	
+		');
+		
 	print('
 		<br/>
 		<div class="hoverbar">

@@ -141,7 +141,7 @@ font-size: 14px;
     border-radius: 5px;
 }
 
-.hoverbar {
+.hoverbar, .copyNShare {
     border: 1px solid #4D4D4D;
     border-radius: 5px 5px 5px 5px;
     padding: 20px 0 20px 30px;

@@ -12,6 +12,14 @@ var defaultServices = '"facebook","twitter","linkedin","email","sharethis"';
 var makeTagsEnabled = false;
 
 function st_log() {
+	if ($('#st_copynshare').attr('checked')) {
+		var pubkey = $('#st_pkey').val();
+		if (pubkey == "") {
+			if ($('#st_pkey_hidden').val() != "")
+				pubkey = $('#st_pkey_hidden').val();		
+		}
+		_gaq.push(['_trackEvent', 'WordPressPlugin', 'ClosedLoopBetaPublishers', pubkey]);
+	}
 	_gaq.push(['_trackEvent', 'WordPressPlugin', 'ConfigOptionsUpdated']);
 	_gaq.push(['_trackEvent', 'WordPressPlugin', "Type_" + $("#st_current_type").val()]);
 	if ($("#get5x").attr("checked")) {
@@ -63,6 +71,10 @@ jQuery(document).ready(function() {
 		stpkeytimeout=setTimeout(function(){makeHeadTag();},500);
 	})
 
+	$('#st_widget').bind('keyup', function(){
+		checkCopyNShare();
+	})
+
 	var services=$('#st_services').val();
 	svc=services.split(",");
 	for(var i=0;i<svc.length;i++){
@@ -82,6 +94,7 @@ jQuery(document).ready(function() {
 	if (tag.match(/new sharethis\.widgets\.hoverbuttons/)){
 		$('#st_hoverbar').attr('checked','checked');
 	}
+	checkCopyNShare();
 	var matches3 = tag.match(/"style": "(\d)*"/); 
 	if (matches3!=null && typeof(matches3[1])!="undefined"){
 		$('ul#themeList').find('li.selected').removeClass('selected');
@@ -180,6 +193,10 @@ jQuery(document).ready(function() {
 		generateShareNow();
 	});
 	
+	$('#st_copynshare').bind('click', function(){
+		generateCopyNShare();
+	});
+
 	$('#st_via').bind('keyup', function(){
 		makeTags();
 	})
@@ -202,6 +219,49 @@ jQuery(document).ready(function() {
 var stkeytimeout=null;
 var stpkeytimeout=null;
 
+function checkCopyNShare(){
+	var tag=$('#st_widget').val();
+	var pubkey = $('#st_pkey').val();
+	if (pubkey == "") {
+		if ($('#st_pkey_hidden').val() != "")
+			pubkey = $('#st_pkey_hidden').val();		
+	}
+	if (tag.match(/doNotHash:(\s)?false/)){
+		$('#st_copynshare').attr('checked','checked');
+		$(".cnsRegister").hide();
+		$(".cnsCheck").show();
+	} else {
+		if ((/[^rp\.\-]\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/).test(pubkey) || (/[^rp\.\-]\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/).test(tag)) {
+			$(".cnsRegister").hide();
+			$(".cnsCheck").show();
+		} else {
+			$(".cnsRegister").show();
+			$(".cnsCheck").hide();
+		}
+	}
+}
+
+function getCopyNShare(){
+	if ($('#st_copynshare').attr('checked')) {
+		return ", hashAddressBar: true, doNotCopy: false, doNotHash: false";
+	} else {
+		return "";
+	}
+}
+
+function generateCopyNShare(){
+	var pubkey = $('#st_pkey').val();
+	if (pubkey == "") {
+		if ($('#st_pkey_hidden').val() != "")
+			pubkey = $('#st_pkey_hidden').val();
+	}
+
+	var tag=$('#st_widget').val();
+	tag = tag.replace(/stLight.options\({.*}\);/, 'stLight.options({publisher:"'+pubkey+'"'+getCopyNShare()+'});');
+	$('#st_widget').val(tag);
+	checkCopyNShare();
+}
+
 function generateShareNow(){
 	var pubkey = $('#st_pkey').val();
 	if (pubkey == "") {
@@ -218,7 +278,7 @@ function generateShareNow(){
 	
 	//var tag='<script charset="utf-8" type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>';
 	tag+='<script charset="utf-8" type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>';
-	tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"});</script>';
+	tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"'+getCopyNShare()+'});</script>';
 	if ($('#st_sharenow').attr('checked')) {
 	
 		if($('#st_hoverbar').attr('checked')){
@@ -254,7 +314,7 @@ function generateShareNow(){
 		}else{
 			// Simple buttons with NO sharenow and NO hoverbar
 			var tag='<script charset="utf-8" type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>';
-			tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"});</script>';
+			tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"'+getCopyNShare()+'});</script>';
 			$('#st_widget').val(tag);
 		}
 	}
@@ -314,7 +374,7 @@ function generateHoverbar(defaultPosition) {
 	
 	//var tag='<script charset="utf-8" type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>';
 	tag +='<script charset="utf-8" type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>';
-	tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"});</script>';	
+	tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"'+getCopyNShare()+'});</script>';	
 	if ($('#st_hoverbar').attr('checked')) {
 		
 		if($('#st_sharenow').attr('checked')){		
@@ -336,7 +396,7 @@ function generateHoverbar(defaultPosition) {
 		}else{
 			// Simple buttons with NO sharenow and NO hoverbar
 			var tag='<script charset="utf-8" type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>';
-			tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"});</script>';
+			tag+='<script type="text/javascript">stLight.options({publisher:"'+pubkey+'"'+getCopyNShare()+'});</script>';
 			$('#st_widget').val(tag);
 		}	
 	}
@@ -356,6 +416,7 @@ function makeHeadTag(){
 	var reg=new RegExp("(publisher:)('|\")(.*?)('|\")",'gim');
 	var b=tag.replace(reg,'$1$2'+val+'$4');
 	$('#st_widget').val(b);
+	checkCopyNShare();
 }
 
 
