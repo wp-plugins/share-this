@@ -6,7 +6,7 @@ Requires at least: 1.5
 Tested up to: 3.4
 Stable tag: trunk
 
-Quick & easy sharing service that allows your users to share content to 120 social channels - features Open Graph Sharing, Hovering Bar and now CopyNShare!
+Quick & easy sharing service that allows your users to share content - features Open Graph Sharing, Hovering Bar and CopyNShare!
 
 == Description ==
 
@@ -16,13 +16,14 @@ With access to *120 social channels* (including Facebook, Twitter, Like, +1, Ema
 
 = NEW =
 
-**[CopyNShare](http://support.sharethis.com/customer/portal/articles/517332#copynshare)** is a new ShareThis widget feature in open beta that that ! CopyNShare is the new ShareThis widget feature in open beta that enables you to track the shares that occur when a user copies and pastes your website's URL or content. ShareThis adds a special #hashtag at the end of your address bar URL to keep track of where your content is being shared on the web, from Facebook, Twitter to emails, etc. When a user copies text within your site, a “See more: yourURL.com#SThashtag” will appear after the pasted text. Enable CopyNShare for your widget!! [FAQs](http://support.sharethis.com/customer/portal/articles/517332#copynshare)
+**[CopyNShare](http://support.sharethis.com/customer/portal/articles/517332#copynshare)**is a new ShareThis widget feature in open beta that that ! CopyNShare is the new ShareThis widget feature in open beta that enables you to track the shares that occur when a user copies and pastes your website's URL or content. ShareThis adds a special #hashtag at the end of your address bar URL to keep track of where your content is being shared on the web, from Facebook, Twitter to emails, etc. When a user copies text within your site, a “See more: yourURL.com#SThashtag” will appear after the pasted text. Enable CopyNShare for your widget! [FAQs](http://support.sharethis.com/customer/portal/articles/517332#copynshare)
 
 **Hovering Bar** is now available to WordPress users! Always present on the left or right side of content, the Hovering Bar makes it easier for your users to share. It's always in view - even when your users scroll up and down the page. [Get the Hovering Bar Now!](http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration#Plugin-Options)
 
 **[ShareNow](http://sharethis.com/publishers/get-sharenow)** is the new social tool that allows you to leverage *frictionless sharing* without having to create your own custom solution and puts your users in control over how they share content. Placed on the right or left side of your content, ShareNow makes it easier for your users to share, delete and re-share to their social network timeline. Increase sharing activity on your site and add ShareNow!
 
-Join the ShareThis Publisher Network of 1.6M sites and get access to your analytics:
+Join the ShareThis Publisher Network of over 2M sites and get access to your analytics:
+Check out the live demo (http://sharethis.com/publishers/metrics-dashboard?txtHidDemo=demo#home)
 
 * Daily sharing activity per registered domain
 * Detailed reports on the top shared URLs (content) of your site(s)
@@ -44,6 +45,11 @@ More information about the [ShareNow plugin for WordPress] (http://support.share
 
 == Changelog ==
 
+5.4.1
+
+1. Get the Instagram badge and link to your profile!
+2. Bug Fixes.
+
 5.4
 
 1. Now you know how many users share by copying and pasting. Introducing CopyNShare. Enable it and check your Analytics Dashboard to see those numbers pop up.
@@ -63,6 +69,7 @@ More information about the [ShareNow plugin for WordPress] (http://support.share
 == Sharing Analytics ==
 
 Once you join the the ShareThis Publisher Network, you get access to ShareThis Analytics.  Create your account and register your domain to access your site’s sharing activity. 
+Check out the live demo (http://sharethis.com/publishers/metrics-dashboard?txtHidDemo=demo#home)
 
 Reports include:
 1. Daily sharing activity per registered domain
@@ -78,7 +85,7 @@ What are you waiting for? Download the ShareThis plugin today and get access to 
 
 ShareThis’ mission is to make the world more connected, trusted and valuable through sharing. Our goal is to provide websites with solutions to improve and drive value from the social engagement of their site. 
 
-With the ShareThis Publisher Network of 1.4M websites, 120 social channels and a reach of 80% of the web (US), ShareThis is the largest ecosystem for sharing and engagement across the web. 
+With the ShareThis Publisher Network of 2M websites, 120 social channels and a reach of 80% of the web (US), ShareThis is the largest ecosystem for sharing and engagement across the web. 
 
 Learn More at http://www.sharethis.com
 
