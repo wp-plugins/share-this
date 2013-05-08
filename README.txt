@@ -1,9 +1,9 @@
-=== ShareThis: Share Buttons and Sharing Analytics ===
+﻿=== ShareThis: Share Buttons and Sharing Analytics ===
 Tags:share, share this, sharethis, addthis, addtoany, share this, bookmark facebook, like, send, google plus, +1, sharing, pinterest, sharenow, hovering bar, floating buttons, copy and paste,
 
 Contributors:ShareThis
 Requires at least: 1.5
-Tested up to: 3.4
+Tested up to: 3.5
 Stable tag: trunk
 
 Quick & easy sharing service that allows your users to share content - features Open Graph Sharing, Hovering Bar and CopyNShare!
@@ -44,6 +44,11 @@ More information about the [ShareNow plugin for WordPress] (http://support.share
 6. To enable Hovering Bar (floating share buttons), go to the ShareThis Options page and scroll down check the 'Enable Hovering Bar' button.
 
 == Changelog ==
+
+6.0
+
+1. CNS implementation
+2. Bug Fixes.
 
 5.4.1
 
