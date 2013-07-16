@@ -54,6 +54,10 @@ More information about the [ShareNow plugin for WordPress](http://support.sharet
 
 == Changelog ==
 
+7.0.1
+
+1. Fixes for IE
+
 7.0
 
 1. Pulldown bar implementation

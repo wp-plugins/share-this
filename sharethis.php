@@ -22,14 +22,14 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0
+ Version: 7.0.1
  Author: <a href="http://www.sharethis.com">Kalpak Shah@ShareThis</a>
  Author URI: http://sharethis.com
  */
 
 load_plugin_textdomain('sharethis');
 
-$_stversion=7.0;
+$_stversion=7.0.1;
 
 function install_ShareThis(){
 	$publisher_id = get_option('st_pubid'); //pub key value
@@ -545,20 +545,20 @@ function st_options_form() {
 				<div id="showLoadingStatus">Loading...</div>
 				<div id="outerContainer" style="width:1000px;">
 				<div id="st_title" style="width: 100%; height: 38px;">
-					<div class="st_header_title">
+					<div class="wp_st_header_title">
 						<label>Welcome to ShareThis for WordPress</label>
 					</div>	
-					<div class="st_userinfo">
+					<div class="wp_st_userinfo">
 						<div id="usernameContainer" style="display:none">You are logged in as : <span id="login_name"></span></div>
 						<div id="pbukeyContainer" style="display:none">Your publisher key : <span id="login_key"></span></div>
 					</div> 
 				</div> 
 				<form id="ak_sharethis" name="ak_sharethis" action="'.get_bloginfo('wpurl').'/wp-admin/index.php" method="post" >
 					<fieldset class="options">
-						<div id="step1" class="st_parentDiv">
+						<div id="step1" class="wp_st_parentDiv">
 							<div id="st_header">
 								<div class="left_navigator">&nbsp;
-									<img id="st_leftarrow" class="st_arrow st_leftarrow" src="'.$plugin_location.'images/leftArrow.png" onclick="moveToPrevious(st_button_state)" style="display:none"/>
+									<img class="wp_st_arrow wp_st_leftarrow" src="'.$plugin_location.'images/leftArrow.png" onclick="moveToPrevious(st_button_state)" style="display:none"/>
 									<label class="back_text" onclick="moveToPrevious(st_button_state)" style="display:none">Back : </label>
 									<label class="back_screen_title" style="display:none" onclick="moveToPrevious(st_button_state)">Select Serivce</label>
 								</div>
@@ -568,8 +568,8 @@ function st_options_form() {
 								<div class="right_navigator">
 									<label class="next_text" onclick="moveToNext(st_button_state)">Next : </label>
 									<label class="next_screen_title" onclick="moveToNext(st_button_state)">Select Services</label>
-									<img id="st_rightarrow" class="st_arrow st_rightarrow" src="'.$plugin_location.'images/rightArrow.png" onclick="moveToNext(st_button_state)"/>
-									<input type="submit" id="edit" value="Edit" name="Edit" class="st_editButton"/>
+									<img id="st_rightarrow" class="wp_st_arrow wp_st_rightarrow" src="'.$plugin_location.'images/rightArrow.png" onclick="moveToNext(st_button_state)"/>
+									<input type="submit" id="edit" value="Edit" name="Edit" class="wp_st_editButton"/>
 								&nbsp;</div>
 							</div>
 							<div id="st_mainbody">
@@ -602,13 +602,13 @@ function st_options_form() {
 								<hr id="st_separator"/>
 								
 								<!-- STEP 1 -->
-								<div id="st_step1" class="st_centerContainer2">	
+								<div id="st_step1" class="wp_st_centerContainer2">	
 									
 									<div id="styleLinks" class="linksDiv">
 											<h1 class="nonbars">Choose a button style:</h1>
 											<h1 class="bars show">Choose more options</h1>
 											<div style="clear:both;"></div> 
-										<div class="st_widget5x">	
+										<div class="wp_st_widget5x">	
 											<ul class="nonbars" style="padding-left:80px">
 												<li class="styleLink chickletStyle jqBtnStyle" id="chickletStyle"><div class="hoverState2 chickletStyle"></div><div class="hoverState chickletStyle">Prominent, yet minimalistic, the classic style of these buttons display sharing icons in 2 different sizes (16x16 &amp; 32x32).</div><img src="'.$plugin_location.'images/Button4.png" class="chickletStyleButtonImg"/></li>
 												<li class="styleLink hcountStyle jqBtnStyle" id="hcountStyle"><div class="hoverState2 hcountStyle"></div><div class="hoverState hcountStyle">Sharing buttons with horizontal counters to publicly display the sharing activity for that piece of content.</div><img src="'.$plugin_location.'images/HORZ.png" class="hcountStyleButtonImg"/></li>
@@ -629,7 +629,7 @@ function st_options_form() {
 												<hr/>
 											</div>
 											
-										<div class="st_widget4x">	
+										<div class="wp_st_widget4x">	
 											<ul class="bars show" style="padding-left:80px">
 												<li class="styleLink jqBarStyle hoverbarStyle" id="hoverbarStyle"><div class="hoverState2 hoverbarStyle"></div><div class="hoverState hoverbarStyle">This bar can float either on the left side or the right side of the page to provide an always-visible view of the sharing tools.</div><img id="hoverBarImage" src="'.$plugin_location.'images/HOVER_Buttons.png" class="hoverbarStyleButtonImg"/><img id="hoverbarLoadingImg" src="'.$plugin_location.'images/loading.gif" class="loadingImage" style="display:none"/></li>
 												<li class="styleLink jqBarStyle pulldownStyle" id="pulldownStyle"><div class="hoverState2 pulldownStyle"></div><div class="hoverState pulldownStyle">This bar with sharing buttons is placed at the top of page, but appears only when the reader scrolls down.</div><img id="pullDownBarImage" src="'.$plugin_location.'images/PULLDOWN.png" class="pulldownStyleButtonImg"/><img id="pulldownLoadingImg" src="'.$plugin_location.'images/loading.gif" class="loadingImage" style="display:none"/></li>
@@ -662,19 +662,19 @@ function st_options_form() {
 								<div id="st_slidingContainer" style="display:none;"> 
 									 <h3 style="margin-left:5px">Customize ShareNow:</h3>
 									 <ul id="themeList" class="subOptions">
-										<li data-value="3" class="st_sharenowImg" id="st_sharenowImg3">
+										<li data-value="3" class="wp_st_sharenowImg" id="st_sharenowImg3">
 											<a><img class="widgetIconSelected" id="opt_theme3" src="'.$plugin_location.'images/fbtheme_3.png"/></a>
 										</li>
-										<li data-value="4" class="st_sharenowImg" id="st_sharenowImg4">
+										<li data-value="4" class="wp_st_sharenowImg" id="st_sharenowImg4">
 											<a><img class="widgetIconSelected" id="opt_theme4" src="'.$plugin_location.'images/fbtheme_4.png"/></a>
 										</li>
-										<li data-value="5" class="st_sharenowImg" id="st_sharenowImg5">
+										<li data-value="5" class="wp_st_sharenowImg" id="st_sharenowImg5">
 											<a><img class="widgetIconSelected" id="opt_theme5" src="'.$plugin_location.'images/fbtheme_5.png"/></a>
 										</li>
-										<li data-value="6" class="st_sharenowImg" id="st_sharenowImg6">
+										<li data-value="6" class="wp_st_sharenowImg" id="st_sharenowImg6">
 											<a><img class="widgetIconSelected" id="opt_theme6" src="'.$plugin_location.'images/fbtheme_6.png"/></a>
 										</li>
-										<li data-value="7" class="st_sharenowImg" id="st_sharenowImg7">
+										<li data-value="7" class="wp_st_sharenowImg" id="st_sharenowImg7">
 											<a><img class="widgetIconSelected" id="opt_theme7" src="'.$plugin_location.'images/fbtheme_7.png"/></a>
 										</li>
 									</ul>
@@ -699,45 +699,45 @@ function st_options_form() {
 								</div>
 								
 								<!-- STEP 2 -->
-								<div id="st_step2" class="st_centerContainer2" style="display:none;">
+								<div id="st_step2" class="wp_st_centerContainer2" style="display:none;">
 									<div style="height:230px;text-align: center;">
 										<div id="mySPicker"></div> 
 									</div>	
 								</div>
 								
 								<!-- STEP 3 -->
-								<div id="st_step3" class="st_centerContainer2" style="display:none;">
+								<div id="st_step3" class="wp_st_centerContainer2" style="display:none;">
 									<div style="height:250px;text-align: center;">
-										<div id="st_widget5x" class="st_widget5x">
+										<div id="st_widget5x" class="wp_st_widget5x">
 											<div style="width:48%; float:left">
 												<img src="'.$plugin_location.'images/widget-5x.png"/>
 											</div>
 											<div style="width:48%; float:right;">
 												<p id="st_5xwidget" class="post_heading '.$widget5xSelected.'" style="width:86%">Multi Post</p>
-												<p class="st_text">Sharing takes place inside the widget, without taking users away from your site. Preferences are saved so your users can share to more than one service at the same time.</p>	
+												<p class="wp_st_text">Sharing takes place inside the widget, without taking users away from your site. Preferences are saved so your users can share to more than one service at the same time.</p>	
 											</div>
 										</div>
 										<div id="st_vseparator">
 										<hr/>
 										</div>
-										<div id="st_widget4x" class="st_widget4x">
+										<div id="st_widget4x" class="wp_st_widget4x">
 											<div style="width:48%; float:left;position: relative">
 												<img src="'.$plugin_location.'images/widget-4x.png"/>
 											</div>
 											<div style="width:48%; float:right">
 												<p id="st_4xwidget" class="post_heading '.$widget4xSelected.'" style="width:86%">Direct Post</p>
-												<p class="st_text">Your users will be redirected to Facebook, Twitter, etc when clicking on the corresponding buttons. The widget is opened when users click on "Email" and "ShareThis".</p>	
+												<p class="wp_st_text">Your users will be redirected to Facebook, Twitter, etc when clicking on the corresponding buttons. The widget is opened when users click on "Email" and "ShareThis".</p>	
 											</div>
 										</div>
 									</div>	
 							</div>
-							<div id="st_splServiceContainer" class="st_splServiceContainer">
+							<div id="st_splServiceContainer" class="wp_st_splServiceContainer">
 								
 							</div>
 							<!-- STEP 4 -->	
-							<div id="st_step4"  class="st_centerContainer2" style="display:none;">
+							<div id="st_step4"  class="wp_st_centerContainer2" style="display:none;">
 								<div style="height:175px;text-align: center;">
-									<div id="" class="st_widget5x">
+									<div id="" class="wp_st_widget5x">
 										<div class="copynshare_heading">
 											<span id="st_copynshare">Enable CopyNShare</span>
 										</div>
@@ -786,7 +786,7 @@ function st_options_form() {
 						</div> 
 							
 							<!-- STEP 5 -->
-							<div id="st_step5" class="st_centerContainer2" style="display:none;">
+							<div id="st_step5" class="wp_st_centerContainer2" style="display:none;">
 								<div id="loginWindowDiv" class="loginWindowDiv">
 									<iframe id="loginFrame" width="644px" height="398px" frameborder="0" src="http://sharethis.com/external-login?pluginType=newPlugins"></iframe>
 									<div class="login_message">You are successfully logged-in with ShareThis.</div>		
@@ -794,15 +794,15 @@ function st_options_form() {
 							</div>
 						
 							<!-- STEP 6 -->
-							<div id="st_step6" class="st_centerContainer2" style="display:none;">
-								<div id="st_additional_options" class="st_additional_options">
+							<div id="st_step6" class="wp_st_centerContainer2" style="display:none;">
+								<div id="st_additional_options" class="wp_st_additional_options">
 								
 								</div>	
 							</div>
 							
 							<div id="st_footer">
 							<div class="left_navigator" >&nbsp;
-									<img id="st_leftarrow" class="st_arrow st_leftarrow " src="'.$plugin_location.'images/leftArrow.png" onclick="moveToPrevious(st_button_state)" style="display:none"/>
+									<img class="wp_st_arrow wp_st_leftarrow " src="'.$plugin_location.'images/leftArrow.png" onclick="moveToPrevious(st_button_state)" style="display:none"/>
 									<label class="back_text" onclick="moveToPrevious(st_button_state)" style="display:none">Back : </label>
 									<label class="back_screen_title" style="display:none" onclick="moveToPrevious(st_button_state)">Select Serivce</label>
 								</div>
@@ -820,7 +820,7 @@ function st_options_form() {
 								<div class="right_navigator" style="position:relative;right:6px;">
 									<label class="next_text" onclick="moveToNext(st_button_state)">Next : </label>
 									<label class="next_screen_title" onclick="moveToNext(st_button_state)">Select Services</label>
-									<img class="st_arrow st_rightarrow" src="'.$plugin_location.'images/rightArrow.png" onclick="moveToNext(st_button_state)"/>
+									<img class="wp_st_arrow wp_st_rightarrow" src="'.$plugin_location.'images/rightArrow.png" onclick="moveToNext(st_button_state)"/>
 								</div>
 							</div>
 						</div>
