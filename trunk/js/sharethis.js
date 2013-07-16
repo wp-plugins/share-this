@@ -312,7 +312,7 @@ function windowLoaded(){
 		location.href = "#st_slidingContainer";
 	});
 		
-	jQuery(".st_sharenowImg").click(function(){
+	jQuery(".wp_st_sharenowImg").click(function(){
 		sharenow.stgOptions.style = jQuery(this).attr('data-value');
 		jQuery("#st_sharenow_theme").val(jQuery(this).attr('data-value'));
 	});
@@ -768,17 +768,17 @@ function removeSocialPluginsFromBar(){
 	if(st_selectedBarStyle == "pulldownStyle"){
 		for(var i=0; i<chickletServicesArray.length; i++){
 			// Skip social services from bar
-			if(chickletServicesArray[i].trim() != 'plusone' && chickletServicesArray[i].trim() != 'fblike' && chickletServicesArray[i].trim() != 'fbrec'&& chickletServicesArray[i].trim() != 'fbsend'&& chickletServicesArray[i].trim() != 'fbsub'&& chickletServicesArray[i].trim() != 'foursquaresave'&& chickletServicesArray[i].trim() != 'foursquarefollow'&& chickletServicesArray[i].trim() != 'youtube'&& chickletServicesArray[i].trim() != 'pinterestfollow'&&
-			chickletServicesArray[i].trim() != 'twitterfollow'&& chickletServicesArray[i].trim() != 'instagram') {
-				newchickletServicesArray[jCounter] = chickletServicesArray[i].trim();
+			if(jQuery.trim(chickletServicesArray[i]) != 'plusone' && jQuery.trim(chickletServicesArray[i]) != 'fblike' && jQuery.trim(chickletServicesArray[i]) != 'fbrec'&& jQuery.trim(chickletServicesArray[i]) != 'fbsend'&& jQuery.trim(chickletServicesArray[i]) != 'fbsub'&& jQuery.trim(chickletServicesArray[i]) != 'foursquaresave'&& jQuery.trim(chickletServicesArray[i]) != 'foursquarefollow'&& jQuery.trim(chickletServicesArray[i]) != 'youtube'&& jQuery.trim(chickletServicesArray[i]) != 'pinterestfollow'&&
+			jQuery.trim(chickletServicesArray[i]) != 'twitterfollow'&& jQuery.trim(chickletServicesArray[i]) != 'instagram') {
+				newchickletServicesArray[jCounter] = jQuery.trim(chickletServicesArray[i]);
 				jCounter++;
 			}
 		}			
 	}else if(st_selectedBarStyle == "hoverbarStyle"){
 	for(var i=0; i<chickletServicesArray.length; i++){
 		// Skip social services from bar, instagram is part of hoverbar 
-			if(chickletServicesArray[i].trim() != 'plusone' && chickletServicesArray[i].trim() != 'fblike' && chickletServicesArray[i].trim() != 'fbrec'&& chickletServicesArray[i].trim() != 'fbsend'&& chickletServicesArray[i].trim() != 'fbsub'&& chickletServicesArray[i].trim() != 'foursquaresave'&& chickletServicesArray[i].trim() != 'foursquarefollow'&& chickletServicesArray[i].trim() != 'youtube'&& chickletServicesArray[i].trim() != 'pinterestfollow' && chickletServicesArray[i].trim() != 'twitterfollow') {
-				newchickletServicesArray[jCounter] = chickletServicesArray[i].trim();
+			if(jQuery.trim(chickletServicesArray[i]) != 'plusone' && jQuery.trim(chickletServicesArray[i]) != 'fblike' && jQuery.trim(chickletServicesArray[i]) != 'fbrec'&& jQuery.trim(chickletServicesArray[i]) != 'fbsend'&& jQuery.trim(chickletServicesArray[i]) != 'fbsub'&& jQuery.trim(chickletServicesArray[i]) != 'foursquaresave'&& jQuery.trim(chickletServicesArray[i]) != 'foursquarefollow'&& jQuery.trim(chickletServicesArray[i]) != 'youtube'&& jQuery.trim(chickletServicesArray[i]) != 'pinterestfollow' && jQuery.trim(chickletServicesArray[i]) != 'twitterfollow') {
+				newchickletServicesArray[jCounter] = jQuery.trim(chickletServicesArray[i]);
 				jCounter++;
 			}
 		}
@@ -806,25 +806,25 @@ function removeBars() {
 }
 
 function disableLeftArrow(){
-	jQuery(".st_leftarrow").hide();
+	jQuery(".wp_st_leftarrow").hide();
 	jQuery(".back_text").hide();
 	jQuery(".back_screen_title").hide();
 }
 
 function enableLeftArrow(){
-	jQuery(".st_leftarrow").show();
+	jQuery(".wp_st_leftarrow").show();
 	jQuery(".back_text").show();
 	jQuery(".back_screen_title").show();
 }
 
 function disableRightArrow(){
-    jQuery(".st_rightarrow").hide();
+    jQuery(".wp_st_rightarrow").hide();
 	jQuery(".next_text").hide();
 	jQuery(".next_screen_title").hide();
 }
 
 function enableRightArrow(){
-    jQuery(".st_rightarrow").show();
+    jQuery(".wp_st_rightarrow").show();
 	jQuery(".next_text").show();
 	jQuery(".next_screen_title").show();
 }
