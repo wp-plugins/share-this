@@ -29,7 +29,7 @@
 
 load_plugin_textdomain('sharethis');
 
-$_stversion=7.0.1;
+$_stversion=7.0;
 
 function install_ShareThis(){
 	$publisher_id = get_option('st_pubid'); //pub key value
