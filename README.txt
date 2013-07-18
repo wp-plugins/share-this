@@ -10,7 +10,7 @@ Social Charge your Content with ShareThis - features Social Analytics, CopyNShar
 
 == Description ==
 
-Increase social activity on your site with ShareThis!
+**Increase social activity on your site with ShareThis!**
 
 * Choose from to 120 social channels, including Facebook, Twitter, LinkedIn, and Pinterest.
 * Use small or large buttons, add counters or use one of the Sharing Bars 
@@ -23,6 +23,10 @@ Join the ShareThis Network of over 2.4M sites and get access to your analytics: 
 * Detailed reports on the top shared URLs of your site(s)
 * Top social channel reports
 * Analysis of the social quality of your site via [SQI – Social Quality Index](www.sharethis.com/sqi).
+
+
+**SnapSets Beta - Released on July 18, 2013**  
+We've just released [SnapSets](http://snapsets.sharethis.com/publishers.html) in open beta! Contact us to learn more. 
 
 **Track Users' Copy and Paste Shares**  
 [CopyNShare](http://support.sharethis.com/customer/portal/articles/517332#copynshare) is a ShareThis widget feature in open beta that enables you to track the shares that occur when a user copies and pastes your website's URL or content. Two options are available:
