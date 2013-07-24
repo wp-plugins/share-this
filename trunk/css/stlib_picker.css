@@ -248,3 +248,7 @@
 .stp_pickerArrowRtNative{
 	margin-top : -30px;
 }
+
+ #chicklet_search input[type=text]::-ms-clear {
+    display: none;
+}

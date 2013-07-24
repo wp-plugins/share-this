@@ -82,7 +82,7 @@ function checkButtonJsStatus(){
 	if(typeof(stbuttons) != "undefined"){ 
 		clearInterval(checkJsLoadingStatus);
 		jQuery("#showLoadingStatus").hide();
-		jQuery("#outerContainer").fadeIn(2000);
+		jQuery("#wp_st_outerContainer").fadeIn(2000);
 		if(jQuery("#freshInstalation").val() == 0){
 			moveToNext(5);
 			enableLeftArrow();	
@@ -95,30 +95,30 @@ function windowLoaded(){
 		checkButtonJsStatus()
 	},500);
 	jQuery(".stButton").remove();
-	jQuery("#st_savebutton").hide();
+	jQuery("#wp_st_savebutton").hide();
 	jQuery("#st_customize_sharenow").hide();
 	jQuery("#st_configure_pulldown").hide();
 	disableLeftArrow();	
 	
-	jQuery(".navSlideDot").click(function(){
+	jQuery(".wp_st_navSlideDot").click(function(){
 		var isBtnBarSelected = validateUserSelection();
 		if(isBtnBarSelected == true){
 			var selectedDot = jQuery(this).attr("value");
 			if(selectedDot > 1){
 			    enableLeftArrow();
 				enableRightArrow();
-				jQuery(".next_text").html("Next : ");
+				jQuery(".wp_st_nextText").html("Next : ");
 				moveToNext((selectedDot-1));
 			}else if(selectedDot == 1){
 			   	enableRightArrow();
-				jQuery(".next_text").html("Next : ");
+				jQuery(".wp_st_nextText").html("Next : ");
 				moveToPrevious(2);
 			}
 		}
 	});
 	
 	jQuery("#edit").click(function(){
-		jQuery(".next_text").html("Next : ");
+		jQuery(".wp_st_nextText").html("Next : ");
 		moveToPrevious(2);
 		enableRightArrow();
 		return false;
@@ -272,7 +272,7 @@ function windowLoaded(){
 	});
 	
 	jQuery("#st_configure_pulldown").click(function(){		
-		jQuery("#st_slidingContainer").hide();
+		jQuery("#wp_st_slidingContainer").hide();
 		jQuery("#st_pulldownConfig").toggle("slow");
 		location.href = "#st_pulldownConfig";
 	});
@@ -297,7 +297,7 @@ function windowLoaded(){
 				jQuery(".jqShareNow").removeClass("selected");
 				st_isShareNowSelected = false;
 				jQuery("#st_customize_sharenow").hide();
-				jQuery("#st_slidingContainer").hide();
+				jQuery("#wp_st_slidingContainer").hide();
 			}else{
 				selectShareNow();
 			}
@@ -308,8 +308,8 @@ function windowLoaded(){
 	
 	jQuery("#st_customize_sharenow").click(function(){
 		jQuery("#st_pulldownConfig").hide();
-		jQuery("#st_slidingContainer").toggle("slow");
-		location.href = "#st_slidingContainer";
+		jQuery("#wp_st_slidingContainer").toggle("slow");
+		location.href = "#wp_st_slidingContainer";
 	});
 		
 	jQuery(".wp_st_sharenowImg").click(function(){
@@ -320,7 +320,7 @@ function windowLoaded(){
 	/**
 	* Sharing button hover and out functionality 
 	*/
-	jQuery(".styleLink").mouseover(function () {
+	jQuery(".wp_st_styleLink").mouseover(function () {
 		if(jQuery(this).hasClass('jqBtnStyle')){
 			changeHoverView(this, 'over');
 		}else if((flgLoaderCompleted == true) && (jQuery(this).hasClass('hoverbarStyle') || jQuery(this).hasClass('pulldownStyle') || jQuery(this).hasClass('fbStyle'))){
@@ -330,15 +330,15 @@ function windowLoaded(){
 		}
 	});
 	
-	jQuery(".styleLink").mouseout(function () {
+	jQuery(".wp_st_styleLink").mouseout(function () {
 		changeHoverView(this, 'out');
 	});
 	
 	/**	
 	* For multipost and direct post selection
 	*/
-	jQuery("p.post_heading").click(function(event){
-		jQuery("p.post_heading").removeClass("selected");
+	jQuery("p.wp_st_post_heading").click(function(event){
+		jQuery("p.wp_st_post_heading").removeClass("selected");
 		jQuery(this).addClass("selected");
 		if(event.target.id == "st_5xwidget"){
 			st_widgetVersion = "5x";
@@ -424,7 +424,7 @@ function updateUserLoginInfo(){
 		jQuery("#pbukeyContainer").show();
 		jQuery("#login_key").html(st_publisherKey);
 		jQuery("#loginFrame").hide();
-		jQuery(".login_message").show();
+		jQuery(".wp_st_login_message").show();
 	}else{
 		jQuery("#pbukeyContainer").hide();
 	}
@@ -532,9 +532,9 @@ function removeShareNow() {
 function changeHoverView(obj, mouse_event) {
 	var text = jQuery(obj).attr("id");
 	if(mouse_event == 'out'){
-		jQuery(".hoverState."+text+",.hoverState2."+text).removeClass("show");
+		jQuery(".wp_st_hoverState."+text+",.wp_st_hoverState2."+text).removeClass("wp_st_show");
 	}else{
-		jQuery(".hoverState."+text+",.hoverState2."+text).addClass("show");
+		jQuery(".wp_st_hoverState."+text+",.wp_st_hoverState2."+text).addClass("wp_st_show");
 	}
 }	
 
@@ -702,9 +702,9 @@ function setButtonType(){
 
 function updateUI(){
 	if(st_selectedButtonStyle == "chickletStyle"){
-		jQuery('#selectSizeType').addClass('show');
+		jQuery('#selectSizeType').addClass('wp_st_show');
 	}else{
-		jQuery('#selectSizeType').removeClass('show');
+		jQuery('#selectSizeType').removeClass('wp_st_show');
 	}
 	if(st_selectedBarStyle == "hoverbarStyle"){
 		jQuery("#hoverbar_selectDock").show();
@@ -807,32 +807,32 @@ function removeBars() {
 
 function disableLeftArrow(){
 	jQuery(".wp_st_leftarrow").hide();
-	jQuery(".back_text").hide();
-	jQuery(".back_screen_title").hide();
+	jQuery(".wp_st_backText").hide();
+	jQuery(".wp_st_backTitle").hide();
 }
 
 function enableLeftArrow(){
 	jQuery(".wp_st_leftarrow").show();
-	jQuery(".back_text").show();
-	jQuery(".back_screen_title").show();
+	jQuery(".wp_st_backText").show();
+	jQuery(".wp_st_backTitle").show();
 }
 
 function disableRightArrow(){
     jQuery(".wp_st_rightarrow").hide();
-	jQuery(".next_text").hide();
-	jQuery(".next_screen_title").hide();
+	jQuery(".wp_st_nextText").hide();
+	jQuery(".wp_st_nextTitle").hide();
 }
 
 function enableRightArrow(){
     jQuery(".wp_st_rightarrow").show();
-	jQuery(".next_text").show();
-	jQuery(".next_screen_title").show();
+	jQuery(".wp_st_nextText").show();
+	jQuery(".wp_st_nextTitle").show();
 }
 
 function checkSpecialServices(){
 	var splHtml = getNativeConfigOptions(st_selectedServicesList,"callbackFunction(this)");
 	jQuery("#st_splServiceContainer").html(splHtml);
-	if(jQuery("#st_native_config").find('.buttonCodeGeneratorConfig').length != 0){
+	if(jQuery("#st_native_config").find('.wp_st_buttonCodeGeneratorConfig').length != 0){
 		jQuery("#st_splServiceContainer").show();
 	}else{
 		jQuery("#st_splServiceContainer").hide();
@@ -848,122 +848,122 @@ function callbackFunction(obj){
 function getNativeConfigOptions(services,callback) {
 	var html = "";
 	html += "<div";
-	html += " class='socialPluginContainer' style='clear: both;text-align: left;'>";
-	html += "<h2 class='buttonCodeHeading'>We noticed that you picked some buttons which require a bit more information.</h2>";
+	html += " class='wp_st_socialPluginContainer' style='clear: both;text-align: left;'>";
+	html += "<h2 class='wp_st_buttonCodeHeading'>We noticed that you picked some buttons which require a bit more information.</h2>";
 	html += "<ol id='st_native_config'>";
 	
 	for (s=0;s<services.length;s++) {
 		if (services[s] == "pinterestfollow") {
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>Pinterest follow username</label>";
 			html += "<input id='pinterestfollow_textbox' type='textbox' value='"+st_socialPluginValues["pinterestfollow_textbox"]+"' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label class='defaultCursor'>Example: Enter 'sharethis' for username</label>";
+			html += "><label class='wp_st_defaultCursor'>Example: Enter 'sharethis' for username</label>";
 			html += "</div>";
 		} else if (services[s] == "instagram") {
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>Instagram badge username</label>";
 			html += "<input id='instagram_textbox' type='textbox' value='"+st_socialPluginValues["instagram_textbox"]+"' name='instagram[username]' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label class='defaultCursor'>Example: Enter 'sharethis' for username</label>";
+			html += "><label class='wp_st_defaultCursor'>Example: Enter 'sharethis' for username</label>";
 			html += "</div>";
 		} else if (services[s] == "googleplusadd") {
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>Google add profile id</label>";
 			html += "<input id='googleplusadd_textbox' type='textbox' value='' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label class='defaultCursor'>Example: '113842823840690472625'</label>";
+			html += "><label class='wp_st_defaultCursor'>Example: '113842823840690472625'</label>";
 			html += "</div>";
 		} else if (services[s] == "googleplusfollow") {
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>Google follow page id</label>";
 			html += "<input id='googleplusfollow_textbox' type='textbox' value='' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label class='defaultCursor'>Example: '110924060789171264851'</label>";
+			html += "><label class='wp_st_defaultCursor'>Example: '110924060789171264851'</label>";
 			html += "</div>";
 		} else if (services[s] == "youtube") {
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>Youtube subscribe username</label>";
 			html += "<input id='youtube_textbox' type='textbox' value='"+st_socialPluginValues["youtube_textbox"]+"' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label class='defaultCursor'>Example: Enter 'sharethis' for username</label>";
+			html += "><label class='wp_st_defaultCursor'>Example: Enter 'sharethis' for username</label>";
 			html += "</div>";
 		} else if (services[s] == "linkedinfollow") {
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>LinkedIn follow profile id</label>";
 			html += "<input id='linkedinfollow_textbox' type='textbox' value='' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label class='defaultCursor'>Example: Enter '207839' for profile id</label>";
+			html += "><label class='wp_st_defaultCursor'>Example: Enter '207839' for profile id</label>";
 			html += "</div>";
 		} else if (services[s] == "twitterfollow") {
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>Twitter follow username</label>";
 			html += "<input id='twitterfollow_textbox' type='textbox' name='twitterfollow[via]' value='"+st_socialPluginValues["twitterfollow_textbox"]+"' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label class='defaultCursor'>Example: Enter 'sharethis' for username</label>";
+			html += "><label class='wp_st_defaultCursor'>Example: Enter 'sharethis' for username</label>";
 			html += "</div>";
 		} else if (services[s] == "fbsub") {
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>Facebook subscribe username</label>";
 			html += "<input id='fbsub_textbox' type='textbox' value='"+st_socialPluginValues["fbsub_textbox"]+"' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label class='defaultCursor'>Example: Enter 'sharethis' for profile name</label>";
+			html += "><label class='wp_st_defaultCursor'>Example: Enter 'sharethis' for profile name</label>";
 			html += "</div>";
 		} else if (services[s] == "foursquaresave") {
 			//html += "<li>For Foursquare Save button</li>";
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>For Foursquare Save button</label>";
 			html += "Please make sure your website contains the needed hCard or OpenGraph location metadata so that foursquare knows which place your webpage is referring to. Click <a href='https://foursquare.com/business/brands/offerings/savetofoursquare/tester' target='_blank'>here</a> for more information.";
 			html += "</div>";
 		} else if (services[s] == "foursquarefollow") {
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>Foursquare follow username</label>";
 			html += "<input id='foursquarefollow_textbox'  style='width:15%;' type='textbox' value='"+st_socialPluginValues["foursquarefollow_textbox"]+"' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label style='margin-right:30px;' class='defaultCursor'>Ex: nytimes</label>";
+			html += "><label style='margin-right:30px;' class='wp_st_defaultCursor'>Ex: nytimes</label>";
 			html += "<label style='margin-right:20px;'>Profile id</label>";
 			html += "<input id='foursquarefollow_textbox2' style='width:15%;' type='textbox' value='"+st_socialPluginValues["foursquarefollow_textbox2"]+"' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label style='margin-right:0px;' class='defaultCursor'>Ex: 1234567</label>";
+			html += "><label style='margin-right:0px;' class='wp_st_defaultCursor'>Ex: 1234567</label>";
 			html += "</div>";
 		}else if(services[s] == "twitter"){
-			html += "<div class='buttonCodeGeneratorConfig'>";
+			html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 			html += "<label class='leftLabel'>Twitter via username</label>";
 			html += "<input id='twitter_via_textbox' type='textbox' value='"+st_socialPluginValues["twitter_via_textbox"]+"' name='twitter[via]' data-value=''";
 			if (callback) {
 				html += " onblur='"+callback+"'";
 			}
-			html += "><label class='defaultCursor'>Example: Enter 'sharethis' for username</label>";
+			html += "><label class='wp_st_defaultCursor'>Example: Enter 'sharethis' for username</label>";
 			html += "</div>";
 			
 			if(st_btnType != "_none"){
-				html += "<div class='buttonCodeGeneratorConfig'>";
+				html += "<div class='wp_st_buttonCodeGeneratorConfig'>";
 				html += "<label class='leftLabel'>Twitter account username</label>";
 				html += "<input id='twitter_username_textbox' type='textbox' value='"+st_socialPluginValues["twitter_username_textbox"]+"' name='twitter[username]' data-value=''";
 				if (callback) {
 					html += " onblur='"+callback+"'";
 				}
-				html += "><label class='defaultCursor'>Example: Enter 'sharethis' for username</label>";
+				html += "><label class='wp_st_defaultCursor'>Example: Enter 'sharethis' for username</label>";
 				html += "</div>";
 			}
 		}
@@ -1124,12 +1124,12 @@ function setPullDownConfig(){
 }
 
 function setHeaderValues(indexNumber){
-	jQuery(".navSlideDot").removeClass("slideSelected");
-	jQuery("#navDotSlide"+(indexNumber+1)).addClass("slideSelected");
-    jQuery("#st_stepfooter").html("Step "+(indexNumber+1)+" of 6");
-	jQuery(".back_screen_title").html(headerInformation[indexNumber].back); 
-	jQuery("#st_slideTitle").html(headerInformation[indexNumber].title);
-	jQuery(".next_screen_title").html(headerInformation[indexNumber].next);
+	jQuery(".wp_st_navSlideDot").removeClass("wp_st_slideSelected");
+	jQuery("#navDotSlide"+(indexNumber+1)).addClass("wp_st_slideSelected");
+    jQuery("#wp_st_stepfooter").html("Step "+(indexNumber+1)+" of 6");
+	jQuery(".wp_st_backTitle").html(headerInformation[indexNumber].back); 
+	jQuery("#wp_st_slideTitle").html(headerInformation[indexNumber].title);
+	jQuery(".wp_st_nextTitle").html(headerInformation[indexNumber].next);
 }	
 
 
@@ -1228,7 +1228,7 @@ function checkAdditionalOptions(){
  function getAdditionalOptions(services){
 	var html="";
 	html="<h1>Your Additional Selected Options:</h1>"
-	html+="<ul class='additional_opts_list'>";
+	html+="<ul class='wp_st_additional_opts_list'>";
 	if(st_widgetVersion != ""){
 		var sharingMethod;
 		if(st_widgetVersion == "5x"){
@@ -1244,42 +1244,42 @@ function checkAdditionalOptions(){
    for(s=0;s<services.length;s++){
 	 if(services[s] == "twitter"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_via_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Via </span><span class='value'>"+st_socialPluginValues[services[s]+"_via_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Via </span><span class='value'>"+st_socialPluginValues[services[s]+"_via_textbox"]+"</span></li>";
 		}
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_username_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Username </span><span class='value'>"+st_socialPluginValues[services[s]+"_username_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Username </span><span class='value'>"+st_socialPluginValues[services[s]+"_username_textbox"]+"</span></li>";
 		}
 	  }else if(services[s]=="pinterestfollow"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Pinterest Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Pinterest Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 	   }
 	  }else if (services[s] == "instagram"){
 	  	if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Instagram Badge Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Instagram Badge Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 		}
 	  }else if (services[s] == "youtube"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Youtube Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Youtube Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 		}	
 	  }else if (services[s] == "linkedinfollow"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Linkedin Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Linkedin Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 		}	
 	  }else if (services[s] == "twitterfollow"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 		}	
 	  }else if (services[s] == "fbsub"){
 	  if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Facebook Subscribe Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Facebook Subscribe Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 		}	
 	  }else if (services[s] == "foursquaresave"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Foursquare Save Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Foursquare Save Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 		}	
 	  }else if (services[s] == "foursquarefollow"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Foursquare Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Foursquare Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 		}	
 	  } 
 	}
@@ -1290,13 +1290,13 @@ function checkAdditionalOptions(){
 function validateUserSelection(){
 	if(st_selectedButtonStyle == "" && st_selectedBarStyle== "" && st_isShareNowSelected == false){
 		jQuery("#preview").show();
-		jQuery("#preview").addClass("error_message");
+		jQuery("#preview").addClass("wp_st_error_message");
 		jQuery("#preview").html("Please select any of the button style or bar style");
-		location.href = "#st_header";
+		location.href = "#wp_st_header";
 		return false;
 	}else{
-		if(jQuery("#preview").hasClass("error_message")){
-			jQuery("#preview").removeClass("error_message");
+		if(jQuery("#preview").hasClass("wp_st_error_message")){
+			jQuery("#preview").removeClass("wp_st_error_message");
 		}
 		return true;
 	}
@@ -1311,9 +1311,9 @@ function hideAll(){
 	jQuery("#st_step5").hide();
 	jQuery("#st_step6").hide();
 	jQuery("#st_splServiceContainer").hide();
-	jQuery("#st_slidingContainer").hide();
+	jQuery("#wp_st_slidingContainer").hide();
 	jQuery("#st_pulldownConfig").hide();
-	jQuery("#st_savebutton").hide();
+	jQuery("#wp_st_savebutton").hide();
 	jQuery("#edit").hide();
 }
 
@@ -1332,7 +1332,7 @@ function moveToPrevious(stepNumber){
 		}
 	}else if(stepNumber == 5){
 		setPreviousValues("#st_step4",stepNumber);
-		jQuery(".next_text").html("Next : ");
+		jQuery(".wp_st_nextText").html("Next : ");
 		enableRightArrow();
 	}else if(stepNumber == 6){
 		setPreviousValues("#st_step5",stepNumber);
@@ -1367,14 +1367,14 @@ function moveToNext(stepNumber){
 		setNextValues("#st_step4",stepNumber);
 	}else if(stepNumber == 4){
 		setNextValues("#st_step5",stepNumber);
-		jQuery(".next_text").html("Almost Done : ");
+		jQuery(".wp_st_nextText").html("Almost Done : ");
 		checkForLoginCredentials();
 	}else if(stepNumber == 5){
 		checkAdditionalOptions();
 		generateCode();
 		setNextValues("#st_step6",stepNumber);
-		jQuery("#st_savebutton").show();
-		jQuery("#st_savebutton").attr("disabled", false);
+		jQuery("#wp_st_savebutton").show();
+		jQuery("#wp_st_savebutton").attr("disabled", false);
 		jQuery("#edit").show();
 		disableRightArrow();
 	}

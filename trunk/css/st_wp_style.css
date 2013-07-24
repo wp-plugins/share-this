@@ -1,19 +1,19 @@
 @font-face
 {
-  font-family : "Helvetica";
+  font-family : "WP_ST_Helvetica";
   src : url("fonts/helvetica.woff") format("woff");
   font-weight : bold;
   font-style : normal;
 }
 
-#st_header,#st_footer{
+.wp_st_headerFooter{
 	width : 100%;
 	height: 50px;
 	background-color : #ECECEC;
 	margin : 0px;	
 }
 		
-#st_centerContainer1{
+#wp_st_centerContainer1{
 	/*height : 140px;*/
 	text-align:center;
 	width : 100%;
@@ -33,21 +33,21 @@
 	width : 100%;
 }
 
-#st_mainbody{
+#wp_st_mainbody{
 	width : 100%;
-	font-family:Helvetica !important;
+	font-family:WP_ST_Helvetica !important;
 	font-size: 12px !important;
 	/*height : 82%;*/
 }
 
-#st_slideTitle{
+#wp_st_slideTitle{
 	font-weight: bold;
 	font-size : 18px;
 	line-height: 1.4em !important;
 	cursor : default;
 }
 
-.next_text, .back_text{
+.wp_st_nextText, .wp_st_backText{
 	font-weight: bold;
 	color: #36759a;
 	position : relative;
@@ -56,14 +56,14 @@
 	vertical-align: inherit !important;
 }
 
-.left_navigator{
+.wp_st_left_navigator{
 	float: left;
 	width: 35%;
 	margin-left: 5px;
 	margin-top: 6px;
 }
 
-#st_header_middle{
+.wp_st_header_middle{
 	position : relative;
 	width : 29%;
 	text-align: center;
@@ -71,14 +71,14 @@
 	float : left;
 }
 
-#st_footer_middle{
+.wp_st_footer_middle{
 	position : relative;
 	width : 29%;
 	float : left;
 	text-align: center;
 }
 
-.right_navigator{
+.wp_st_right_navigator{
 	float: right;
     position: relative;
     text-align: right;
@@ -88,7 +88,7 @@
 }
 
 
-.next_screen_title, .back_screen_title {
+.wp_st_nextTitle, .wp_st_backTitle {
 	color: #36759a;
 	position : relative;
 	bottom : 2px;
@@ -97,50 +97,20 @@
 	cursor : pointer;
 }
 
-.button_heading{
-	background: url("../images/Gradient_Default.jpg") repeat scroll 0 0 transparent;
-    border: 2px solid lightGrey;
-    border-radius: 5px 5px 5px 5px;
-    color: #367499;
-    cursor: pointer;
-    float: left;
-    font-size: 16px;
-    font-weight: bold;
-    height: 45px;
-    left: 24px;
-    margin-left: 3.5%;
-    margin-top: 2%;
-    text-align: center;
-    width: 100px;
-	padding-top: 8px;
-}
-
-p.button_heading:hover {
-	background: url("../images/Gradient_Over.jpg") repeat scroll 0 0 transparent;
-	border: 2px solid #AAAACC;
-}
-.button_heading.selected {
-	border: 2px solid #4DAA3D;
-}
-
 .wp_st_arrow{
 	position : relative;
 	top : 5px;
 	cursor: pointer;
 }
 
-#st_previewlabel{
-	font-size : 14px;
-}
-
-#st_separator{
+#wp_st_separator{
 	color : #DFDFDF;
 	background-color : #DFDFDF;
 	height : 1px;
 	border : 0px;
 }
 
-#st_vseparator{
+.wp_st_vseparator{
 	color : #DFDFDF;
 	background-color : #DFDFDF;
 	height : 240px;
@@ -162,19 +132,7 @@ p.button_heading:hover {
 	width : 49%;
 }
 
-
-.previewBox {
-    background: none repeat scroll 0 0 white;
-    border: 1px solid lightgray;
-    border-radius: 5px 5px 5px 5px;
-    box-shadow: 3px 3px 5px #888888;
-    margin: 20px 0 4px;
-    padding: 10px;
-    text-align: center;
-    width: 98%;
-}
-
-.previewDiv{
+.wp_st_previewDiv{
 	margin: 20px 0 4px;
     padding: 10px;
     text-align: center;
@@ -184,10 +142,7 @@ p.button_heading:hover {
 	position : relative;
 }
 
-#preview{
-	margin-top : 30px;
-}
-#barPreview1{
+.wp_st_barPreview1{
 	display:none;
 	height:50px;
 	background:url('../images/direction_arrows.png');
@@ -198,47 +153,31 @@ p.button_heading:hover {
 	left:10px;
 	top:0px;
 }
-#barPreview2{
+.wp_st_barPreview2{
     display:none;
 	height:50px;
 	background:url('../images/direction_arrows.png');
 	background-position:-90px 0;
 	background-repeat:no-repeat;
 	width:46px;
-	/*position:relative;
-	left:935px;
-	top:-90px; frm sagar*/
 	position:absolute;
 	left:810px;
 	top:0px;
 }
 
-#barPreview3{
+.wp_st_barPreview3{
     display:none;
 	height:50px;
 	background:url('../images/direction_arrows.png');
 	background-position:-45px 0;
 	background-repeat:no-repeat;
 	width:46px;
-	/*position:relative;
-    top:-115px; frm sagar*/
 	position:absolute;
     top:0px; 
 	left:10px;
 }
 
-h2{
-	margin : 0px;
-}
-
-.listsPositioning{
-	position: relative;
-	top:0px;
-	margin:0px;
-	float: left;
-}
-
-#navDots {
+#wp_st_navDots {
     margin: 0 auto;
     position: relative;
     top: 12px;
@@ -246,7 +185,7 @@ h2{
     z-index: 1000
 }
 
-.navSlideDot {
+.wp_st_navSlideDot {
     background: url("../images/dots.png") no-repeat scroll 0 0 transparent;
     float: left;
     height: 12px;
@@ -256,28 +195,27 @@ h2{
 	cursor : pointer;
 }
 
-
-.slideSelected {
+.wp_st_slideSelected {
     background: url("../images/dots.png") no-repeat scroll 0 -12px transparent;
     height: 14px;
     padding-right: 4px;
 }
 
-#st_stepfooter {
+#wp_st_stepfooter {
     margin: 0 auto;
     position: relative;
     top: 6px;
     width: 70px;
 }
 
-#st_slidingContainer{
+#wp_st_slidingContainer{
 	width : 100%;
 	height : 195px;
 	border-bottom: 1px solid #CCCCCC;
     border-top: 1px solid #CCCCCC;
 }
 
-#st_savebutton{
+#wp_st_savebutton{
 	background: #119966;
 	background: -moz-linear-gradient(top, #119966 0%, #056D2D 48%, #008553 100%);
     border: 1px solid #008855;
@@ -308,22 +246,19 @@ h2{
  {
  /*background: url("/images/Gradient_Default.jpg") repeat scroll 0 0 transparent;*/
 	border: 2px solid white;
-    /*border-radius: 5px 5px 5px 5px;*/
     float: left;
-   /* margin: 5px 5px 5px 10px;*/
     margin-left: 35px;
     text-align: center;
 	cursor:pointer;
-	/*display : inline;*/
  }
  
  
-.subOptions li.selected {
+.wp_st_subOptions li.selected {
     background: none repeat scroll 0 0 #DDDDDD;
     border: 2px solid #4DAA3D;
 }
  
- .buttonCodeGeneratorConfig input {
+ .wp_st_buttonCodeGeneratorConfig input {
 	border: 2px solid #ddd;
 	min-height: 1.5em;
 	width: 32%;
@@ -335,7 +270,7 @@ h2{
 	padding-left: 5px;
 }
 
-.buttonCodeGeneratorConfig .leftLabel {
+.wp_st_buttonCodeGeneratorConfig .leftLabel {
 	display : block;
 	clear : left;
     float : left;
@@ -345,7 +280,7 @@ h2{
 	cursor : default;
 }
 
-.buttonCodeGeneratorConfig {
+.wp_st_buttonCodeGeneratorConfig {
     background: none repeat scroll 0 0 white;
     border: 1px solid #AAAAAA;
     cursor: text;
@@ -358,11 +293,11 @@ h2{
 }
 
 
-.buttonCodeHeading{
+.wp_st_buttonCodeHeading{
     color: #FF6E00 !important;
     font-size: 16px !important;
     margin: 0 2% 1% !important;
-	font-family:Helvetica !important;
+	font-family:WP_ST_Helvetica !important;
 }
 
 .wp_st_buttonholder{
@@ -372,7 +307,7 @@ h2{
     width: 800px;
 }
 
-.post_heading{
+.wp_st_post_heading{
 background: url("../images/Gradient_Default.jpg") repeat scroll 0 0 transparent;
     border: 2px solid lightGrey;
     border-radius: 5px 5px 5px 5px;
@@ -380,7 +315,7 @@ background: url("../images/Gradient_Default.jpg") repeat scroll 0 0 transparent;
     cursor: pointer;
     float: left;
     font-size: 18px;
-	font-family:Helvetica;
+	font-family:WP_ST_Helvetica;
     font-weight: bold;
     height: 32px;
     left: 24px;
@@ -390,19 +325,15 @@ background: url("../images/Gradient_Default.jpg") repeat scroll 0 0 transparent;
     width: 100px;
 }	
 
-p.post_heading:hover{
+p.wp_st_post_heading:hover{
 	background: url("../images/Gradient_Over.jpg") repeat scroll 0 0 transparent;
 	border: 2px solid #AAAACC;
 }
-.post_heading.selected{
+.wp_st_post_heading.selected{
 	border: 2px solid #4DAA3D;
 }
 
-.socialPluginContainer{
-
-}
-
-.socialPluginContainer li{
+.wp_st_socialPluginContainer li{
 	font-size: 16px !important;
     margin-left: 30px !important;
     padding: 0 !important;
@@ -419,31 +350,31 @@ p.post_heading:hover{
 }
 
 
-#styleLinks.linksDiv {
+#wp_st_wp_st_styleLinks.linksDiv {
 	margin-top: 15px;
 	text-align: center;
 }
 
-#styleLinks .makeHori {
+#wp_st_styleLinks .makeHori {
 	width: auto;
 }
 
-#styleLinks h1 {
+#wp_st_styleLinks h1 {
 	float: left;
 	width: 263px;
 	text-align: center;
 	margin: 0px 100px;
 	font-size: 18px;
 	font-weight:bold;
-	font-family:Helvetica;
+	font-family:WP_ST_Helvetica;
 }
 
-#styleLinks ul {
+#wp_st_styleLinks ul {
 	width: 283px;
 	float: left;
 }
 
-#destLinks ul li, #styleLinks ul li {
+#wp_st_styleLinks ul li {
     background: url("../images/Gradient_Default.jpg") repeat scroll 0 0 transparent;
     border: 2px solid lightgrey;
     border-radius: 5px 5px 5px 5px;
@@ -452,18 +383,18 @@ p.post_heading:hover{
     cursor: pointer;
 }
 
-#destLinks ul li.selected, #styleLinks ul li.selected, #destLinks ul li.selected:hover, #styleLinks ul li.selected:hover {
+#wp_st_styleLinks ul li.selected,#wp_st_styleLinks ul li.selected:hover {
     background: none repeat scroll 0 0 #DDDDDD;
     border: 2px solid #4DAA3D;
     border-radius: 5px 5px 5px 5px;
 }
 
-#destLinks ul li:hover, #styleLinks ul li:hover {
+#wp_st_styleLinks ul li:hover {
     background: url("../images/Gradient_Over.jpg") repeat scroll 0 0 transparent;
     border: 2px solid #AAAACC;
 }
 
-#styleLinks {
+#wp_st_styleLinks {
 	margin: 0 24px;
 }
 
@@ -473,7 +404,7 @@ p.post_heading:hover{
     text-align: center;
 }
 
-.hoverState {
+.wp_st_hoverState {
     position: absolute;
 	display: none;
 	padding: 30px 15px 15px;
@@ -483,7 +414,7 @@ p.post_heading:hover{
 	text-align: left;
 }
 
-.hoverState2 {
+.wp_st_hoverState2 {
 	height: 119px;
     width: 263px;
     position: absolute;
@@ -497,7 +428,7 @@ p.post_heading:hover{
 	-khtml-opacity: 0.75;
 }
 
-.styleLink {
+.wp_st_styleLink {
 	background: none repeat scroll 0 0 #D3D3D3;
 	margin: 10px 8px;
 	color: #006FBB;
@@ -505,39 +436,35 @@ p.post_heading:hover{
 	width: 263px;
 }
 
-.hcountStyleButtonImg {
+.wp_st_hcountStyleButtonImg {
 	margin-top: 45px;
 }
 
-.vcountStyleButtonImg {
+.wp_st_vcountStyleButtonImg {
 	margin-top: 20px;
 }
 
-.chickletStyleButtonImg {
+.wp_st_chickletStyleButtonImg {
 	margin-top: 35px;
 }
 
-.hoverbarStyleButtonImg {
+.wp_st_hoverbarStyleButtonImg {
 	margin: 19px 10px 0;
 }
 
-.pulldownStyleButtonImg {
+.wp_st_pulldownStyleButtonImg {
 	margin: 18px 10px 0;
 }
 
-.sharebarStyleButtonImg {
+.wp_st_sharebarStyleButtonImg {
 	margin: 0 10px;
 }
 
-.loadingImage{
+.wp_st_loadingImage{
 	margin: 10px 10px;
 }
 	
-.featuredStyleButtonImg {
-	margin-top: 22px;
-}
-
-.selectSizeType{
+.wp_st_selectSizeType{
 	display: none;
 	width:80px;
 	margin-top:12px;
@@ -545,41 +472,41 @@ p.post_heading:hover{
 	text-align : left;
 }	
 
-.show {
+.wp_st_show {
 	display: block;
 }
 
-.shareNowCustomization{
+.wp_st_shareNowCustomization{
 	border: 0px;
 	position:absolute;
 	top: 408px;
 	cursor : pointer;
-	/*color: #36759A;*/
 }
 
-.pulldownCustomization{
+.wp_st_pulldownCustomization{
 	border: 0px;
 	position:absolute;
 	top: 270px;
 	cursor : pointer;
 }
 
-#inputBoxLI{
+.wp_st_inputBoxLI{
 	background : none repeat scroll 0 0 transparent !important;
 	color: #36759A;
 }
 
-.hoverbar_selectDock{
+.wp_st_hoverbar_selectDock{
 	display: none;
     margin-left: 5px;
     margin-top: 12px;
     width: 80px;
 	text-align : left;
 }
-input[type='checkbox'],input[type='radio']{
+
+/*input[type='checkbox'],input[type='radio']{
   vertical-align : top;
   margin-top : 2px;
-}
+}*/
  
 .stpulldown-gradient
 {
@@ -599,7 +526,7 @@ margin-top: 5px;
 background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
 }
 
-.pulldown_optionsTextbox {
+.wp_st_pulldown_optionsTextbox {
     border: 2px solid #DDDDDD;
     border-radius: 4px 4px 4px 4px;
     color: #4E4E4E;
@@ -607,7 +534,7 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
     width: 32%;
 }
 
-#st_pulldownConfig{
+.wp_st_pulldownConfig{
 	width : 100%;
 	height : 120px;
 	border-bottom: 1px solid #CCCCCC;
@@ -625,23 +552,13 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
     padding: 4px 6px;
 }
 
-#pulldown_selectDock {
+.wp_st_pulldown_selectDock {
 	margin-left : 15px;
 	color: #7F8084;
 	font-size: 12px;
 }
 
-#dvLoading
-{
-   background:#fefefe;
-   height: 100%;
-   width: 100%;
-   position: absolute;
-   z-index: 1000;
-   top: 0;
- 
-}
-.additional_opts_list li
+.wp_st_additional_opts_list li
 {
 	border : 1px solid #D9D9D9;
 	width : 520px;
@@ -650,14 +567,14 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
 	left : 240px;
 	height : 31px;
  }
-.additional_opts_list li .label
+.wp_st_additional_opts_list li .label
  {
   text-align:left;
   padding-left:15px;
   position:relative;
   top:-12px;
  }
- .additional_opts_list li .value
+ .wp_st_additional_opts_list li .value
  {
   padding-left:15px;
   position:absolute;
@@ -665,17 +582,17 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
   top:7px;
  }
  
- .bartext{
+ .wp_st_bartext{
 	margin-left: 50px;
  }
  
- .barPreviewHeader{
+ .wp_st_barPreviewHeader{
 	width: 135px; 
 	font-weight: bold; 
 	text-align:center;
  }
  
- .barPreviewText{
+ .wp_st_barPreviewText{
 	width : 135px;
 	font-size : 14px !important;
  }
@@ -704,7 +621,7 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
 	background-color : #ECECEC;
  }
  
- #st_copynshare{
+ #wp_st_copynshare{
 	width : 46%;
 	font-weight : bold;
  }
@@ -717,7 +634,7 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
 	display : none;
  }
  
- .copynshare_heading{
+ .wp_st_copynshare_heading{
 	width : 48%;
 	float : left;
 	position : relative;
@@ -726,14 +643,14 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
 	font-size : 16px;
  }
  
- .copynshare_image{
+ .wp_st_copynshare_image{
 	width : 42%;
 	position : absolute;
 	top : 42px;
 	left : 50px;
  }
  
- .copynshare_text{
+ .wp_st_copynshare_text{
 	width : 60%;
 	position : absolute;
 	top : 35px;
@@ -741,7 +658,7 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
 	text-align : left;
  }
  
- .copynshare_checkboxes{
+ .wp_st_copynshare_checkboxes{
 	width : 63%;
 	position : absolute;
 	top : 46px;
@@ -749,26 +666,25 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
 	text-align : left;
 }
 
-.customizewidget_heading{
+.wp_st_customizewidget_heading{
 	text-align : left;
 	margin-left : 50px;
 	font-size : 16px;
 	font-weight : bold;
 }
 
-.customizewidget_options{
+.wp_st_customizewidget_options{
 	margin-top : 15px; 
 	text-align : center;
 	left : 50px;
 	position : absolute;
 }
 
-.loginWindowDiv{
-	/*height : 400px;*/
+.wp_st_loginWindowDiv{
 	text-align : center;
 }	
 
-.login_message{
+.wp_st_login_message{
 	font-size : 15px;
 	margin-left : 20px;
 	margin-top : 20px;
@@ -778,19 +694,19 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
 	height : 40px;
 }
 
-.error_message{
+.wp_st_error_message{
 	color : red;
 }
 
-.defaultCursor{
+.wp_st_defaultCursor{
 	cursor : default;
 }
 
-.alignPluginIcons{
+.wp_st_alignPluginIcons{
 	margin-left : 10px;
 }
 
- #donotcopy_label,#hashaddress_label
+ #wp_st_donotcopy_label,#wp_st_hashaddress_label
  {
   position:relative;
   top:-1px;
@@ -800,16 +716,12 @@ background:url("http://sd.sharethis.com/disc/images/Logo_Area.png") no-repeat;
   width:5em;
  }
  
- #showLoadingStatus{
+ .wp_st_showLoadingStatus{
 	font-size : 20px;
 	top : 10%;
  }
  
- #outerContainer{
+ #wp_st_outerContainer{
 	display : none;
-	font-family: Helvetica !important; 
+	font-family: WP_ST_Helvetica !important; 
  }
- 
- input[type=text]::-ms-clear {
-    display: none;
-}
