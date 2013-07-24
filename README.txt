@@ -58,6 +58,10 @@ More information about the [ShareNow plugin for WordPress](http://support.sharet
 
 == Changelog ==
 
+7.0.3
+
+1. CSS Fixes
+
 7.0.2
 
 1. Versioning bug
