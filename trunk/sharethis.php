@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.3
+ Version: 7.0.4
  Author: <a href="http://www.sharethis.com">Kalpak Shah@ShareThis</a>
  Author URI: http://sharethis.com
  */
@@ -140,6 +140,7 @@ if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
 }
 
 function st_widget_head() {
+	adding_st_filters();
 	$widget = get_option('st_widget');
 	if ($widget == '') {
 	}
@@ -244,14 +245,16 @@ function st_add_feed_link($content) {
 	return $content;
 }
 
-// 2006-06-02 Filters to Add Sharethis widget on content and/or link on RSS
-// 2006-06-02 Expected behavior is that the feed link will show up if an option is not 'no'
-if (get_option('st_add_to_content') != 'no' || get_option('st_add_to_page') != 'no') {
-	add_filter('the_content', 'st_add_widget');
+function adding_st_filters(){
+	// 2006-06-02 Filters to Add Sharethis widget on content and/or link on RSS
+	// 2006-06-02 Expected behavior is that the feed link will show up if an option is not 'no'
+	if (get_option('st_add_to_content') != 'no' || get_option('st_add_to_page') != 'no') {
+		add_filter('the_content', 'st_add_widget');
 
-	// 2008-08-15 Excerpts don't play nice due to strip_tags().
-	add_filter('get_the_excerpt', 'st_remove_st_add_link',9);
-	add_filter('the_excerpt', 'st_add_widget');
+		// 2008-08-15 Excerpts don't play nice due to strip_tags().
+		add_filter('get_the_excerpt', 'st_remove_st_add_link',9);
+		add_filter('the_excerpt', 'st_add_widget');
+	}
 }
 
 function st_widget_fix_domain($widget) {
@@ -316,13 +319,12 @@ function st_request_handler() {
 						if(!empty($_POST['st_version'])) {
 							update_option('st_version', $_POST['st_version']);
 							if (($_POST['st_version']) == '5x') {
-								$st_switchTo5x = true;
+								$st_switchTo5x = "true";
 							} elseif (($_POST['st_version']) == '4x') {
-								$st_switchTo5x = false;
+								$st_switchTo5x = "false";
 							}
 						}
-						
-						$widgetTemp = "<script charset=\"utf-8\" type=\"text/javascript\">var switchTo5x={$st_switchTo5x};</script>";
+						$widgetTemp = "<script charset=\"utf-8\" type=\"text/javascript\">var switchTo5x=".$st_switchTo5x.";</script>";
 						
 						$widgetTemp.="<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script>";
 						
@@ -521,7 +523,7 @@ function st_options_form() {
 		<script type="text/javascript" src="http://sharethis.com/js/new/json2.js"></script>
 		<script type="text/javascript" src="http://sharethis.com/js/new/jquery.autocomplete.js"></script>
 		<script type="text/javascript" src="http://sharethis.com/js/new/jquery.colorbox.js"></script>
-		<script type="text/javascript" src="http://sharethis.com/js/new/get-buttons-new.js"></script>
+		<script type="text/javascript" src="'.$plugin_location.'libraries/get-buttons-new.js"></script>
 		<link rel="stylesheet" type="text/css" href="http://w.sharethis.com/button/css/buttons.css"></link>
 		<script type="text/javascript" src="'.$plugin_location.'libraries/stlib_picker.js"></script>
 		<script type="text/javascript" src="'.$plugin_location.'libraries/stlib_preview.js"></script>
