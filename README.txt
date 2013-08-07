@@ -57,6 +57,9 @@ More information about the [ShareNow plugin for WordPress](http://support.sharet
 6. To enable Hovering Bar (floating share buttons), go to the ShareThis Options page and scroll down check the 'Enable Hovering Bar' button.
 
 == Changelog ==
+7.0.4
+1. jQuery noConflict fixed 
+2. Yoast SEO conflict fixed
 
 7.0.3
 

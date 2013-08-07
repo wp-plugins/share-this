@@ -552,7 +552,7 @@ function scriptLoading(barStyle){
 	if(barStyle=="hoverbarStyle"){
 		jQuery('#hoverBarImage').hide();
 		jQuery("#hoverbarLoadingImg").show();
-		jQuery.getScript("http://sharethis.com/js/new/get-hoverbuttons-new.js",function(data){ 
+		jQuery.getScript(PLUGIN_PATH+"libraries/get-hoverbuttons-new.js",function(data){ 
 			hoverbuttons.stgOptions.position =  st_hoverBarPosition;
 			var st_hoverbuttons_widget = new sharethis.widgets.hoverbuttons(hoverbuttons.stgOptions);
 			checkHoverBarPosition();
@@ -581,7 +581,7 @@ function scriptLoading(barStyle){
 	  }else if(barStyle=="pulldownStyle"){
 		jQuery('#pullDownBarImage').hide();
 		jQuery("#pulldownLoadingImg").show();
-		jQuery.getScript("http://sharethis.com/js/new/get-pulldown-new.js",function(data){ 
+		jQuery.getScript(PLUGIN_PATH+"libraries/get-pulldown-new.js",function(data){ 
 			var st_pulldown_widget = new sharethis.widgets.pulldownbar(pulldown.stgOptions);
 			jQuery("#st_configure_pulldown").show();
 			st_selectedBarStyle = barStyle;
@@ -610,7 +610,7 @@ function scriptLoading(barStyle){
 	  if(barStyle=="fbStyle"){
 		jQuery('#shareNowImage').hide();
 		jQuery("#sharenowLoadingImg").show();
-		jQuery.getScript("http://sharethis.com/js/new/get-sharenow-new.js",function(data){ 
+		jQuery.getScript(PLUGIN_PATH+"libraries/get-sharenow-new.js",function(data){ 
 			sharenow.stgOptions.style = jQuery("#st_sharenow_theme").val();
 			var st_service_widget = new sharethis.widgets.serviceWidget(sharenow.stgOptions);
 			jQuery("#st_customize_sharenow").show();
