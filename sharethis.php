@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.5
+ Version: 7.0.6
  Author: <a href="http://www.sharethis.com">Kalpak Shah@ShareThis</a>
  Author URI: http://sharethis.com
  */
@@ -300,6 +300,13 @@ function st_request_handler() {
 	if (!empty($_REQUEST['st_action'])) {
 		switch ($_REQUEST['st_action']) {
 			case 'st_update_settings':
+				
+				// Security check nonce
+				if ( ! wp_verify_nonce( $_REQUEST['st_nonce'], 'wp-sharethis' ) ) {
+					// This nonce is not valid.
+					die( 'Security check' ); 
+				}
+				
 				if (ak_can_update_options()) {
 					if($_POST['Edit'] == ""){
 						$publisher_id=$_POST['st_pkey'];
@@ -838,6 +845,7 @@ function st_options_form() {
 					<input type="hidden" id="is_copynshre_selected" value=""/>
 					
 					<input type="hidden" name="st_action" value="st_update_settings" />
+					<input type="hidden" name="st_nonce" value="'.wp_create_nonce("wp-sharethis").'" />
 					<input type="hidden" name="st_version" id="st_version" value="'.$st_widget_version.'"/>
 					<input type="hidden" name="st_services" id="st_services" value="'.$services.'"/>
 					<input type="hidden" name="st_current_type" id="st_current_type" value="'.$st_current_type.'"/>
@@ -947,6 +955,12 @@ var st_script_vars = {"plugin_url":"'.plugin_dir_url( __FILE__ ).'"};
 </script>';
 
 }
+
+// Update nonce security code every hour
+function nonce_hourly() {
+    return 3600;
+}
+add_filter( 'nonce_life', 'nonce_hourly' );
 
 add_action('wp_head', 'st_widget_head');
 add_action('init', 'st_request_handler', 9999);
