@@ -10,6 +10,39 @@ Social Charge your Content with ShareThis - features Social Analytics, CopyNShar
 
 == Description ==
 
+**ShareThis Presents: The Page View is Dead:Thriving in the Social & Mobile Era**
+
+A 4-part webinar series for website publishers and mobile app developers. 
+
+Learn how to:
+
+ 
+* Improve your Social Media Strategies
+* Increase Engagement on your Mobile App
+* Leverage your Social Analytics
+* Evaluate New Metrics to Measure Success
+
+Register today!
+
+September 24 2013 11AM PDT
+Evaluate your Social Cycle: Connect. Engage. Increase. Repeat.
+[Register Now](https://attendee.gotowebinar.com/register/4719982769076930048)
+
+October 15, 2013 11AM PDT
+Turning the Lights On: Increasing Engagement in your Mobile App
+[Register Now](https://attendee.gotowebinar.com/register/1730058809434486016)
+
+October 29, 2013 11AM PDT
+Leveraging Social Analytics to Power Quality Referral Traffic
+[Register Now](https://attendee.gotowebinar.com/register/3082408633575857664)
+
+November 19, 2013 11AM PDT
+Verdict: Infinite Scroll Found Guilty in Page View’s Death
+[Register Now](https://attendee.gotowebinar.com/register/4953046248818162432)
+
+
+[Learn More](http://support.sharethis.com/customer/portal/articles/1268746-2013-webinars#sthash.xj3pOTKZ.dpbs).
+
 **Increase social activity on your site with ShareThis!**
 
 * Choose from to 120 social channels, including Facebook, Twitter, LinkedIn, and Pinterest.
