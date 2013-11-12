@@ -12,33 +12,15 @@ Social Charge your Content with ShareThis - features Social Analytics, CopyNShar
 
 **ShareThis Presents: The Page View is Dead:Thriving in the Social & Mobile Era**
 
-A 4-part webinar series for website publishers and mobile app developers. 
+Join us for our last webinar!
 
-Learn how to:
+November 19, 2013 11AM PST 
 
- 
-* Improve your Social Media Strategies
-* Increase Engagement on your Mobile App
-* Leverage your Social Analytics
-* Evaluate New Metrics to Measure Success
+Verdict: Infinite Scroll Found Guilty in Page View’s Death 
 
-Register today!
-
-September 24 2013 11AM PDT
-Evaluate your Social Cycle: Connect. Engage. Increase. Repeat.
-[Register Now](https://attendee.gotowebinar.com/register/4719982769076930048)
-
-October 15, 2013 11AM PDT
-Turning the Lights On: Increasing Engagement in your Mobile App
-[Register Now](https://attendee.gotowebinar.com/register/1730058809434486016)
-
-October 29, 2013 11AM PDT
-Leveraging Social Analytics to Power Quality Referral Traffic
-[Register Now](https://attendee.gotowebinar.com/register/3082408633575857664)
-
-November 19, 2013 11AM PDT
-Verdict: Infinite Scroll Found Guilty in Page View’s Death
 [Register Now](https://attendee.gotowebinar.com/register/4953046248818162432)
+
+Redefine the value of your website. Go beyond page views and CTRs. Find out why agencies, such as SMG, are adopting SQI as an additional metric to measure the relevancy of their target audiences - the social influencers.
 
 
 [Learn More](http://support.sharethis.com/customer/portal/articles/1268746-2013-webinars#sthash.xj3pOTKZ.dpbs).
