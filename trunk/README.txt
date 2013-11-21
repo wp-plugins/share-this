@@ -10,20 +10,6 @@ Social Charge your Content with ShareThis - features Social Analytics, CopyNShar
 
 == Description ==
 
-**ShareThis Presents: The Page View is Dead:Thriving in the Social & Mobile Era**
-
-Join us for our last webinar!
-
-November 19, 2013 11AM PST 
-
-Verdict: Infinite Scroll Found Guilty in Page View’s Death 
-
-[Register Now](https://attendee.gotowebinar.com/register/4953046248818162432)
-
-Redefine the value of your website. Go beyond page views and CTRs. Find out why agencies, such as SMG, are adopting SQI as an additional metric to measure the relevancy of their target audiences - the social influencers.
-
-
-[Learn More](http://support.sharethis.com/customer/portal/articles/1268746-2013-webinars#sthash.xj3pOTKZ.dpbs).
 
 **Increase social activity on your site with ShareThis!**
 
