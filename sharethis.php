@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.6
+ Version: 7.0.7
  Author: <a href="http://www.sharethis.com">Kalpak Shah@ShareThis</a>
  Author URI: http://sharethis.com
  */
@@ -57,6 +57,9 @@ function install_ShareThis(){
 	
 	if($widget==false || !preg_match('/stLight.options/',$widget)){
 		$pkey2=get_option('st_pubid'); 
+		if(empty($pkey2))
+			$pkey2 = trim(makePkey());
+			
 		$widget ="<script charset=\"utf-8\" type=\"text/javascript\">var switchTo5x=true;</script>";
 		$widget.="<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script>";
 		$widget.="<script type=\"text/javascript\">stLight.options({publisher:'$pkey2'});var st_type='wordpress".trim(get_bloginfo('version'))."';</script>";
@@ -85,14 +88,20 @@ function install_ShareThis(){
 	if (get_option('st_add_to_content') == '') {
 		update_option('st_add_to_content', 'yes');
 	}
+	if (get_option('st_add_to_content1') == '') {
+		update_option('st_add_to_content1', 'bot');
+	}
 	if (get_option('st_add_to_page') == '') {
 		update_option('st_add_to_page', 'yes');
+	}
+	if (get_option('st_add_to_page2') == '') {
+		update_option('st_add_to_page2', 'bot');
 	}
 }
 
 function uninstall_ShareThis()
 {
-	$st_options = array('st_add_to_content','st_add_to_page','st_current_type',
+	$st_options = array('st_add_to_content','st_add_to_page','st_current_type','st_add_to_content1','st_add_to_page2',
 						'st_prompt','st_pubid','st_sent','st_services',
 						'st_tags','st_upgrade_five','st_version','st_widget','st_username','st_pulldownlogo');
 	foreach ($st_options as $option){
@@ -227,13 +236,37 @@ function st_remove_st_add_link($content) {
 
 // MODIFIES THE CONTENT OF THE PAGE
 function st_add_widget($content) {
-	if ((is_page() && get_option('st_add_to_page') != 'no') || (!is_page() && get_option('st_add_to_content') != 'no')) {
+	/*if ((is_page() && get_option('st_add_to_page') != 'no') || (!is_page() && get_option('st_add_to_content') != 'no')) {
 		if (!is_feed()) {
 			return $content.'<p>'.st_makeEntries().'</p>';
 		}
 	}
 
+	return $content;*/
+	/*$selectedPage = get_option('st_list_pages');
+	if ((is_page($selectedPage) && get_option('st_add_to_page') != 'no')) {*/
+	if ((is_page() && get_option('st_add_to_page') != 'no')) {
+		if (!is_feed()) {
+			return st_show_buttons($content, 'st_add_to_page2');
+		}
+	}
+	
+	if((!is_page() && get_option('st_add_to_content') != 'no')) {
+		if (!is_feed()) {
+			return st_show_buttons($content, 'st_add_to_content1');
+		}	
+	}
+	
 	return $content;
+}
+
+function st_show_buttons($content, $btnPosObj) {
+	if (get_option($btnPosObj) == 'top')
+		return '<p>'.st_makeEntries().'</p>'.$content;
+	else if (get_option($btnPosObj) == 'bot')
+		return $content.'<p>'.st_makeEntries().'</p>';
+	else if (get_option($btnPosObj) == 'both')
+		return '<p>'.st_makeEntries().'</p>'.$content.'<p>'.st_makeEntries().'</p>';
 }
 
 // 2006-06-02 Renamed function from st_add_st_link() to st_add_feed_link()
@@ -318,7 +351,8 @@ function st_request_handler() {
 						//print_r ($_POST);
 						//var_dump($cns_settings);
 						/* updates username in database*/ 
-						if($_POST['st_user_name'] != "" && $_POST['st_user_name'] != "undefined"){
+						//if($_POST['st_user_name'] != "" && $_POST['st_user_name'] != "undefined"){
+						if($_POST['st_user_name'] != "undefined"){
 							update_option('st_username', $_POST['st_user_name']);
 						}
 						
@@ -331,6 +365,8 @@ function st_request_handler() {
 								$st_switchTo5x = "false";
 							}
 						}
+						
+						if(empty($publisher_id)) $publisher_id = trim(makePkey());
 						$widgetTemp = "<script charset=\"utf-8\" type=\"text/javascript\">var switchTo5x=".$st_switchTo5x.";</script>";
 						
 						$widgetTemp.="<script charset=\"utf-8\" type=\"text/javascript\" src=\"http://w.sharethis.com/button/buttons.js\"></script>";
@@ -385,11 +421,21 @@ function st_request_handler() {
 							'st_add_to_content'
 							, 'st_add_to_page'
 							);
-							foreach ($options as $option) {
-								if (isset($_POST[$option]) && in_array($_POST[$option], array('yes', 'no'))) {
-									update_option($option, $_POST[$option]);
-								}
+						foreach ($options as $option) {
+							if (isset($_POST[$option]) && in_array($_POST[$option], array('yes', 'no'))) {
+								update_option($option, $_POST[$option]);
 							}
+						}
+						
+						$options1 = array(
+							'st_add_to_content1'
+							, 'st_add_to_page2'
+							);
+						foreach ($options1 as $option) {
+							if (isset($_POST[$option]) && in_array($_POST[$option], array('top', 'bot', 'both'))) {
+								update_option($option, $_POST[$option]);
+							}
+						}
 								
 							//header('Location: '.get_bloginfo('wpurl').'/wp-admin/options-general.php?page=sharethis.php&updated=true');
 							//$blog_title = get_bloginfo('wpurl');
@@ -463,6 +509,20 @@ function st_options_form() {
 		$st_add_to_contentNo = ' selected="selected" ';
 	}
 	
+	if(get_option('st_add_to_content1') == 'top') {
+		$st_add_to_contentTop = ' selected="selected" ';
+		$st_add_to_contentBot = "";
+		$st_add_to_contentBoth = "";
+	} else if (get_option('st_add_to_content1') == 'bot') {
+		$st_add_to_contentTop = "";
+		$st_add_to_contentBot = ' selected="selected" ';
+		$st_add_to_contentBoth = "";
+	} else if (get_option('st_add_to_content1') == 'both') {
+		$st_add_to_contentTop = "";
+		$st_add_to_contentBot = "";
+		$st_add_to_contentBoth = ' selected="selected" ';
+	}
+	
 	if(get_option('st_add_to_page') != 'no') {
 		$st_add_to_pageYes = ' selected="selected" ';
 		$st_add_to_pageNo = "";
@@ -470,6 +530,21 @@ function st_options_form() {
 		$st_add_to_pageYes = "";
 		$st_add_to_pageNo = ' selected="selected" ';
 	}
+	
+	if(get_option('st_add_to_page2') == 'top') {
+		$st_add_to_pageTop = ' selected="selected" ';
+		$st_add_to_pageBot = "";
+		$st_add_to_pageBoth = "";
+	} else if (get_option('st_add_to_page2') == 'bot') {
+		$st_add_to_pageTop = "";
+		$st_add_to_pageBot = ' selected="selected" ';
+		$st_add_to_pageBoth = "";
+	} else if (get_option('st_add_to_page2') == 'both') {
+		$st_add_to_pageTop = "";
+		$st_add_to_pageBot = "";
+		$st_add_to_pageBoth = ' selected="selected" ';
+	}
+	
 	$widgetTag = get_option('st_widget');
 	
 	if(empty($publisher_id)){
@@ -527,9 +602,9 @@ function st_options_form() {
 		<script type="text/javascript" src="http://w.sharethis.com/dynamic/stlib/allServices.js"></script>
 		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 		<script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
-		<script type="text/javascript" src="http://sharethis.com/js/new/json2.js"></script>
+		<!--<script type="text/javascript" src="http://sharethis.com/js/new/json2.js"></script>
 		<script type="text/javascript" src="http://sharethis.com/js/new/jquery.autocomplete.js"></script>
-		<script type="text/javascript" src="http://sharethis.com/js/new/jquery.colorbox.js"></script>
+		<script type="text/javascript" src="http://sharethis.com/js/new/jquery.colorbox.js"></script> -->
 		<script type="text/javascript" src="'.$plugin_location.'libraries/get-buttons-new.js"></script>
 		<link rel="stylesheet" type="text/css" href="http://w.sharethis.com/button/css/buttons.css"></link>
 		<script type="text/javascript" src="'.$plugin_location.'libraries/stlib_picker.js"></script>
@@ -558,7 +633,7 @@ function st_options_form() {
 						<label>Welcome to ShareThis for WordPress</label>
 					</div>	
 					<div class="wp_st_userinfo">
-						<div id="usernameContainer" style="display:none">You are logged in as : <span id="login_name"></span></div>
+						<div id="usernameContainer" style="display:none">You are logged in as : <span id="login_name"></span><span style="float:right;font-size:16px;cursor:pointer;" onclick="st_signOut()">Sign out</span></div>
 						<div id="pbukeyContainer" style="display:none">Your publisher key : <span id="login_key"></span></div>
 					</div> 
 				</div> 
@@ -775,19 +850,39 @@ function st_options_form() {
 											<span>Customize Widget Position</span>
 										</div>
 										<div class="wp_st_customizewidget_options">
-											<div style="margin-top: 5px"> 
-												<span style="cursor:auto;">Automatically add ShareThis to your posts?</span>
-												<span style="margin-left: 10px"><select name="st_add_to_content" id="st_add_to_content">
-													<option value="yes"'.$st_add_to_contentYes.'>Yes</option>
-													<option value="no"'.$st_add_to_contentNo.'>No</option>
-												</select></span>
+											<div>
+												<div style="margin-top: 5px;float:left;"> 
+													<span style="cursor:auto;">Automatically add ShareThis to your posts?</span>
+													<span style="margin-left: 10px"><select name="st_add_to_content" id="st_add_to_content">
+														<option value="yes"'.$st_add_to_contentYes.'>Yes</option>
+														<option value="no"'.$st_add_to_contentNo.'>No</option>
+													</select></span>
+												</div>
+												<div style="margin-top: 5px"> 
+													<span style="cursor:auto;">Set button positions for posts?</span>
+													<span style="margin-left: 10px"><select name="st_add_to_content1" id="st_add_to_content1">
+														<option value="top"'.$st_add_to_contentTop.'>Top</option>
+														<option value="bot"'.$st_add_to_contentBot.'>Bottom</option>
+														<option value="both"'.$st_add_to_contentBoth.'>Both</option>
+													</select></span>
+												</div>												
 											</div>
-											<div style="margin-top: 7px">
-												<span style="cursor:auto;position: relative; left: 2px;">Automatically add ShareThis to your pages?</span>
-												<span style="margin-left: 10px;position:relative;left:-2px;"><select name="st_add_to_page" id="st_add_to_page">
-													<option value="yes"'.$st_add_to_pageYes.'>Yes</option>
-													<option value="no"'.$st_add_to_pageNo.'>No</option>
-												</select></span>
+											<div>
+												<div style="margin-top: 7px;float:left">
+													<span style="cursor:auto;position: relative; left: 2px;">Automatically add ShareThis to your pages?</span>
+													<span style="margin-left: 10px;position:relative;left:-2px;"><select name="st_add_to_page" id="st_add_to_page">
+														<option value="yes"'.$st_add_to_pageYes.'>Yes</option>
+														<option value="no"'.$st_add_to_pageNo.'>No</option>
+													</select></span>
+												</div>
+												<div style="margin-top: 7px">
+													<span style="cursor:auto;position: relative; left: 2px;">Set button positions for pages?</span>
+													<span style="margin-left: 10px;position:relative;left:-2px;"><select'.$st_add_to_page2.' name="st_add_to_page2" id="st_add_to_page2">
+														<option value="top"'.$st_add_to_pageTop.'>Top</option>
+														<option value="bot"'.$st_add_to_pageBot.'>Bottom</option>
+														<option value="both"'.$st_add_to_pageBoth.'>Both</option>
+													</select></span>
+												</div>												
 											</div>
 									  </div>
 								</div>
