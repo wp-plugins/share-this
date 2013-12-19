@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.7
+ Version: 7.0.8
  Author: <a href="http://www.sharethis.com">Kalpak Shah@ShareThis</a>
  Author URI: http://sharethis.com
  */
@@ -263,10 +263,10 @@ function st_add_widget($content) {
 function st_show_buttons($content, $btnPosObj) {
 	if (get_option($btnPosObj) == 'top')
 		return '<p>'.st_makeEntries().'</p>'.$content;
-	else if (get_option($btnPosObj) == 'bot')
-		return $content.'<p>'.st_makeEntries().'</p>';
 	else if (get_option($btnPosObj) == 'both')
 		return '<p>'.st_makeEntries().'</p>'.$content.'<p>'.st_makeEntries().'</p>';
+	else
+		return $content.'<p>'.st_makeEntries().'</p>';		
 }
 
 // 2006-06-02 Renamed function from st_add_st_link() to st_add_feed_link()
@@ -513,14 +513,14 @@ function st_options_form() {
 		$st_add_to_contentTop = ' selected="selected" ';
 		$st_add_to_contentBot = "";
 		$st_add_to_contentBoth = "";
-	} else if (get_option('st_add_to_content1') == 'bot') {
-		$st_add_to_contentTop = "";
-		$st_add_to_contentBot = ' selected="selected" ';
-		$st_add_to_contentBoth = "";
 	} else if (get_option('st_add_to_content1') == 'both') {
 		$st_add_to_contentTop = "";
 		$st_add_to_contentBot = "";
 		$st_add_to_contentBoth = ' selected="selected" ';
+	} else {
+		$st_add_to_contentTop = "";
+		$st_add_to_contentBot = ' selected="selected" ';
+		$st_add_to_contentBoth = "";
 	}
 	
 	if(get_option('st_add_to_page') != 'no') {
@@ -535,14 +535,14 @@ function st_options_form() {
 		$st_add_to_pageTop = ' selected="selected" ';
 		$st_add_to_pageBot = "";
 		$st_add_to_pageBoth = "";
-	} else if (get_option('st_add_to_page2') == 'bot') {
-		$st_add_to_pageTop = "";
-		$st_add_to_pageBot = ' selected="selected" ';
-		$st_add_to_pageBoth = "";
 	} else if (get_option('st_add_to_page2') == 'both') {
 		$st_add_to_pageTop = "";
 		$st_add_to_pageBot = "";
 		$st_add_to_pageBoth = ' selected="selected" ';
+	} else {
+		$st_add_to_pageTop = "";
+		$st_add_to_pageBot = ' selected="selected" ';
+		$st_add_to_pageBoth = "";
 	}
 	
 	$widgetTag = get_option('st_widget');
