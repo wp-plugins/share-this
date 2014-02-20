@@ -11,11 +11,19 @@ Social Charge your Content with ShareThis - features Social Analytics, CopyNShar
 == Description ==
 
 
-**Increase social activity on your site with ShareThis!**
+**Increase social activity on your site with [ShareThis](www.sharethis.com)!**
 
-* Choose from to 120 social channels, including Facebook, Twitter, LinkedIn, and Pinterest.
+* Choose from 120 social channels, including Facebook, Twitter, LinkedIn, and Pinterest.
 * Use small or large buttons, add counters or use one of the Sharing Bars 
 * Access to greater insights by creating a Social Analytics Dashboard account
+
+**Miss our Webinars? Watch our 4-part Webinar Series to learn how to improve your social media strategies.**
+
+* ​Evaluate your Social Cycle: Connect. Engage. Increase. Repeat. [Watch Now](http://slidesbysharethis.com/v/4cmrl8)
+* Turning the Lights On: Increasing Engagement in your Mobile App [Watch Now](http://slidesbysharethis.com/v/sppp8n)
+* Leveraging Social Analytics to Power Quality Referral Traffic [Watch Now](http://slidesbysharethis.com/v/r5g4te)
+* Verdict: Infinite Scroll Found Guilty in Page View’s Death [Watch Now](http://slidesbysharethis.com/v/uyk7bd)
+
 
 **Join the ShareThis Network**  
 Join the ShareThis Network of over 2.4M sites and get access to your analytics: Check out the [live demo](http://sharethis.com/publishers/metrics-dashboard?txtHidDemo=demo#home).
