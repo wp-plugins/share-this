@@ -150,7 +150,7 @@ function manageBarsOnSave() {
 	var sn_matches = str1.match(/sharethis\.widgets\.serviceWidget/);
 	var so_matches = str1.match(/stLight\.options/);
 	
-	if((!hb_matches || !pb_matches) && !sn_matches && !so_matches) {
+	if( !(hb_matches || pb_matches) && !sn_matches && !so_matches) {
 		jQuery("#preview").show();
 		jQuery("#preview").addClass("wp_st_error_message");
 		jQuery("#preview").html("At least one button or bar style option code should be present");
@@ -1877,14 +1877,31 @@ gtc = new function () {
 			objDBBarOptions = this.parseBarOptions(scriptTagDBObj, "h_options");		
 			
 			if((typeof objEditBoxBarOptions) != "undefined") {
-				if((typeof objDBBarOptions) != "undefined" && objEditBoxBarOptions.position != objDBBarOptions.position)
-					objEditBoxBarOptions.position = this.gtc_st_hoverbar_pos;
+				objEditBoxBarOptions.position = this.gtc_st_hoverbar_pos;
+				
 				if((typeof objDBBarOptions) != "undefined" && objEditBoxBarOptions.chicklets_params.instagram.st_username != objDBBarOptions.chicklets_params.instagram.st_username)
 					objEditBoxBarOptions.chicklets_params.instagram.st_username = this.gtc_st_instagram_username;
 				if((typeof objDBBarOptions) != "undefined" && objEditBoxBarOptions.chicklets_params.twitter.st_via != objDBBarOptions.chicklets_params.twitter.st_via)
 					objEditBoxBarOptions.chicklets_params.instagram.st_username = this.gtc_st_twitter_via;
-				if(st_selectedServicesList.length != objEditBoxBarOptions.chicklets.items.length)
-					objEditBoxBarOptions.chicklets.items = st_selectedServicesList;
+				if(st_selectedServicesList.length != objEditBoxBarOptions.chicklets.items.length) {
+					if (st_selectedServicesList instanceof Array) {
+						var newServicesCounter=0;	
+						var newselectedServicesArray = new Array();
+						
+						for(var i=0; i<st_selectedServicesList.length; i++){
+							if(st_selectedServicesList[i] != 'plusone' && st_selectedServicesList[i] != 'fblike' && st_selectedServicesList[i] != 'fbrec'&& st_selectedServicesList[i] != 'fbsend'&& st_selectedServicesList[i] != 'fbsub'&& st_selectedServicesList[i] != 'foursquaresave'&& st_selectedServicesList[i] != 'foursquarefollow'&& st_selectedServicesList[i] != 'youtube'&& st_selectedServicesList[i] != 'pinterestfollow'&&
+							st_selectedServicesList[i] != 'twitterfollow') {
+								newselectedServicesArray[newServicesCounter] = st_selectedServicesList[i];
+								newServicesCounter++;
+							}
+						}
+						objEditBoxBarOptions.chicklets.items = newselectedServicesArray;
+					}else{
+						objEditBoxBarOptions.chicklets.items = st_selectedServicesList;
+					}	
+				}	
+					
+				
 			}
 			return objEditBoxBarOptions;
 		} else if('pulldownStyle' == styleType) {
@@ -1899,7 +1916,22 @@ gtc = new function () {
 					jQuery('#st_pulldownbar_scrollpx').val(jQuery('#selectScrollHeight_id').val());
 				} 
 				if(st_selectedServicesList.length != objEditBoxBarOptions.chicklets.items.length) {
-					objEditBoxBarOptions.chicklets.items = st_selectedServicesList;
+					if (st_selectedServicesList instanceof Array) {
+						var newServicesCounter=0;	
+						var newselectedServicesArray = new Array();
+						
+						for(var i=0; i<st_selectedServicesList.length; i++){
+							if(st_selectedServicesList[i] != 'plusone' && st_selectedServicesList[i] != 'fblike' && st_selectedServicesList[i] != 'fbrec'&& st_selectedServicesList[i] != 'fbsend'&& st_selectedServicesList[i] != 'fbsub'&& st_selectedServicesList[i] != 'foursquaresave'&& st_selectedServicesList[i] != 'foursquarefollow'&& st_selectedServicesList[i] != 'youtube'&& st_selectedServicesList[i] != 'pinterestfollow'&&
+							st_selectedServicesList[i] != 'twitterfollow'&& st_selectedServicesList[i] != 'instagram') {
+								newselectedServicesArray[newServicesCounter] = st_selectedServicesList[i];
+								newServicesCounter++;
+							}
+						}
+						objEditBoxBarOptions.chicklets.items = newselectedServicesArray;
+					}else{
+						objEditBoxBarOptions.chicklets.items = st_selectedServicesList;
+					}	
+					
 				}
 			}
 			return objEditBoxBarOptions;

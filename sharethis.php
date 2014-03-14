@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://www.sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.9
+ Version: 7.0.10
  Author: <a href="http://www.sharethis.com">Kalpak Shah@ShareThis</a>
  Author URI: http://www.sharethis.com
  */
@@ -448,6 +448,9 @@ function st_request_handler() {
 						if(!empty($_POST['pulldownbar']['services'])) {
 							update_option('st_pulldownbar_services', $_POST['pulldownbar']['services'] );
 						}
+						if(!empty($_POST['pulldownbar']['logo'])) {
+							update_option('st_pulldownlogo', $_POST['pulldownbar']['logo'] );
+						}
 						
 						if(!empty($_POST['st_current_type'])){
 							update_option('st_current_type', trim($_POST['st_current_type'],",") );
@@ -703,7 +706,7 @@ function st_options_form() {
 		
 			<div class="wrap">
 				<div style="padding:10px;border:1px solid #aaa;background-color:#9fde33;text-align:center;display:none;" id="st_updated">Your options were successfully updated</div>
-				<div id="showLoadingStatus" class="wp_st_showLoadingStatus">Loading...</div>
+				<div id="showLoadingStatus" class="wp_st_showLoadingStatus">Loading please wait...</div>
 				<div id="wp_st_outerContainer" style="width:1000px;">
 				<div id="st_title" style="width: 100%; height: 38px;">
 					<div class="wp_st_header_title">
@@ -1240,34 +1243,38 @@ function makePkey(){
 }
 
 function st_styles(){
-	$pulldownBarLogo = get_option('st_pulldownlogo');
-		$custom_css = "
-		.stpulldown-gradient
-		{
-			background: #E1E1E1;
-			background: -moz-linear-gradient(top, #E1E1E1 0%, #A7A7A7 100%); /* firefox */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E1E1E1), color-stop(100%,#A7A7A7)); /* webkit */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E1E1E1', endColorstr='#A7A7A7',GradientType=0 ); /* ie */
-			background: -o-linear-gradient(top, #E1E1E1 0%,#A7A7A7 100%); /* opera */
-			color: #636363;
+	$widget=get_option('st_widget');	
+	if(!empty($widget)){
+		if(preg_match('/pulldownbar/',$widget)){
+			$pulldownBarLogo = get_option('st_pulldownlogo');
+			$custom_css = "
+			.stpulldown-gradient
+			{
+				background: #E1E1E1;
+				background: -moz-linear-gradient(top, #E1E1E1 0%, #A7A7A7 100%); /* firefox */
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E1E1E1), color-stop(100%,#A7A7A7)); /* webkit */
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E1E1E1', endColorstr='#A7A7A7',GradientType=0 ); /* ie */
+				background: -o-linear-gradient(top, #E1E1E1 0%,#A7A7A7 100%); /* opera */
+				color: #636363;
+			}
+			#stpulldown .stpulldown-logo
+			{
+				height: 40px;
+				width: 300px;
+				margin-left: 20px;
+				margin-top: 5px;
+				background:url('".$pulldownBarLogo."') no-repeat;
+			}
+			#stpulldown, #stpulldown *, .entry-content, .entry-content * {
+				-webkit-box-sizing: content-box !important;
+				-moz-box-sizing:    content-box !important;
+				box-sizing:         content-box !important;
+			}";
+			echo "<style type='text/css'>";
+			echo $custom_css;
+			echo "\n</style>\n";
 		}
-		#stpulldown .stpulldown-logo
-		{
-			height: 40px;
-			width: 300px;
-			margin-left: 20px;
-			margin-top: 5px;
-			background:url('".$pulldownBarLogo."') no-repeat;
-		}
-		
-		#stpulldown, #stpulldown *, .entry-content, .entry-content * {
-			-webkit-box-sizing: content-box !important;
-            -moz-box-sizing:    content-box !important;
-            box-sizing:         content-box !important;
-        }";
-	echo "<style type='text/css'>";
-	echo $custom_css;
-	echo "\n</style>\n";
+	}	
 }
 
 function st_load_custom_scripts() {

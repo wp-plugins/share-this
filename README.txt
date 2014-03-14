@@ -3,7 +3,7 @@ Tags:share, share this, sharethis, addthis, addtoany, share this, bookmark faceb
 
 Contributors:ShareThis
 Requires at least: 1.5
-Tested up to: 3.5
+Tested up to: 3.8.1
 Stable tag: trunk
 
 Social Charge your Content with ShareThis - features Social Analytics, CopyNShare, Open Graph Sharing, and the Hovering Bar!
@@ -66,8 +66,33 @@ More information about the [ShareNow plugin for WordPress](http://support.sharet
 6. To enable Hovering Bar (floating share buttons), go to the ShareThis Options page and scroll down check the 'Enable Hovering Bar' button.
 
 == Changelog ==
-7.0.6
+7.0.10
+Maintenance Fixes
+1. Social Plugins are showing-up on Hoverbar and messing the other buttons
+2. Wordpress Plugin Configuration Page Error when only HoverBar option is selected
+3. Hover Bar Position (Left/Right) not getting updated on the actual website
+4. Pulldown Bar logo image not getting saved
 
+7.0.9
+1. Option to add or edit http/https option in code.
+2. Options to show buttons on selected pages.
+3. Advance configuration to edit code.
+4. Added option to show/hide 
+	a. Step 3 Sharing method.
+	b. Step 4 Manage page exceptions.
+	c. Step 6 View & Edit code.
+5. Removed drop downs for Page & Post selection from Step 4.
+6. Minor bug fixes.
+
+7.0.8
+Hot fix for plugin upgradation failure(Content not displaying on website after plugin upgradation)
+
+7.0.7
+1. ShareThis plugin support for Wordpress 3.8
+2. Option to show buttons on Top or Below the post
+3. Option to Logout in Plugin
+
+7.0.6
 1. Secunia vulnerability issue resolved
 
 7.0.5
