@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://www.sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.11
+ Version: 7.0.12
  Author: <a href="http://www.sharethis.com">Kalpak Shah@ShareThis</a>
  Author URI: http://www.sharethis.com
  */
@@ -311,11 +311,11 @@ function st_show_buttons($content) {
 
 	if(($post->post_type == 'page' && !in_array($post->ID , $selectedPage)) || $post->post_type == 'post') { 
 		if ($getTopOptions == 'top' && $getBotOptions == 'bot') 
-			return '<p>'.st_makeEntries().'</p>'.$content.'<p>'.st_makeEntries().'</p>';	
+			return '<p class="no-break">'.st_makeEntries().'</p>'.$content.'<p>'.st_makeEntries().'</p>';	
 		else if ($getTopOptions == 'top' && empty($getBotOptions))
-			return '<p>'.st_makeEntries().'</p>'.$content;
+			return '<p class="no-break">'.st_makeEntries().'</p>'.$content;
 		else if(empty($getTopOptions) && $getBotOptions == 'bot')
-			return $content.'<p>'.st_makeEntries().'</p>';
+			return $content.'<p class="no-break">'.st_makeEntries().'</p>';
 	}
 	
 	return $content;
@@ -1274,6 +1274,22 @@ function st_styles(){
 			echo $custom_css;
 			echo "\n</style>\n";
 		}
+		if(preg_match('/hoverbuttons/',$widget)){
+			echo "<style type='text/css'>
+					#sthoverbuttons #sthoverbuttonsMain, .stMainServices {
+						-webkit-box-sizing: content-box !important;
+						-moz-box-sizing:    content-box !important;
+						box-sizing:         content-box !important;
+					}
+				</style>";
+		}
+		
+		echo "<style type='text/css'>
+					.no-break br {
+						display: none !important;
+					}
+			</style>";
+		
 	}	
 }
 
