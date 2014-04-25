@@ -14,7 +14,7 @@ Social Charge your Content with ShareThis - features Social Analytics, CopyNShar
 
 New Look. Same Function.
 You may have been selected to get a free ShareThis Multi Post widget upgrade.
-This subtle change will give your social tools a more modern look to keep you up to date with the trends. And don’t worry, the widget still functions the same way so your users can choose from 120 social channels to share your content with their friends and family. [Learn More](http://support.sharethis.com/customer/portal/articles/517332-share-widget-faqs)
+This subtle change will give your social tools a more modern look and improved user interaction. And don’t worry, the widget still functions the same way so your users can choose from 120 social channels to share your content with their friends and family. [Learn More](http://support.sharethis.com/customer/portal/articles/517332-share-widget-faqs)
 
 **Increase social activity on your site with [ShareThis](www.sharethis.com)!**
 
