@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://www.sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.13
+ Version: 7.0.14
  Author: <a href="http://www.sharethis.com">Kalpak Shah@ShareThis</a>
  Author URI: http://www.sharethis.com
  */
@@ -198,10 +198,6 @@ function getNewTag($oldTag){
 		$newUrl=$url;
 	}
 	return $newTag='<script type="text/javascript" charset="utf-8" src="'.$newUrl.'"></script>';
-}
-
-if (isset($_GET['activate']) && $_GET['activate'] == 'true') {
-	install_ShareThis();
 }
 
 function st_widget_head() {
@@ -524,6 +520,7 @@ function st_options_form() {
 	$stPostsTop = get_option('st_posts_on_top');
 	$stPostsBot = get_option('st_posts_on_bot');
 	$freshInstalation = empty($services)?1:0;
+	$sharenow_style = "3"; // Default Style
 
 	$checkPagesTop = '';
 	$checkPagesBot = '';
@@ -1133,6 +1130,7 @@ function getPageIdsRecursive($page, &$arrIds) {
 }
 
 function st_get_list_of_pages() {
+	$option = '';
 	$args = array(
 		'sort_order' => 'DESC',
 		'sort_column' => 'post_date',
@@ -1181,6 +1179,7 @@ function st_get_list_of_pages() {
 }
 
 function getPageRecursive($page, &$tempArr, $selectedPages, $elemDisabled, $lvl = 0) {
+	$option = '';
 	$lvl++;
 	$pg = get_pages(array('child_of' => $page->ID));
 	foreach ( $pg as $p ) {
@@ -1316,5 +1315,6 @@ add_action('init', 'st_request_handler', 9999);
 add_action('admin_menu', 'st_menu_items');
 add_action( 'wp_enqueue_scripts', 'st_styles' ); 
 add_action('admin_print_scripts', 'st_load_custom_scripts');
+register_activation_hook( __FILE__, 'install_ShareThis');
 register_uninstall_hook( __FILE__, 'uninstall_ShareThis');
 ?>
