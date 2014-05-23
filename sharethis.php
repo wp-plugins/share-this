@@ -22,8 +22,8 @@
  Plugin Name: ShareThis
  Plugin URI: http://www.sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.14
- Author: <a href="http://www.sharethis.com">Kalpak Shah@ShareThis</a>
+ Version: 7.0.15
+ Author: <a href="http://www.sharethis.com">The ShareThis Team</a>
  Author URI: http://www.sharethis.com
  */
 
@@ -334,8 +334,11 @@ function adding_st_filters(){
 		
 		// META GRAPH Plugin conflicts with Buttons Excerpts
 		$current_plugins = get_option('active_plugins');		
-		if( !( (in_array('wp-open-graph/wp-open-graph.php', $current_plugins)) ||
-			(in_array('wp-open-graph-meta/wp-open-graph-meta.php', $current_plugins)) )
+		if( (!( (in_array('wp-open-graph/wp-open-graph.php', $current_plugins)) ||
+			(in_array('wp-open-graph-meta/wp-open-graph-meta.php', $current_plugins)) ) )
+			&&
+			(!( (in_array('facebook/facebook.php', $current_plugins)) &&
+			(in_array('wordpress-seo/wp-seo.php', $current_plugins)) ))
 			) {
 			// 2008-08-15 Excerpts don't play nice due to strip_tags().
 			add_filter('get_the_excerpt', 'st_remove_st_add_link',9);
