@@ -73,6 +73,7 @@ jQuery(document).ready(function(){
 	PLUGIN_PATH = st_script_vars.plugin_url;
 	window.onload  = function (){
 		windowLoaded();
+		setPostExcerpt();
 	}
 	
 	jQuery("input[name='protocolType']").click(function() {
@@ -2068,4 +2069,13 @@ gtc = new function () {
 	this.clearString = function(val) {
 		return jQuery.trim(val);
 	};
+}
+
+function setPostExcerpt() {
+	//	Disable the post excerpt checkbox if buttons are not selected on top/bottom
+	if (!document.getElementById('st_posts_on_top').checked && !document.getElementById('st_posts_on_bot').checked) {
+		document.getElementById('st_post_excerpt').disabled = true;
+	}else{
+		document.getElementById('st_post_excerpt').disabled = false;
+	}
 }
