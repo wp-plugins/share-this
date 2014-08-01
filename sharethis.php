@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://www.sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.17
+ Version: 7.0.18
  Author: <a href="http://www.sharethis.com">The ShareThis Team</a>
  Author URI: http://www.sharethis.com
  */
@@ -219,7 +219,7 @@ function sendWelcomeEmail($newUser){
 
 	$body = "The ShareThis plugin on your website has been activated on ".get_option('siteurl')."\n\n"
 	."If you would like to customize the look of your widget, go to the ShareThis Options page in your WordPress administration area. $updatePage\n\n" 
-	."Get more information on customization options at http://help.sharethis.com/integration/wordpress." 
+	."Get more information on customization options at http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration" 
 	."To get reporting on share data login to your account at http://www.sharethis.com/account and choose options in the Analytics section\n\n"
     ."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
 
@@ -232,7 +232,7 @@ function sendWelcomeEmail($newUser){
 		$subject = "ShareThis WordPress Plugin Activation";
 		$body ="Thanks for installing the ShareThis plugin on your blog.\n\n" 
 		."If you would like to customize the look of your widget, go to the ShareThis Options page in your WordPress administration area. $updatePage\n\n" 
-		."Get more information on customization options at http://help.sharethis.com/integration/wordpress.\n\n" 		
+		."Get more information on customization options at http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration\n\n" 		
 		."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
 	}
 	$headers = "From: ShareThis Support <support@sharethis.com>\r\n" ."X-Mailer: php";
@@ -247,7 +247,7 @@ function sendUpgradeEmail() {
 	
 	$body = "The ShareThis plugin on your website has been updated!\n\n"
 	."If you would like to customize the look of your widget, go to the ShareThis Options page in your WordPress administration area. $updatePage\n\n" 
-	."Get more information on customization options at http://help.sharethis.com/integration/wordpress." 
+	."Get more information on customization options at http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration" 
 	."To get reporting on share data login to your account at http://www.sharethis.com/account and choose options in the Analytics section\n\n"
     ."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
 
