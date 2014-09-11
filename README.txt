@@ -3,7 +3,7 @@ Tags:share, share this, sharethis, addthis, addtoany, share this, bookmark faceb
 
 Contributors:ShareThis
 Requires at least: 1.5
-Tested up to: 3.8.1
+Tested up to: 4.0
 Stable tag: trunk
 
 Social Charge your Content with ShareThis - features Social Analytics, CopyNShare, Open Graph Sharing, and the Hovering Bar!
