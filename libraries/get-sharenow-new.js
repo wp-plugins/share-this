@@ -41,9 +41,9 @@ var sharenow = {
 		var links = document.getElementsByTagName('link');
 		for (var i=0; i< links.length; i++){
 			if (links[i].getAttribute("type") && links[i].getAttribute("type")=="text/css" && links[i].getAttribute("href")) {
-				if (links[i].getAttribute("href").match(/http:\/\/sd.sharethis.com\/disc\/css\/serviceWidget-facebook-style.*\.css/)) {
+				if (links[i].getAttribute("href").match(/http(|s):\/\/sd.sharethis.com\/disc\/css\/serviceWidget-facebook-style.*\.css/)) {
 					if (sharenow.ieFallback && i>31) {break;}
-					links[i].setAttribute("href", "http://sd.sharethis.com/disc/css/serviceWidget-facebook-style"+sharenow.stgOptions.style+".css");
+					links[i].setAttribute("href", "//sd.sharethis.com/disc/css/serviceWidget-facebook-style"+sharenow.stgOptions.style+".css");
 				}
 			}
 	    }

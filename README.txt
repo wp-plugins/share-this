@@ -54,7 +54,7 @@ Hovering Bar is always present on the left or right side of content, makes it ea
 **Leverage Frictionless Sharing**  
 [ShareNow](http://sharethis.com/publishers/get-sharenow) is the new social tool that allows you to leverage frictionless sharing without having to create your own custom solution and puts your users in control over how they share content. Placed on the right or left side of your content, ShareNow makes it easier for your users to share, delete and re-share to their social network timeline. Increase sharing activity on your site and add ShareNow! [FAQs](http://support.sharethis.com/customer/portal/articles/542253-sharenow-by-sharethis)
 
-More information about the [ShareThis plugin for WordPress](http://help.sharethis.com/integration/wordpress)
+More information about the [ShareThis plugin for WordPress](http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration)
 
 More information about the [ShareNow plugin for WordPress](http://support.sharethis.com/customer/portal/articles/542253-sharenow-by-sharethis).
 == Installation ==
@@ -63,10 +63,13 @@ More information about the [ShareNow plugin for WordPress](http://support.sharet
 2. Put the 'sharethis.php' file into your wp-content/plugins/ directory.
 3. Go to the Plugins page in your WordPress Administration area and click 'Activate' for ShareThis.
 4. In the WordPress Administration area, open the ShareThis Options page, and customize the sharing buttons based on your need.
-5. To enable ShareNow, go to the ShareThis Options page and scroll down check the 'Enable ShareNow' button.
-6. To enable Hovering Bar (floating share buttons), go to the ShareThis Options page and scroll down check the 'Enable Hovering Bar' button.
+5. Please refer this article for detailed instructions - [wordpress installation](http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration)
 
 == Changelog ==
+7.0.19
+
+Added HTTPS Support for Publishers who manage the ShareThis Plugin over HTTPS Admin Panel.
+
 7.0.18
 
 1. Updated Help links in the Welcome Email

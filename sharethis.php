@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://www.sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.18
+ Version: 7.0.19
  Author: <a href="http://www.sharethis.com">The ShareThis Team</a>
  Author URI: http://www.sharethis.com
  */
@@ -219,8 +219,8 @@ function sendWelcomeEmail($newUser){
 
 	$body = "The ShareThis plugin on your website has been activated on ".get_option('siteurl')."\n\n"
 	."If you would like to customize the look of your widget, go to the ShareThis Options page in your WordPress administration area. $updatePage\n\n" 
-	."Get more information on customization options at http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration" 
-	."To get reporting on share data login to your account at http://www.sharethis.com/account and choose options in the Analytics section\n\n"
+	."Get more information on customization options at //support.sharethis.com/customer/portal/articles/446440-wordpress-integration" 
+	."To get reporting on share data login to your account at //www.sharethis.com/account and choose options in the Analytics section\n\n"
     ."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
 
 	$subject = "ShareThis WordPress Plugin";
@@ -232,7 +232,7 @@ function sendWelcomeEmail($newUser){
 		$subject = "ShareThis WordPress Plugin Activation";
 		$body ="Thanks for installing the ShareThis plugin on your blog.\n\n" 
 		."If you would like to customize the look of your widget, go to the ShareThis Options page in your WordPress administration area. $updatePage\n\n" 
-		."Get more information on customization options at http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration\n\n" 		
+		."Get more information on customization options at //support.sharethis.com/customer/portal/articles/446440-wordpress-integration\n\n" 		
 		."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
 	}
 	$headers = "From: ShareThis Support <support@sharethis.com>\r\n" ."X-Mailer: php";
@@ -247,8 +247,8 @@ function sendUpgradeEmail() {
 	
 	$body = "The ShareThis plugin on your website has been updated!\n\n"
 	."If you would like to customize the look of your widget, go to the ShareThis Options page in your WordPress administration area. $updatePage\n\n" 
-	."Get more information on customization options at http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration" 
-	."To get reporting on share data login to your account at http://www.sharethis.com/account and choose options in the Analytics section\n\n"
+	."Get more information on customization options at //support.sharethis.com/customer/portal/articles/446440-wordpress-integration" 
+	."To get reporting on share data login to your account at //www.sharethis.com/account and choose options in the Analytics section\n\n"
     ."If you have any additional questions or need help please email us at support@sharethis.com\n\n--The ShareThis Team";
 
 	$subject = "ShareThis WordPress Plugin Updated";
@@ -265,7 +265,7 @@ function sendUpgradeEmail() {
 function st_link() {
 	global $post;
 
-	$sharethis = '<p><a href="http://www.sharethis.com/item?&wp='
+	$sharethis = '<p><a href="//www.sharethis.com/item?&wp='
 	.get_bloginfo('version').'&amp;publisher='
 	.get_option('st_pubid').'&amp;title='
 	.urlencode(get_the_title()).'&amp;url='
@@ -581,8 +581,13 @@ function st_options_form() {
 			$isSecure = '';		
 		}
 	} else {
-		$isNonSecure = 'checked="checked"';
-		$isSecure = '';	
+		if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || $_SERVER['HTTPS'] == 'on') {
+			$isNonSecure = '';
+			$isSecure = 'checked="checked"';		
+		} else {
+			$isNonSecure = 'checked="checked"';
+			$isSecure = '';	
+		}
 	}
 	
 	if(empty($st_username)){
@@ -590,7 +595,7 @@ function st_options_form() {
 	}
 	
 	if(empty($st_pulldownlogo)){
-		$st_pulldownlogo = "http://sd.sharethis.com/disc/images/Logo_Area.png";
+		$st_pulldownlogo = "//sd.sharethis.com/disc/images/Logo_Area.png";
 	}
 	
 	if(empty($pulldown_scrollpx))
@@ -905,7 +910,7 @@ function st_options_form() {
 									</div>								
 									<div id="addOptions" style="height:250px;text-align: center;display:none;">
 										<div id="st_widget5x" class="wp_st_widget5x">
-											<div style="width:48%; float:left">
+											<div style="width:50%; float:left;margin-top:5px;">
 												<img src="'.$plugin_location.'images/widget-5x.png"/>
 											</div>
 											<div style="width:48%; float:right;">
@@ -1023,7 +1028,7 @@ function st_options_form() {
 							<!-- STEP 5 -->
 							<div id="st_step5" class="wp_st_centerContainer2" style="display:none;">
 								<div id="loginWindowDiv" class="wp_st_loginWindowDiv">
-									<iframe id="loginFrame" width="644px" height="398px" frameborder="0" src="http://www.sharethis.com/external-login?pluginType=newPlugins"></iframe>
+									<iframe id="loginFrame" width="644px" height="398px" frameborder="0" src="//www.sharethis.com/external-login?pluginType=newPlugins"></iframe>
 									<div class="wp_st_login_message">You are successfully logged-in with ShareThis.</div>		
 								</div>
 							</div>
@@ -1041,14 +1046,14 @@ function st_options_form() {
 								</div>							
 								<div id="codeDiv" style="display:none;">
 									<div id="divScripTag" style="background:#ECECEC;display:inline-block;padding:5px;">
-										<div style="float: left;color:#36759A;">Modify script tags<a style="padding-left:5px;" href="http://support.sharethis.com/customer/portal/articles/464663-customize-functionality" title="Customize Functionality" target="_blank"><img src="'.$plugin_location.'images/QUESTION_Icon.png" /></a></div>
+										<div style="float: left;color:#36759A;">Modify script tags<a style="padding-left:5px;" href="//support.sharethis.com/customer/portal/articles/464663-customize-functionality" title="Customize Functionality" target="_blank"><img src="'.$plugin_location.'images/QUESTION_Icon.png" /></a></div>
 										<div style="float: left; margin-left: 288px;color:#36759A;margin-top:1px;"><input type="radio" name="protocolType" id="typehttp" value="http" '.$isNonSecure.' style="'.$scriptProtocolCss.'"/>http&nbsp;&nbsp;&nbsp;</div>
-										<div style="float:left;color:#36759A;"><input type="radio" name="protocolType" id="typehttps" value="https" '.$isSecure.' style="'.$scriptProtocolCss.'" />https<a style="padding-left:5px;" href="http://support.sharethis.com/customer/portal/articles/475097-ssl-support" title="SSL Support" target="_blank"><img src="'.$plugin_location.'images/QUESTION_Icon.png" /></a></div>
+										<div style="float:left;color:#36759A;"><input type="radio" name="protocolType" id="typehttps" value="https" '.$isSecure.' style="'.$scriptProtocolCss.'" />https<a style="padding-left:5px;" href="//support.sharethis.com/customer/portal/articles/475097-ssl-support" title="SSL Support" target="_blank"><img src="'.$plugin_location.'images/QUESTION_Icon.png" /></a></div>
 									</div>
 									<div style="clear:both;"><textarea id="st_widget" name="st_widget" style="height: 150px; width: 525px;font-size:12px;">'.htmlspecialchars($toShow).'</textarea></div>
 									<div>&nbsp;</div>
 									<div id="divHtmlTag" style="background:#ECECEC;display:inline-block;padding:5px;width:517px;text-align:left;">
-										<div style="float: left;color:#36759A;">Modify HTML tags<a style="padding-left:5px;" href="http://support.sharethis.com/customer/portal/articles/475079-share-properties-and-sharing-custom-information#Properties_Tags" title="Share Properties and Sharing Custom Information" target="_blank"><img src="'.$plugin_location.'images/QUESTION_Icon.png" /></a></div>
+										<div style="float: left;color:#36759A;">Modify HTML tags<a style="padding-left:5px;" href="//support.sharethis.com/customer/portal/articles/475079-share-properties-and-sharing-custom-information#Properties_Tags" title="Share Properties and Sharing Custom Information" target="_blank"><img src="'.$plugin_location.'images/QUESTION_Icon.png" /></a></div>
 									</div>									
 									<div style="clear:both;"><textarea id="st_tags" name="st_tags" style="height: 150px; width: 525px;font-size:12px;">'.htmlspecialchars($tags).'</textarea></div>
 								</div>							

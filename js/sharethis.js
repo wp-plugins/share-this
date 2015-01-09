@@ -113,7 +113,7 @@ function st_signOut(pKey) {
 	jQuery('<iframe />', {
 		name: 'tempIframe',
 		id:   'tempIframe',
-		src: 'http://www.sharethis.com/account/signout.php'
+		src: '//www.sharethis.com/account/signout.php'
 	}).appendTo('body');
 	jQuery('#tempIframe').css({'width': '1px', 'height': '1px', 'position': 'absolute', 'top': '-100px'});
 	jQuery('#st_pkey').val(pKey);
@@ -611,38 +611,38 @@ function UpdateSocialPluginValues(){
 			st_socialPluginValues["twitter_via_textbox"] = matches[1];
 		} 
 		
-		var matches2=tags.match(/st_username='(\w*)' class='(st_twitter\w*)'/); 
+		var matches2=tags.match(/st_username='(\w*)'(.*)class='(st_twitter\w*)'/); 
 		if (matches2!=null && typeof(matches2[1])!="undefined"){
 			st_socialPluginValues["twitter_username_textbox"] = matches2[1];
 		} 
 		
-		var matchInstagram = tags.match(/st_username='(\w*)' class='(st_instagram\w*)'/);
+		var matchInstagram = tags.match(/st_username='(\w*)'(.*)class='(st_instagram\w*)'/);
 		if(matchInstagram != null && typeof(matchInstagram[1]) != "undefined"){
 			st_socialPluginValues["instagram_textbox"] = matchInstagram[1];
 		}
 		
-		var matchFbSubscribe = tags.match(/st_username='(\w*)' class='(st_fbsub\w*)'/);
+		var matchFbSubscribe = tags.match(/st_username='(\w*)'(.*)class='(st_fbsub\w*)'/);
 		if(matchFbSubscribe != null && typeof(matchFbSubscribe[1]) != "undefined"){
 			st_socialPluginValues["fbsub_textbox"] = matchFbSubscribe[1];
 		}
 		
-		var matchTwFollow = tags.match(/st_username='(\w*)' class='(st_twitterfollow\w*)'/);
+		var matchTwFollow = tags.match(/st_username='(\w*)'(.*)class='(st_twitterfollow\w*)'/);
 		if(matchTwFollow != null && typeof(matchTwFollow[1]) != "undefined"){
 			st_socialPluginValues["twitterfollow_textbox"] = matchTwFollow[1];
 		}
 		
-		var matchPinFollow = tags.match(/st_username='(\w*)' class='(st_pinterestfollow\w*)'/);
+		var matchPinFollow = tags.match(/st_username='(\w*)'(.*)class='(st_pinterestfollow\w*)'/);
 		if(matchPinFollow != null && typeof(matchPinFollow[1]) != "undefined"){
 			st_socialPluginValues["pinterestfollow_textbox"] = matchPinFollow[1];
 		}
 		
-		var matchFSFollow = tags.match(/st_username='(\w*)' st_followId='(\w*)' class='(st_foursquarefollow\w*)'/);
+		var matchFSFollow = tags.match(/st_username='(\w*)'(.*)st_followId='(\w*)'(.*)class='(st_foursquarefollow\w*)'/);
 		if(matchFSFollow != null && typeof(matchFSFollow[1]) != "undefined"){
 			st_socialPluginValues["foursquarefollow_textbox"] = matchFSFollow[1];
 			st_socialPluginValues["foursquarefollow_textbox2"] = matchFSFollow[2];
 		}
 		
-		var matchYTSubscribe = tags.match(/st_username='(\w*)' class='(st_youtube\w*)'/);
+		var matchYTSubscribe = tags.match(/st_username='(\w*)'(.*)class='(st_youtube\w*)'/);
 		if(matchYTSubscribe != null && typeof(matchYTSubscribe[1]) != "undefined"){
 			st_socialPluginValues["youtube_textbox"] = matchYTSubscribe[1];
 		}
@@ -700,7 +700,7 @@ function checkForLoginCredentials(){
 */
 function getPublisherInfo(){
 	 jQuery.ajax({
-		url: 'http://www.sharethis.com/get-publisher-info.php?callback=?',
+		url: '//www.sharethis.com/get-publisher-info.php?callback=?',
 		type: "GET",
 		dataType: "jsonp",
 		jsonpCallback: "parsePublisherInfo"
@@ -824,7 +824,7 @@ function scriptLoading(barStyle){
 					hoverbuttons.updateWidget();
 					jQuery("#hoverbarLoadingImg").hide();
 					jQuery('#hoverBarImage').show();
-				},1000);
+				},3000);
 			}
 			flgLoaderCompleted = true;
 			removePulldownbar();
@@ -849,9 +849,9 @@ function scriptLoading(barStyle){
 					stPullDown.initWidget();
 					updatePulldownBarChicklets();
 					pulldown.updateWidget();
-				},1000);
-				jQuery("#pulldownLoadingImg").hide();
-				jQuery('#pullDownBarImage').show();
+					jQuery("#pulldownLoadingImg").hide();
+					jQuery('#pullDownBarImage').show();					
+				},3000);
 			}
 			flgLoaderCompleted = true;
 			removeHoverbar();
@@ -874,9 +874,10 @@ function scriptLoading(barStyle){
 			}catch (e) {
 				setTimeout(function(){
 					stServiceWidget = new sharethis.widgets.serviceWidget.framework(); // after serviceWidget.js is loaded.
-				},1000);
-				jQuery("#sharenowLoadingImg").hide();
-				jQuery('#shareNowImage').show();
+					jQuery("#sharenowLoadingImg").hide();
+					jQuery('#shareNowImage').show();					
+				},3000);
+
 			}
 			flgLoaderCompleted = true;
 		},'script'
@@ -893,7 +894,7 @@ function selectStyle(obj) {
 			stlib_preview.updateOpt("preview", {icon:'hcount',label:true});
 		} else if (text == "vcountStyle") {
 			stlib_preview.updateOpt("preview", {icon:'vcount',label:true});
-		} else if (text == "chickletStyle"){
+		} else if (text == "chickletStyle" || text == st_selectedBarStyle || text == 'fbStyle'){
 			var radioButtons = jQuery('#selectSizeType input:radio');
 			for (var i=0; i<radioButtons.length; i++) {
 				if (jQuery('#selectSizeType input:radio')[i].checked) {
@@ -1532,9 +1533,10 @@ function checkAdditionalOptions(){
 }
  
 function getAdditionalOptions(services){
-	var html="";
-	var html1="";
-	var showSelectOptionTitle = false;
+	var html="",
+		html1="",
+		scheme = ("https:" == document.location.protocol) ? "https://ws" : "http://w";
+		showSelectOptionTitle = false;
 	html1="<h1 style='font-size:16px;'>Your Selected Options:</h1>"
 	html1+="<ul class='wp_st_additional_opts_list'>";
 
@@ -1545,51 +1547,51 @@ function getAdditionalOptions(services){
    for(s=0;s<services.length;s++){
 	 if(services[s] == "twitter"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_via_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Via </span><span class='value'>"+st_socialPluginValues[services[s]+"_via_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Via </span><span class='value'>"+st_socialPluginValues[services[s]+"_via_textbox"]+"</span></li>";
 			showSelectOptionTitle = true
 		}
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_username_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Username </span><span class='value'>"+st_socialPluginValues[services[s]+"_username_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Username </span><span class='value'>"+st_socialPluginValues[services[s]+"_username_textbox"]+"</span></li>";
 			showSelectOptionTitle = true
 		}
 	  }else if(services[s]=="pinterestfollow"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Pinterest Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Pinterest Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 			showSelectOptionTitle = true
 	   }
 	  }else if (services[s] == "instagram"){
 	  	if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Instagram Badge Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Instagram Badge Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 			showSelectOptionTitle = true			
 		}
 	  }else if (services[s] == "youtube"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Youtube Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Youtube Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 			showSelectOptionTitle = true
 		}	
 	  }else if (services[s] == "linkedinfollow"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Linkedin Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Linkedin Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 			showSelectOptionTitle = true
 		}	
 	  }else if (services[s] == "twitterfollow"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Twitter Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 			showSelectOptionTitle = true			
 		}	
 	  }else if (services[s] == "fbsub"){
 	  if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Facebook Subscribe Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Facebook Subscribe Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 			showSelectOptionTitle = true
 		}	
 	  }else if (services[s] == "foursquaresave"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Foursquare Save Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Foursquare Save Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 			showSelectOptionTitle = true
 		}	
 	  }else if (services[s] == "foursquarefollow"){
 		if(jQuery.trim(st_socialPluginValues[services[s]+"_textbox"]) != ""){
-			html+="<li><span class='wp_st_alignPluginIcons'><img src='http://w.sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Foursquare Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
+			html+="<li><span class='wp_st_alignPluginIcons'><img src='"+scheme+".sharethis.com/images/"+services[s]+"_32.png'></img></span><span class='label'>Foursquare Follow Username</span><span class='value'>"+st_socialPluginValues[services[s]+"_textbox"]+"</span></li>";
 			showSelectOptionTitle = true			
 		}	
 	  } 
