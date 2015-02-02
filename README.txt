@@ -50,13 +50,8 @@ Enable CopyNShare for your widget! [FAQs](http://support.sharethis.com/customer/
 **Make it Easier for your Users to Share your Content**  
 Hovering Bar is always present on the left or right side of content, makes it easier for your users to share. It's always in view - even when your users scroll up and down the page. [Get the Hovering Bar Now!](http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration#Plugin-Options)
 
-
-**Leverage Frictionless Sharing**  
-[ShareNow](http://sharethis.com/publishers/get-sharenow) is the new social tool that allows you to leverage frictionless sharing without having to create your own custom solution and puts your users in control over how they share content. Placed on the right or left side of your content, ShareNow makes it easier for your users to share, delete and re-share to their social network timeline. Increase sharing activity on your site and add ShareNow! [FAQs](http://support.sharethis.com/customer/portal/articles/542253-sharenow-by-sharethis)
-
 More information about the [ShareThis plugin for WordPress](http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration)
 
-More information about the [ShareNow plugin for WordPress](http://support.sharethis.com/customer/portal/articles/542253-sharenow-by-sharethis).
 == Installation ==
 
 1. Download the plugin archive and expand it (you've likely already done this).
@@ -66,6 +61,11 @@ More information about the [ShareNow plugin for WordPress](http://support.sharet
 5. Please refer this article for detailed instructions - [wordpress installation](http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration)
 
 == Changelog ==
+7.0.20
+
+1. Removed ShareNow Widget from configuration section
+2. Updated Direct Post screenshots
+
 7.0.19
 
 Added HTTPS Support for Publishers who manage the ShareThis Plugin over HTTPS Admin Panel.
@@ -231,5 +231,4 @@ Check out some screenshots of our widget in action!
 1. Screenshot of the ShareThis widget when a user clicks on it.
 2. Screenshot of the Social Analytics Dashboard
 3. Screenshot of the ShareThis widget above content.
-4. Screenshot of the ShareNow widget.
-5. Example of the Hovering Bar.
+4. Example of the Hovering Bar.

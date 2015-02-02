@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://www.sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.19
+ Version: 7.0.20
  Author: <a href="http://www.sharethis.com">The ShareThis Team</a>
  Author URI: http://www.sharethis.com
  */
@@ -532,7 +532,6 @@ function st_options_form() {
 	$stPostsBot = get_option('st_posts_on_bot');
 	$stPostExcerpt = get_option('st_post_excerpt');
 	$freshInstalation = empty($services)?1:0;
-	$sharenow_style = "3"; // Default Style
 
 	$checkPagesTop = '';
 	$checkPagesBot = '';
@@ -651,22 +650,6 @@ function st_options_form() {
 	else{
 		$toShow = $widgetTag;
 	}	
-	
-	//echo $toShow;
-	/* Pulls the theme ID for the sharenow feature*/
-	$a = preg_replace('~[\r\n]+~', '', $toShow);
-	if (preg_match('/serviceWidget/',$a)) { 
-            $pattern = "/<script(.*?)<\/script>/";
-            preg_match_all($pattern, $a, $matches);
-            foreach($matches[1] as $k=>$v)
-            {
-                  if (preg_match('/serviceWidget/',$v)) {
-                        preg_match("/\"style(.*):[\s\"\']{0,}(\d)[\s\"\']{0,}/", $v, $matches);
-                        $sharenow_style = $matches[2];
-                        break;
-                  }
-            }
-      }
 
 	/* Pulls the scrollpx value for the  pull down bar  */
 	$a = preg_replace('~[\r\n]+~', '', $toShow);
@@ -780,6 +763,7 @@ function st_options_form() {
 													</div>
 												</div>
 												<div id="preview" style="margin-top:30px;font-size:30px;"></div>
+												<div id="errorMessage" style="margin-top:30px;font-size:30px;" class="wp_st_error_message"></div>
 												<div id="barPreview2" class="wp_st_barPreview2">
 													<div class="wp_st_bartext">
 														<div class="wp_st_barPreviewHeader">Look to the side!</div>
@@ -828,8 +812,7 @@ function st_options_form() {
 										<div class="wp_st_widget4x">	
 											<ul class="bars wp_st_show" style="padding-left:80px">
 												<li class="wp_st_styleLink jqBarStyle hoverbarStyle" id="hoverbarStyle"><div class="wp_st_hoverState2 hoverbarStyle"></div><div class="wp_st_hoverState hoverbarStyle">This bar can float either on the left side or the right side of the page to provide an always-visible view of the sharing tools.</div><img id="hoverBarImage" src="'.$plugin_location.'images/HOVER_Buttons.png" class="wp_st_hoverbarStyleButtonImg"/><img id="hoverbarLoadingImg" src="'.$plugin_location.'images/loading.gif" class="wp_st_loadingImage" style="display:none"/></li>
-												<li class="wp_st_styleLink jqBarStyle pulldownStyle" id="pulldownStyle"><div class="wp_st_hoverState2 pulldownStyle"></div><div class="wp_st_hoverState pulldownStyle">This bar with sharing buttons is placed at the top of page, but appears only when the reader scrolls down.</div><img id="pullDownBarImage" src="'.$plugin_location.'images/PULLDOWN.png" class="wp_st_pulldownStyleButtonImg"/><img id="pulldownLoadingImg" src="'.$plugin_location.'images/loading.gif" class="wp_st_loadingImage" style="display:none"/></li>
-												<li class="wp_st_styleLink jqShareNow fbStyle" id="fbStyle"><div class="wp_st_hoverState2 fbStyle"></div><div class="wp_st_hoverState fbStyle">ShareNow allows any publisher to leverage Facebook frictionless sharing without having to create their own solution.</div><img id="shareNowImage" src="'.$plugin_location.'images/ShareNow_Button.png" class="wp_st_sharebarStyleButtonImg"/><img id="sharenowLoadingImg" src="'.$plugin_location.'images/loading.gif" class="wp_st_loadingImage" style="display:none"/></li>
+												<li class="wp_st_styleLink jqBarStyle pulldownStyle" id="pulldownStyle"><div class="wp_st_hoverState2 pulldownStyle"></div><div class="wp_st_hoverState pulldownStyle">This bar with sharing buttons is placed at the top of page, but appears only when the reader scrolls down.</div><img id="pullDownBarImage" src="'.$plugin_location.'images/PULLDOWN.png" class="wp_st_pulldownStyleButtonImg"/><img id="pulldownLoadingImg" src="'.$plugin_location.'images/loading.gif" class="wp_st_loadingImage" style="display:none"/></li>											
 											</ul>
 											<ul style="width:100px">
 												<li style="border:0px" class="wp_st_inputBoxLI"><div class="btnDiv" >
@@ -843,38 +826,14 @@ function st_options_form() {
 												
 												<li class="wp_st_pulldownCustomization wp_st_inputBoxLI" style="border:0px" >
 													<span id="st_configure_pulldown" style="display:none">&nbsp;&nbsp;Configure it!</span>
-												</li>
-												
-												<li class="wp_st_shareNowCustomization wp_st_inputBoxLI" style="border:0px" >
-													<span id="st_customize_sharenow" style="display:none;position:relative;top:5px;">&nbsp;&nbsp;Customize it!</span>
-												</li>
-												
+												</li>									
+																							
 											</ul>		
 										</div>	
 										<div style="clear:both;" class="bars wp_st_show"></div>
 									</div>
 								</div>
 								
-								<div id="wp_st_slidingContainer" style="display:none;"> 
-									 <h3 style="margin-left:5px">Customize ShareNow:</h3>
-									 <ul id="themeList" class="wp_st_subOptions">
-										<li data-value="3" class="wp_st_sharenowImg" id="st_sharenowImg3">
-											<a><img class="widgetIconSelected" id="opt_theme3" src="'.$plugin_location.'images/fbtheme_3.png"/></a>
-										</li>
-										<li data-value="4" class="wp_st_sharenowImg" id="st_sharenowImg4">
-											<a><img class="widgetIconSelected" id="opt_theme4" src="'.$plugin_location.'images/fbtheme_4.png"/></a>
-										</li>
-										<li data-value="5" class="wp_st_sharenowImg" id="st_sharenowImg5">
-											<a><img class="widgetIconSelected" id="opt_theme5" src="'.$plugin_location.'images/fbtheme_5.png"/></a>
-										</li>
-										<li data-value="6" class="wp_st_sharenowImg" id="st_sharenowImg6">
-											<a><img class="widgetIconSelected" id="opt_theme6" src="'.$plugin_location.'images/fbtheme_6.png"/></a>
-										</li>
-										<li data-value="7" class="wp_st_sharenowImg" id="st_sharenowImg7">
-											<a><img class="widgetIconSelected" id="opt_theme7" src="'.$plugin_location.'images/fbtheme_7.png"/></a>
-										</li>
-									</ul>
-								</div>
 								
 								<div id="st_pulldownConfig" class="wp_st_pulldownConfig" style="display:none;"> 
 									<h3 style="margin-left:5px">Customize PullDownBar:</h3>
@@ -1012,6 +971,7 @@ function st_options_form() {
 												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Manage Page Exceptions
 											</span>
 									  </div>
+									  <br/>
 									  <div id="divPageList" style="display:none;">
 										  <div class="wp_st_customizewidget_heading">
 												<span style="font-size:12px;">Do <strong style="font-family: sans-serif;font-weight:bold;"><i>not</i></strong> show on</span>
@@ -1090,8 +1050,7 @@ function st_options_form() {
 						<script src="'.$plugin_location.'js/sharethis.js" type="text/javascript"></script>
 					</fieldset>
 
-					<input type="hidden" id="is_hoverbar_selected" value=""/>
-					<input type="hidden" id="is_sharenow_selected" value=""/>
+					<input type="hidden" id="is_hoverbar_selected" value=""/>				
 					<input type="hidden" id="is_copynshre_selected" value=""/>
 					<input type="hidden" name="st_action" value="st_update_settings" />
 					
@@ -1114,8 +1073,6 @@ function st_options_form() {
 					<input type="hidden" name="pulldownbar[logo]" id="st_pulldownbar_logo" value="'.$st_pulldownlogo.'"/>
 					<input type="hidden" name="pulldownbar[services]" id="st_pulldownbar_services" value="'.$st_pulldownbarServices.'"/>
 					
-					<input type="hidden" name="sharenowSelected" id="st_sharenow_selected" value="false"/>
-					<input type="hidden" name="sharenow[theme]" id="st_sharenow_theme" value="'.$sharenow_style.'"/>
 					
 					<input type="hidden" name="copynshareSettings" id="copynshareSettings" value="'.$cns_settings.'"/>
 					<input type="hidden" name="st_callesi" id="st_callesi" value="'.$sharethis_callesi.'" />

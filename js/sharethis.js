@@ -10,6 +10,7 @@ var st_isSmallChickletSelected = false;
 var st_selectedBarStyle ="";
 var st_isShareNowSelected = false;
 var st_hoverBarPosition = "left";
+var presentStepNumber = 1;
 
 //for share buttons
 var st_btnType; 
@@ -198,14 +199,6 @@ function manageBarsOnSave() {
 		updateUI();
 		jQuery('#pulldownStyle').removeClass('selected');
 	}	
-	
-	if(jQuery('#st_sharenow_selected').val() == 'true' && !sn_matches) {
-		jQuery('#st_sharenow_selected').val('false');
-		jQuery('#fbStyle').removeClass('selected');
-		jQuery('#stservicewidget').remove();
-		st_isShareNowSelected = false;
-	}
-	
 	return true;
 }
 
@@ -239,10 +232,7 @@ function submitForm(){
 	  
 		//Set the pulldownbar scrolling height i.e. if user modifies the height from the edit box
 		setScrollpxHeight();
-		
-		//Set sharenow theme i.e. if user modifies the theme from the edit box
-		setSharenowTheme();
-	
+			
 		st_getServicesFromSpanTag();
 		 
 		var isOptionSel = manageBarsOnSave();
@@ -272,18 +262,6 @@ function submitForm(){
 	  return false;
 	});
 }	
-
-function setSharenowTheme() {
-	var str1 = jQuery('#st_widget').val().replace(/\n/g, "");
-	var t = str1.match(/\"style\":[\s\"\']{0,}(\d)[\s\"\']{0,}/);
-	if(t != null) {
-		sharenow.stgOptions.style = t[1];
-		jQuery('#st_sharenow_theme').val(t[1]);
-		jQuery('.wp_st_sharenowImg').removeClass('selected');
-		jQuery('#st_sharenowImg'+t[1]).addClass('selected');
-		jQuery('#st_sharenowImg'+t[1]).attr('data-value', t[1]);
-	}	
-}
 
 function setScrollpxHeight() {
 	var str1 = jQuery('#st_widget').val().replace(/\n/g, "");
@@ -338,13 +316,22 @@ function windowLoaded(){
 	},500);
 	jQuery(".stButton").remove();
 	jQuery("#wp_st_savebutton").hide();
-	jQuery("#st_customize_sharenow").hide();
 	jQuery("#st_configure_pulldown").hide();
 	disableLeftArrow();	
 	
 	jQuery(".wp_st_navSlideDot").click(function(){
-		var isBtnBarSelected = validateUserSelection();
-		if(isBtnBarSelected == true){
+		//var isBtnBarSelected =true;
+		var isBtnBarSelected = validateUserSelection();		
+		if(presentStepNumber == 5 && isBtnBarSelected == false){
+			// This will enable user to navigate back to previous steps without error message
+			jQuery("#errorMessage").hide();
+			enableRightArrow();
+			jQuery(".wp_st_nextText").html("Next : ");
+			moveToPrevious(2);
+			return true;
+		}
+		
+		if(isBtnBarSelected == true){			
 			var selectedDot = jQuery(this).attr("value");
 			if(selectedDot > 1){
 			    enableLeftArrow();
@@ -360,6 +347,7 @@ function windowLoaded(){
 	});
 	
 	jQuery("#edit").click(function(){
+		jQuery("#errorMessage").hide();		
 		jQuery(".wp_st_nextText").html("Next : ");
 		moveToPrevious(2);
 		enableRightArrow();
@@ -457,6 +445,13 @@ function windowLoaded(){
 		jQuery("#pulldownStyle").addClass("selected");
 	}
 	
+	// ShareNow is deprecated. If publisher has saved only ShareNow settings in database, he will get the following message
+	if (st_btnType== "_none" && ! (tag.match(/new sharethis\.widgets\.hoverbuttons/) || tag.match(/new sharethis\.widgets\.pulldownbar/))){
+		jQuery("#preview").hide();
+		jQuery("#errorMessage").html("<span style='font-size:14px'>Please note, we have deprecated the ShareNow Widget.</span>");
+	}
+
+	
 	/**
 	* Retrive widget version from database
 	*/
@@ -522,46 +517,11 @@ function windowLoaded(){
 		location.href = "#st_pulldownConfig";
 	});
 	
-	/**
-	* Retrive sharenow value from database
-	*/
-	checkShareNow();
-	
+		
 	/**
 	* Retrive copynshare configuration from database
 	*/
 	checkCopyNShare();
-	
-	/**
-	* Click handler for sharenow
-	*/
-	jQuery(".jqShareNow").bind('click',function(event){
-		if(flgLoaderCompleted == true){
-			if(jQuery(".jqShareNow").hasClass("selected")){
-				removeShareNow();
-				jQuery(".jqShareNow").removeClass("selected");
-				st_isShareNowSelected = false;
-				jQuery("#st_customize_sharenow").hide();
-				jQuery("#wp_st_slidingContainer").hide();
-				jQuery("#st_sharenow_theme").val('');
-			}else{
-				selectShareNow();
-			}
-			checkHoverBar();			
-		}
-		checkHoverBar();
-	});
-	
-	jQuery("#st_customize_sharenow").click(function(){
-		jQuery("#st_pulldownConfig").hide();
-		jQuery("#wp_st_slidingContainer").toggle("slow");
-		location.href = "#wp_st_slidingContainer";
-	});
-		
-	jQuery(".wp_st_sharenowImg").click(function(){
-		sharenow.stgOptions.style = jQuery(this).attr('data-value');
-		jQuery("#st_sharenow_theme").val(jQuery(this).attr('data-value'));
-	});
 	
 	/**
 	* Sharing button hover and out functionality 
@@ -569,7 +529,7 @@ function windowLoaded(){
 	jQuery(".wp_st_styleLink").mouseover(function () {
 		if(jQuery(this).hasClass('jqBtnStyle')){
 			changeHoverView(this, 'over');
-		}else if((flgLoaderCompleted == true) && (jQuery(this).hasClass('hoverbarStyle') || jQuery(this).hasClass('pulldownStyle') || jQuery(this).hasClass('fbStyle'))){
+		}else if((flgLoaderCompleted == true) && (jQuery(this).hasClass('hoverbarStyle') || jQuery(this).hasClass('pulldownStyle'))){
 			changeHoverView(this, 'over');
 		}else{
 			return false;
@@ -719,45 +679,13 @@ function parsePublisherInfo(response){
 	}
 }		
 	
-function checkShareNow(){
-	var tag=jQuery('#st_widget').val();
-	if (tag.match(/serviceWidget/)){
-		flgLoaderCompleted = true;
-		selectShareNow();
-		checkHoverBar();
-	}	
-}
-
-function selectShareNow(){
-	jQuery(".jqShareNow").addClass("selected");
-	st_isShareNowSelected = true;
-	st_hoverBarPosition = "right";
-	scriptLoading("fbStyle");
-}	
-
 function checkHoverBar(){
-	jQuery("#st_sharenow_selected").val(st_isShareNowSelected);
 	if(st_selectedBarStyle == "hoverbarStyle"){
 		checkHoverBarPosition();	
 	}
 }
 
 function checkHoverBarPosition(){
-	if(st_isShareNowSelected == true){
-		hoverbuttons.stgOptions.position = "right";
-		var radiobuttons = jQuery('#hoverbar_selectDock input:radio');
-		for(var i=0; i<radiobuttons.length; i++){
-			radiobuttons[i].checked = false;
-			radiobuttons[i].disabled = true;
-			if(radiobuttons[i].value == "right"){
-				radiobuttons[i].checked = true;
-			}
-		}
-		if(jQuery("#sthoverbuttons").hasClass("sthoverbuttons-pos-left")){
-			jQuery("#sthoverbuttons").removeClass("sthoverbuttons-pos-left");
-			jQuery("#sthoverbuttons").addClass("sthoverbuttons-pos-right");
-		}
-	}else{
 		var radiobuttons = jQuery('#hoverbar_selectDock input:radio');
 		for(var i=0; i<radiobuttons.length; i++){
 			radiobuttons[i].checked = false;
@@ -772,12 +700,7 @@ function checkHoverBarPosition(){
 		}else if(st_hoverBarPosition == "left"){
 			jQuery("#sthoverbuttons").addClass("sthoverbuttons-pos-left");
 		}
-	}
-}
 
-
-function removeShareNow() {
-	jQuery('#stservicewidget').remove();
 }
 
 function changeHoverView(obj, mouse_event) {
@@ -858,31 +781,6 @@ function scriptLoading(barStyle){
 		},'script'
 		);
 	  }
-	  if(barStyle=="fbStyle"){
-		jQuery('#shareNowImage').hide();
-		jQuery("#sharenowLoadingImg").show();
-		jQuery.getScript(PLUGIN_PATH+"libraries/get-sharenow-new.js",function(data){ 
-			sharenow.stgOptions.style = jQuery("#st_sharenow_theme").val();
-			var st_service_widget = new sharethis.widgets.serviceWidget(sharenow.stgOptions);
-			jQuery("#st_customize_sharenow").show();
-			jQuery("#themeList").find("#st_sharenowImg"+jQuery("#st_sharenow_theme").val()).addClass("selected");
-			selectStyle("fbStyle");
-			try{
-				stServiceWidget = new sharethis.widgets.serviceWidget.framework(); // after serviceWidget.js is loaded.
-				jQuery("#sharenowLoadingImg").hide();
-				jQuery('#shareNowImage').show();
-			}catch (e) {
-				setTimeout(function(){
-					stServiceWidget = new sharethis.widgets.serviceWidget.framework(); // after serviceWidget.js is loaded.
-					jQuery("#sharenowLoadingImg").hide();
-					jQuery('#shareNowImage').show();					
-				},3000);
-
-			}
-			flgLoaderCompleted = true;
-		},'script'
-		);
-	}
 }
 
 function selectStyle(obj) {
@@ -894,7 +792,7 @@ function selectStyle(obj) {
 			stlib_preview.updateOpt("preview", {icon:'hcount',label:true});
 		} else if (text == "vcountStyle") {
 			stlib_preview.updateOpt("preview", {icon:'vcount',label:true});
-		} else if (text == "chickletStyle" || text == st_selectedBarStyle || text == 'fbStyle'){
+		} else if (text == "chickletStyle"){
 			var radioButtons = jQuery('#selectSizeType input:radio');
 			for (var i=0; i<radioButtons.length; i++) {
 				if (jQuery('#selectSizeType input:radio')[i].checked) {
@@ -1407,11 +1305,7 @@ function makeTags(){
 
 
 function setHoverBarPosition(){
-	if(st_isShareNowSelected == true){
-		jQuery("#st_hoverbar_position").val("right");
-	}else{
-		jQuery("#st_hoverbar_position").val(st_hoverBarPosition);
-	}
+	jQuery("#st_hoverbar_position").val(st_hoverBarPosition);	
 }
 
 function generateSpanTags(type,svcList) {
@@ -1607,7 +1501,7 @@ function getAdditionalOptions(services){
  }
  
 function validateUserSelection(){
-	if(st_selectedButtonStyle == "" && st_selectedBarStyle== "" && st_isShareNowSelected == false){
+	if(st_selectedButtonStyle == "" && st_selectedBarStyle== ""){
 		jQuery("#preview").show();
 		jQuery("#preview").addClass("wp_st_error_message");
 		jQuery("#preview").html("Please select any of the button style or bar style");
@@ -1638,11 +1532,11 @@ function hideAll(){
 }
 
 function moveToPrevious(stepNumber){
+	jQuery("#errorMessage").hide();
 	if(stepNumber == 2){
 		setPreviousValues("#st_step1",stepNumber);
 		disableLeftArrow();
-		setScrollpxHeight();
-		setSharenowTheme();
+		setScrollpxHeight();	
 	}else if(stepNumber == 3){
 		setPreviousValues("#st_step2",stepNumber);
 		setPageView();
@@ -1686,6 +1580,7 @@ function setPreviousValues(id,number){
 }
 
 function moveToNext(stepNumber){
+	presentStepNumber = stepNumber;
 	if(stepNumber == 1){
 		var isBtnBarSelected = validateUserSelection();
 		if(isBtnBarSelected == true){
@@ -1705,6 +1600,7 @@ function moveToNext(stepNumber){
 		setNextValues("#st_step4",stepNumber);
 		checkCopyNShare();
 	}else if(stepNumber == 4){
+		
 		var isBtnBarSelected = validateUserSelection();
 		if(isBtnBarSelected == true) {	
 			setNextValues("#st_step5",stepNumber);
@@ -1759,11 +1655,9 @@ gtc = new function () {
 	this.gtc_st_pulldownbar_scrollpx = '';
 	this.gtc_st_pulldownbar_logo = '';
 	this.gtc_st_pulldown_services = '';
-	this.gtc_st_sharenow_theme = '';
 	this.gtc_st_pulldownbar_logo = '';
 	this.gtc_st_current_type = '';
 	this.gtc_st_selected_bar = '';
-	this.gtc_st_sharenow_selected = '';
 	this.gtc_st_copyAndShare = '';
 	
 	this.initGetTheCode = function(){
@@ -1778,12 +1672,10 @@ gtc = new function () {
 		this.gtc_st_pulldownbar_scrollpx = this.clearString(jQuery('#st_pulldownbar_scrollpx').val());
 		this.gtc_st_pulldownbar_logo = this.clearString(jQuery('#pulldown_optionsTextbox_id').val());
 		this.gtc_st_pulldown_services = this.clearString(jQuery('#st_pulldownbar_services').val());
-		this.gtc_st_sharenow_theme = this.clearString(jQuery('#st_sharenow_theme').val());
 		this.gtc_st_pulldownbar_logo = this.clearString(jQuery('#st_pulldownbar_logo').val());
 		this.gtc_st_current_type = this.clearString(jQuery('#st_current_type').val());
 		this.gtc_st_selected_bar = this.clearString(jQuery('#st_selected_bar').val());
-		this.gtc_st_sharenow_selected = this.clearString(jQuery('#st_sharenow_selected').val());
-		this.gtc_st_copyAndShare = this.clearString(jQuery('#copynshareSettings').val());
+			this.gtc_st_copyAndShare = this.clearString(jQuery('#copynshareSettings').val());
 	};
 	
 	this.getSelectedServices = function(selServiceString) {
@@ -1826,7 +1718,7 @@ gtc = new function () {
 				styleType = 'pulldownStyle';
 		}
 		
-		scriptCode = this.createCode(optionType, styleType, this.gtc_st_sharenow_selected);
+		scriptCode = this.createCode(optionType, styleType);
 		jQuery('#st_widget').val(scriptCode);
 	};
 	
@@ -1941,20 +1833,6 @@ gtc = new function () {
 		}
 		
 		if("sharebar" == styleType) {
-			if('true' == this.gtc_st_sharenow_selected) {
-				objEditBoxBarOptions = this.parseBarOptions(scriptTagEditBoxObj, "sb_options");
-				objDBBarOptions = this.parseBarOptions(scriptTagDBObj, "sb_options");
-				
-				if((typeof objEditBoxBarOptions) != "undefined") {
-					//if((typeof objDBBarOptions) != "undefined" && objEditBoxBarOptions.style != objDBBarOptions.style)
-					if(objEditBoxBarOptions.style != this.gtc_st_sharenow_theme)
-						objEditBoxBarOptions.style = this.gtc_st_sharenow_theme;
-					else if(objEditBoxBarOptions.style == this.gtc_st_sharenow_theme)
-						objEditBoxBarOptions.style = this.gtc_st_sharenow_theme;
-					else 
-						objEditBoxBarOptions.style = '3';
-				}
-			}
 			return objEditBoxBarOptions;
 		}
 	};
@@ -2016,7 +1894,7 @@ gtc = new function () {
 		} else if(!objStlightOpt && this.gtc_st_current_type != '_none')
 			jsScriptCode += '<script charset="utf-8" type="text/javascript">stLight.options({"publisher":"'+this.gtc_st_pubid+'"});var st_type="'+this.gtc_st_type+'";</script>\n';
 		
-		if('hoverbarStyle' == styleType || 'pulldownStyle' == styleType || 'true' == isSharebarSelected) {
+		if('hoverbarStyle' == styleType || 'pulldownStyle' == styleType) {
 			if(selected[0].value == "https")
 				jsScriptCode += '<script charset="utf-8" type="text/javascript" src="https://ss.sharethis.com/loader.js"></script>\n';
 			else
@@ -2050,20 +1928,6 @@ gtc = new function () {
 				
 			jsScriptCode += '</script>\n';
 		} 
-		
-		if('true' == isSharebarSelected) {
-			jsScriptCode += '<script charset="utf-8" type="text/javascript">\n';
-			barOpt = this.getBarOptions("sharebar");
-			if((typeof barOpt) == "undefined") {
-				barOpt = '{ "service": "facebook", "timer": { "countdown": 30, "interval": 10, "enable": false}, "frictionlessShare": false, "style": "'+this.gtc_st_sharenow_theme+'", "publisher":"'+this.gtc_st_pubid+'"}\n';
-			} else {
-				barOpt.publisher = this.gtc_st_pubid;
-				barOpt = JSON.stringify(barOpt);
-			}
-			jsScriptCode += 'var sb_options= ' + barOpt;
-			jsScriptCode += ';var st_service_widget = new sharethis.widgets.serviceWidget(sb_options);\n';
-			jsScriptCode += '</script>\n';
-		}
 		
 		return jsScriptCode;
 	};
