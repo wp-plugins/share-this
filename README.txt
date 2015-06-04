@@ -61,6 +61,12 @@ More information about the [ShareThis plugin for WordPress](http://support.share
 5. Please refer this article for detailed instructions - [wordpress installation](http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration)
 
 == Changelog ==
+7.0.21
+
+1. Added support for HTTPS Wordpress Admin Panel
+2. Removed Google Analytics Tracking code
+3. Updated Sign-in workflow
+
 7.0.20
 
 1. Removed ShareNow Widget from configuration section

@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://www.sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.20
+ Version: 7.0.21
  Author: <a href="http://www.sharethis.com">The ShareThis Team</a>
  Author URI: http://www.sharethis.com
  */
@@ -511,7 +511,7 @@ function st_request_handler() {
 }
 
 function st_options_form() {
-	$plugin_location=WP_PLUGIN_URL.'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
+	$plugin_location=plugins_url().'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));
 	$publisher_id = get_option('st_pubid');
 	$services = get_option('st_services');
 	$tags = stripslashes(get_option('st_tags'));
@@ -681,6 +681,16 @@ function st_options_form() {
 
 	$stType = 'wordpress'.trim(get_bloginfo('version'));
 	$sharethis_callesi = (preg_match('/doNotCopy/',$widgetTag))?0:1;
+	
+	$include_scripts='<script type="text/javascript" src="http://w.sharethis.com/dynamic/stlib/allServices.js"></script><script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+			<script type="text/javascript" src="http://s.sharethis.com/loader.js"></script><link rel="stylesheet" type="text/css" href="http://w.sharethis.com/button/css/buttons.css"></link>';
+	if(isset($_SERVER['HTTPS'])) {
+		if ($_SERVER['HTTPS'] == "on") {
+			$include_scripts='<script type="text/javascript" src="https://ws.sharethis.com/dynamic/stlib/allServices.js"></script><script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+			<script type="text/javascript" src="https://ss.sharethis.com/loader.js"></script><link rel="stylesheet" type="text/css" href="https://ws.sharethis.com/button/css/buttons.css"></link>';
+		}
+	}
+
 	print('	
 		<link rel="stylesheet" type="text/css" href="'.$plugin_location.'css/st_wp_style.css"/>	
 		<link rel="stylesheet" type="text/css" href="'.$plugin_location.'css/stlib_picker.css" />
@@ -694,13 +704,11 @@ function st_options_form() {
 			}
 			var st_button_state = 1;
 		</script>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="http://w.sharethis.com/dynamic/stlib/allServices.js"></script>
-		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-		<script type="text/javascript" src="http://s.sharethis.com/loader.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+		'.$include_scripts.'
 		<script type="text/javascript" src="'.$plugin_location.'libraries/get-buttons-new.js"></script>
-		<link rel="stylesheet" type="text/css" href="http://w.sharethis.com/button/css/buttons.css"></link>
+		
 		<script type="text/javascript" src="'.$plugin_location.'libraries/stlib_picker.js"></script>
 		<script type="text/javascript" src="'.$plugin_location.'libraries/stlib_preview.js"></script>
 		<script type="text/javascript">
@@ -988,8 +996,11 @@ function st_options_form() {
 							<!-- STEP 5 -->
 							<div id="st_step5" class="wp_st_centerContainer2" style="display:none;">
 								<div id="loginWindowDiv" class="wp_st_loginWindowDiv">
-									<iframe id="loginFrame" width="644px" height="398px" frameborder="0" src="//www.sharethis.com/external-login?pluginType=newPlugins"></iframe>
-									<div class="wp_st_login_message">You are successfully logged-in with ShareThis.</div>		
+									<div id="signInBlock" style="height:110px;">
+										<div><h1 style="margin-top: 50px;">To get detailed analytics about sharing done on your site, please Sign In.</h1> <span id="winSignin" class="step5SignInBtn">Sign In</span></div>
+									</div>
+									<!--<iframe id="loginFrame" width="644px" height="398px" frameborder="0" src="//www.sharethis.com/external-login?pluginType=newPlugins"></iframe>-->
+									<div class="wp_st_login_message">You are successfully logged-in with ShareThis.</div>
 								</div>
 							</div>
 						
