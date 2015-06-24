@@ -22,7 +22,7 @@
  Plugin Name: ShareThis
  Plugin URI: http://www.sharethis.com
  Description: Let your visitors share a post/page with others. Supports e-mail and posting to social bookmarking sites. <a href="options-general.php?page=sharethis.php">Configuration options are here</a>. Questions on configuration, etc.? Make sure to read the README.
- Version: 7.0.21
+ Version: 7.0.22
  Author: <a href="http://www.sharethis.com">The ShareThis Team</a>
  Author URI: http://www.sharethis.com
  */
@@ -631,15 +631,6 @@ function st_options_form() {
 		$cns_settings = '';
 	}
 	
-	/* Retrieves widget version from the database */ 
-	$widget5xSelected = "";
-	$widget4xSelected = "";
-	if($st_widget_version == "5x"){
-		$widget5xSelected = "selected";
-	}else if($st_widget_version == "4x"){
-		$widget4xSelected = "selected";
-	}
-
 	$widgetTag = stripslashes(get_option('st_widget'));
 	
 	if(empty($publisher_id)){
@@ -682,11 +673,11 @@ function st_options_form() {
 	$stType = 'wordpress'.trim(get_bloginfo('version'));
 	$sharethis_callesi = (preg_match('/doNotCopy/',$widgetTag))?0:1;
 	
-	$include_scripts='<script type="text/javascript" src="http://w.sharethis.com/dynamic/stlib/allServices.js"></script><script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+	$include_scripts='<script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="http://w.sharethis.com/dynamic/stlib/allServices.js"></script><script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 			<script type="text/javascript" src="http://s.sharethis.com/loader.js"></script><link rel="stylesheet" type="text/css" href="http://w.sharethis.com/button/css/buttons.css"></link>';
 	if(isset($_SERVER['HTTPS'])) {
 		if ($_SERVER['HTTPS'] == "on") {
-			$include_scripts='<script type="text/javascript" src="https://ws.sharethis.com/dynamic/stlib/allServices.js"></script><script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
+			$include_scripts='<script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="https://ws.sharethis.com/dynamic/stlib/allServices.js"></script><script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script>
 			<script type="text/javascript" src="https://ss.sharethis.com/loader.js"></script><link rel="stylesheet" type="text/css" href="https://ws.sharethis.com/button/css/buttons.css"></link>';
 		}
 	}
@@ -871,34 +862,8 @@ function st_options_form() {
 								
 								<!-- STEP 3 -->
 								<div id="st_step3" class="wp_st_centerContainer2" style="display:none;">
-									<div id="addOptDivSep" style="padding-bottom:10px"></div>
-									<div id="addOptDiv" class="heading st_additional_option_heading">
-										<span id="headingAddionalOptions" class="headingAddionalOptions_right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional Options</span>
-									</div>								
-									<div id="addOptions" style="height:250px;text-align: center;display:none;">
-										<div id="st_widget5x" class="wp_st_widget5x">
-											<div style="width:50%; float:left;margin-top:5px;">
-												<img src="'.$plugin_location.'images/widget-5x.png"/>
-											</div>
-											<div style="width:48%; float:right;">
-												<p id="st_5xwidget" class="wp_st_post_heading '.$widget5xSelected.'" style="width:86%">Multi Post</p>
-												<p class="wp_st_text">Sharing takes place inside the widget, without taking users away from your site. Preferences are saved so your users can share to more than one service at the same time.</p>	
-											</div>
-										</div>
-										<div class="wp_st_vseparator">
-										<hr/>
-										</div>
-										<div id="st_widget4x" class="wp_st_widget4x">
-											<div style="width:48%; float:left;position: relative">
-												<img src="'.$plugin_location.'images/widget-4x.png"/>
-											</div>
-											<div style="width:48%; float:right">
-												<p id="st_4xwidget" class="wp_st_post_heading '.$widget4xSelected.'" style="width:86%">Direct Post</p>
-												<p class="wp_st_text">Your users will be redirected to Facebook, Twitter, etc when clicking on the corresponding buttons. The widget is opened when users click on "Email" and "ShareThis".</p>	
-											</div>
-										</div>
-									</div>	
-							</div>							
+									
+								</div>							
 							<div id="st_splServiceContainer" class="wp_st_splServiceContainer">
 								
 							</div>

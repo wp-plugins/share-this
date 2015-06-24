@@ -61,6 +61,10 @@ More information about the [ShareThis plugin for WordPress](http://support.share
 5. Please refer this article for detailed instructions - [wordpress installation](http://support.sharethis.com/customer/portal/articles/446440-wordpress-integration)
 
 == Changelog ==
+7.0.22
+
+User will no longer see the selection of MultiPost/Direct Post widget option. By default, new users will get MultiPost Widget.
+
 7.0.21
 
 1. Added support for HTTPS Wordpress Admin Panel
